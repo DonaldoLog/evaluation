@@ -3,6 +3,11 @@
 
 @section('title', 'Dashboard')
 
+@section('css')
+    <script src="./css/app.css"></script>
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
 @section('content_header')
     <h1>Dashboard</h1>
 @stop
@@ -13,11 +18,6 @@
         <example-component>
         </example-component>
     </div>
-@stop
-
-@section('css')
-    <script src="./css/app.css"></script>
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
