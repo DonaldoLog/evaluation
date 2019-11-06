@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('admin.dashboard');
 });
+
+Route::name('careers.')->prefix('careers')->group(function () {
+    Route::get('/index', 'CareerController@index')->name('.index');
+    Route::post('/store', 'CareerController@store')->name('store');
+});
