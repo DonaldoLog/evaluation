@@ -175,7 +175,7 @@ return [
         ],
         [
             'text' => 'Carreras',
-            'url'  => 'admin/settings',
+            'url'  => 'careers/index',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [

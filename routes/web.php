@@ -18,4 +18,5 @@ Route::get('/', function () {
 Route::name('careers.')->prefix('careers')->group(function () {
     Route::get('/index', 'CareerController@index')->name('.index');
     Route::post('/store', 'CareerController@store')->name('store');
+    Route::post('/data', 'CareerController@getCareers');
 });

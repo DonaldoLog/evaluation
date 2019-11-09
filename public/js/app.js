@@ -1953,15 +1953,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {},
   data: function data() {
     return {
+      loading: true,
       mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
       career: {
         name: ''
@@ -1970,14 +1968,8 @@ __webpack_require__.r(__webpack_exports__);
       cargando: false,
       colapsable: false,
       columns: [{
-        field: 'nombres',
+        field: 'name',
         label: 'Nombre'
-      }, {
-        field: 'numero_contrato',
-        label: 'Número de contrato'
-      }, {
-        field: 'calle',
-        label: 'Dirección'
       }],
       perPage: 10,
       currentPage: 1,
@@ -1989,7 +1981,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       },
       order: 'asc',
-      sortedColumn: 'numero_contrato',
+      sortedColumn: 'name',
       search: '',
       optionsPerPage: [{
         value: 10,
@@ -2042,20 +2034,26 @@ __webpack_require__.r(__webpack_exports__);
       this.colapsable = false;
     },
     fetchData: function fetchData() {
-      /* let dataFetchUrl = `${this.urlCmasmez}/contratos-pagar-datatable`;
+      var _this = this;
+
+      var dataFetchUrl = "".concat(this.mainUrl, "/careers/data");
       axios.post(dataFetchUrl, {
-                  page: this.currentPage,
-                  column: this.sortedColumn,
-                  order: this.order,
-                  per_page: this.perPage,
-                  search: this.search
-      }).then(({ data }) => {
-          this.pagination = data
-          this.tableData = data.data
-          if ((this.pagination.meta.last_page < this.pagination.meta.current_page) && (this.pagination.data.length === 0) && (this.pagination.meta.total != 0)) {
-              this.changePage(this.currentPage === 1?this.currentPage: this.currentPage - 1)
-          }
-      }).catch(error => this.tableData = []) */
+        page: this.currentPage,
+        column: this.sortedColumn,
+        order: this.order,
+        per_page: this.perPage,
+        search: this.search
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.pagination = data;
+        _this.tableData = data.data;
+
+        if (_this.pagination.meta.last_page < _this.pagination.meta.current_page && _this.pagination.data.length === 0 && _this.pagination.meta.total != 0) {
+          _this.changePage(_this.currentPage === 1 ? _this.currentPage : _this.currentPage - 1);
+        }
+      })["catch"](function (error) {
+        return _this.tableData = [];
+      });
     },
     serialNumber: function serialNumber(key) {
       return (this.currentPage - 1) * this.perPage + 1 + key;
@@ -2082,20 +2080,20 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchData();
     },
     storeCareer: function storeCareer() {
-      var _this = this;
+      var _this2 = this;
 
       this.$validator.validate().then(function (valid) {
         if (valid) {
-          _this.cargando = true;
-          axios.post("".concat(_this.mainUrl, "/careers/store"), {
-            contrato: ''
+          _this2.loading = true;
+          axios.post("".concat(_this2.mainUrl, "/careers/store"), {
+            career: _this2.career
           }).then(function (response) {
-            _this.cargando = false;
+            _this2.loading = false;
 
-            if (response.data.status == 1) {
+            if (response.data.success) {
               Vue.swal({
                 title: 'Éxito',
-                text: "Contrato creado correctamente.",
+                text: "Carrera creado correctamente.",
                 type: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
@@ -2108,20 +2106,22 @@ __webpack_require__.r(__webpack_exports__);
                 }
               });
             } else {
-              Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
+              Vue.swal('¡Error!', response.data.message, 'error');
             }
           })["catch"](function (error) {
-            _this.cargando = false;
+            _this2.loading = false;
             Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
           });
         } else {
-          _this.cargando = false;
+          _this2.loading = false;
           Vue.swal('¡Atención!', 'Complete todos los campos.', 'warning');
         }
       });
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.fetchData();
+  }
 });
 
 /***/ }),
@@ -63041,14 +63041,15 @@ var render = function() {
           attrs: {
             "header-text-variant": "white",
             "header-tag": "header",
-            "header-class": "row",
             "header-bg-variant": "dark",
             "no-body": ""
           }
         },
         [
           _c("template", { slot: "header" }, [
-            _c("h5", [_vm._v(" " + _vm._s(_vm.title) + " ")]),
+            _c("div", { staticClass: "float-left" }, [
+              _c("h4", [_vm._v(" " + _vm._s(_vm.title) + " ")])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-tools float-right" }, [
               _c(
@@ -63100,7 +63101,7 @@ var render = function() {
           _vm.colapsable
             ? [
                 _c("b-card-body", [
-                  _c("div", { staticClass: "form-group col-4" }, [
+                  _c("div", { staticClass: "form-group col-12" }, [
                     _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
                     _vm._v(" "),
                     _c("input", {
@@ -63141,7 +63142,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-secondary col-2",
+                      staticClass: "btn btn-secondary col-2 offset-5",
                       on: { click: _vm.storeCareer }
                     },
                     [_vm._v("Guardar")]
@@ -63270,14 +63271,302 @@ var render = function() {
                     "table",
                     { staticClass: "table table-striped responsive" },
                     [
-                      _c("thead", [_c("tr")]),
+                      _c("thead", [
+                        _c(
+                          "tr",
+                          [
+                            _vm._l(_vm.columns, function(column) {
+                              return _c(
+                                "th",
+                                {
+                                  key: column["field"],
+                                  staticClass: "table-head",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.sortByColumn(column)
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                                " +
+                                      _vm._s(column["label"]) +
+                                      "\n                                                "
+                                  ),
+                                  column["field"] === _vm.sortedColumn
+                                    ? _c("span", [
+                                        _vm.order === "asc"
+                                          ? _c("i", {
+                                              staticClass: "fas fa-arrow-up"
+                                            })
+                                          : _c("i", {
+                                              staticClass: "fas fa-arrow-down"
+                                            })
+                                      ])
+                                    : _vm._e()
+                                ]
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Acciones")])
+                          ],
+                          2
+                        )
+                      ]),
                       _vm._v(" "),
-                      _c("tbody", [void 0], 2)
+                      _c(
+                        "tbody",
+                        [
+                          _vm.tableData.length > 0
+                            ? [
+                                _vm._l(_vm.tableData, function(career, index) {
+                                  return [
+                                    _c("tr", { key: index }, [
+                                      _c("td", [
+                                        _vm._v(" " + _vm._s(career.name) + " ")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btn btn-secondary",
+                                            attrs: { title: "Editar" }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-edit"
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "btn btn-secondary",
+                                            attrs: { title: "Eliminar" }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "fa fa-trash"
+                                            })
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "btn btn-secondary",
+                                            attrs: {
+                                              href:
+                                                _vm.mainUrl +
+                                                "/contrato-oficio/" +
+                                                career.id,
+                                              target: "_blank",
+                                              title: "Mas"
+                                            }
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "far fa-file"
+                                            })
+                                          ]
+                                        )
+                                      ])
+                                    ])
+                                  ]
+                                })
+                              ]
+                            : [
+                                _c(
+                                  "tr",
+                                  { staticStyle: { "text-align": "center" } },
+                                  [
+                                    _c("td", { attrs: { colspan: "4" } }, [
+                                      _vm._v("No hay careers.")
+                                    ])
+                                  ]
+                                )
+                              ]
+                        ],
+                        2
+                      )
                     ]
                   ),
                   _vm._v(" "),
                   _vm.pagination && _vm.tableData.length > 0
-                    ? _c("nav")
+                    ? _c("nav", [
+                        _c(
+                          "ul",
+                          { staticClass: "pagination" },
+                          [
+                            _c(
+                              "li",
+                              {
+                                staticClass: "page-item",
+                                class: { disabled: _vm.currentPage === 1 }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "page-link",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.changePage(1)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Primera")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "li",
+                              {
+                                staticClass: "page-item",
+                                class: { disabled: _vm.currentPage === 1 }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "page-link",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.changePage(
+                                          _vm.currentPage - 1
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Anterior")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _vm._l(_vm.pagesNumber, function(page) {
+                              return _c(
+                                "li",
+                                {
+                                  key: page,
+                                  staticClass: "page-item",
+                                  class: {
+                                    active:
+                                      page == _vm.pagination.meta.current_page
+                                  }
+                                },
+                                [
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "page-link",
+                                      attrs: { href: "javascript:void(0)" },
+                                      on: {
+                                        click: function($event) {
+                                          $event.preventDefault()
+                                          return _vm.changePage(page)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(page))]
+                                  )
+                                ]
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "li",
+                              {
+                                staticClass: "page-item",
+                                class: {
+                                  disabled:
+                                    _vm.currentPage ===
+                                    _vm.pagination.meta.last_page
+                                }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "page-link",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.changePage(
+                                          _vm.currentPage + 1
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Siguiente")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "li",
+                              {
+                                staticClass: "page-item",
+                                class: {
+                                  disabled:
+                                    _vm.currentPage ===
+                                    _vm.pagination.meta.last_page
+                                }
+                              },
+                              [
+                                _c(
+                                  "a",
+                                  {
+                                    staticClass: "page-link",
+                                    attrs: { href: "#" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.changePage(
+                                          _vm.pagination.meta.last_page
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Última")]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticStyle: { "margin-top": "8px" } },
+                              [
+                                _vm._v("   "),
+                                _c("i", [
+                                  _vm._v(
+                                    "Mostrando " +
+                                      _vm._s(_vm.pagination.meta.from) +
+                                      " a " +
+                                      _vm._s(
+                                        _vm.pagination.meta.to >
+                                          _vm.pagination.meta.total
+                                          ? _vm.pagination.meta.total
+                                          : _vm.pagination.meta.to
+                                      ) +
+                                      " de  " +
+                                      _vm._s(_vm.pagination.meta.total) +
+                                      " registros."
+                                  )
+                                ])
+                              ]
+                            )
+                          ],
+                          2
+                        )
+                      ])
                     : _vm._e()
                 ])
               ])

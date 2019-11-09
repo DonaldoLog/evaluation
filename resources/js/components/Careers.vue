@@ -3,12 +3,13 @@
         <b-card
             header-text-variant="white"
             header-tag="header"
-            header-class="row"
             header-bg-variant="dark"
             no-body
             >
             <template slot="header">
-                <h5> {{ title }} </h5>
+                <div class="float-left">
+                    <h4> {{ title }} </h4>
+                </div>
                 <div class="card-tools float-right">
                     <button v-show="!colapsable" @click="add()" type="button" class="btn btn-secondary" >
                         <a > <i class="fa fa-plus"></i></a>
@@ -20,13 +21,12 @@
             </template>
             <template v-if="colapsable">
             <b-card-body>
-                <div class="form-group col-4">
+                <div class="form-group col-12">
                     <label for="name">Nombre</label>
                     <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="career.name" v-validate="{ required: true}">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
-                <button class="btn btn-secondary col-2" @click="storeCareer">Guardar</button>
-
+                <button class="btn btn-secondary col-2 offset-5" @click="storeCareer">Guardar</button>
             </b-card-body>
             </template>
         </b-card>
@@ -53,7 +53,7 @@
                                     <table class="table table-striped responsive">
                                         <thead>
                                             <tr>
-                                                <!-- <th v-for="column in columns" :key="column['field']" @click="sortByColumn(column)"
+                                                <th v-for="column in columns" :key="column['field']" @click="sortByColumn(column)"
                                                     class="table-head">
                                                     {{ column['label'] }}
                                                     <span v-if="column['field'] === sortedColumn">
@@ -61,32 +61,29 @@
                                                         <i v-else class="fas fa-arrow-down"></i>
                                                     </span>
                                                 </th>
-                                                <th>Acciones</th> -->
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <template>
-                                                <!-- <template v-for="(contrato, index) in tableData">
+                                            <template v-if="tableData.length > 0">
+                                                <template v-for="(career, index) in tableData">
                                                         <tr :key="index">
-                                                            <td> {{ contrato.cliente.nombres }} {{ contrato.cliente.primer_ap }} {{ contrato.cliente.segundo_ap }} </td>
-                                                            <td> 00{{ contrato.numero_contrato == 0? '-': contrato.numero_contrato }} </td>
-                                                            <td> {{ contrato.domicilio.calle }} #{{ contrato.domicilio.no_exterior }}  {{ contrato.domicilio.colonia.colonia }} {{ contrato.domicilio.colonia.colonia }} </td>
+                                                            <td> {{ career.name }} </td>
                                                             <td>
-                                                                <button class="btn btn-secondary" @click="pagar(contrato)" title="Pagar"> <i class="fas fa-money-bill-wave"></i></button>
-                                                                <button class="btn btn-secondary" @click="editarContrato(contrato)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                <button class="btn btn-secondary" @click="eliminarContrato(contrato)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <a class="btn btn-secondary" :href="urlCmasmez+'/contrato-oficio/'+contrato.id" target="_blank" title="Contrato"><i class="far fa-file"></i></a>
+                                                                <button class="btn btn-secondary" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                <button class="btn btn-secondary" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                                <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a>
                                                             </td>
                                                         </tr>
-                                                </template> -->
+                                                </template>
                                             </template>
-                                            <!-- <template v-else>
-                                                <tr style="text-align:center"><td colspan="4" >No hay contratos.</td></tr>
-                                            </template> -->
+                                            <template v-else>
+                                                <tr style="text-align:center"><td colspan="4" >No hay careers.</td></tr>
+                                            </template>
                                         </tbody>
                                     </table>
                                     <nav v-if="pagination && tableData.length > 0">
-                                        <!-- <ul class="pagination">
+                                        <ul class="pagination">
                                             <li class="page-item" :class="{'disabled' : currentPage === 1}">
                                                 <a class="page-link" href="#" @click.prevent="changePage(1)">Primera</a>
                                             </li>
@@ -103,7 +100,7 @@
                                                 <a class="page-link" href="#" @click.prevent="changePage(pagination.meta.last_page)">Última</a>
                                             </li>
                                             <span style="margin-top: 8px;"> &nbsp; <i>Mostrando {{ pagination.meta.from }} a {{ pagination.meta.to > pagination.meta.total? pagination.meta.total: pagination.meta.to }} de  {{ pagination.meta.total }} registros.</i></span>
-                                        </ul> -->
+                                        </ul>
                                     </nav>
                                 </div>
                             </div>
@@ -127,28 +124,27 @@ import mainUrl from '../mainUrl'
     },
     data() {
       return {
+          loading: true,
           mainUrl: mainUrl,
-        career: {
-            name: ''
-        },
-        title: 'Carreras',
-        cargando: false,
-        colapsable: false,
-        columns: [
-            {field: 'nombres', label: 'Nombre'},
-            {field: 'numero_contrato', label: 'Número de contrato'},
-            {field: 'calle', label: 'Dirección'},
-        ],
-        perPage: 10,
-        currentPage: 1,
-        tableData: [],
-        pagination: {
-            meta: { to: 1, from: 1 }
-        },
-        order: 'asc',
-        sortedColumn: 'numero_contrato',
-        search: '',
-        optionsPerPage: [{value: 10, text: "Mostrar 10"}, {value: 20, text: "Mostrar 20"}, {value: 50,text: "Mostrar 50"}],
+          career: {
+              name: ''
+          },
+          title: 'Carreras',
+          cargando: false,
+          colapsable: false,
+          columns: [
+              {field: 'name', label: 'Nombre'},
+          ],
+          perPage: 10,
+          currentPage: 1,
+          tableData: [],
+          pagination: {
+              meta: { to: 1, from: 1 }
+          },
+          order: 'asc',
+          sortedColumn: 'name',
+          search: '',
+          optionsPerPage: [{value: 10, text: "Mostrar 10"}, {value: 20, text: "Mostrar 20"}, {value: 50,text: "Mostrar 50"}],
       }
     },
     watch: {
@@ -185,7 +181,7 @@ import mainUrl from '../mainUrl'
             this.colapsable = false
         },
         fetchData() {
-            /* let dataFetchUrl = `${this.urlCmasmez}/contratos-pagar-datatable`;
+            let dataFetchUrl = `${this.mainUrl}/careers/data`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -198,7 +194,7 @@ import mainUrl from '../mainUrl'
                 if ((this.pagination.meta.last_page < this.pagination.meta.current_page) && (this.pagination.data.length === 0) && (this.pagination.meta.total != 0)) {
                     this.changePage(this.currentPage === 1?this.currentPage: this.currentPage - 1)
                 }
-            }).catch(error => this.tableData = []) */
+            }).catch(error => this.tableData = [])
         },
         serialNumber(key) {
             return (this.currentPage - 1) * this.perPage + 1 + key
@@ -226,16 +222,16 @@ import mainUrl from '../mainUrl'
         storeCareer () {
             this.$validator.validate().then(valid => {
                 if (valid) {
-                    this.cargando = true
+                    this.loading = true
                     axios.post(`${this.mainUrl}/careers/store`, {
-                        contrato: ''
+                        career: this.career
                     })
                     .then((response) => {
-                        this.cargando = false
-                        if (response.data.status == 1) {
+                        this.loading = false
+                        if (response.data.success) {
                             Vue.swal({
                                 title: 'Éxito',
-                                text: "Contrato creado correctamente.",
+                                text: "Carrera creado correctamente.",
                                 type: 'success',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
@@ -251,13 +247,13 @@ import mainUrl from '../mainUrl'
                         } else {
                             Vue.swal(
                                 '¡Error!',
-                                'Ha ocurrido un error, intente de nuevo.',
+                                response.data.message,
                                 'error'
                             )
                         }
                     })
                     .catch((error) => {
-                        this.cargando = false
+                        this.loading = false
                          Vue.swal(
                             '¡Error!',
                             'Ha ocurrido un error, intente de nuevo.',
@@ -266,21 +262,19 @@ import mainUrl from '../mainUrl'
                     })
 
                 } else {
-                    this.cargando = false
+                    this.loading = false
                     Vue.swal(
                         '¡Atención!',
                         'Complete todos los campos.',
                         'warning'
-                        )
-
+                    )
                 }
-
             });
 
         },
      },
      mounted() {
-
+         this.fetchData()
     },
   }
 </script>
