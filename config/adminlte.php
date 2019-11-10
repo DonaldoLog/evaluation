@@ -176,22 +176,22 @@ return [
         [
             'text' => 'Carreras',
             'url'  => 'careers/index',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-pencil-alt',
         ],
         [
             'text' => 'Grupos',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'url'  => 'groups/index',
+            'icon' => 'fas fa-users',
         ],
         [
             'text' => 'Estudiantes',
             'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-user',
         ],
         [
             'text' => 'Maestros',
             'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
+            'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
             'text'    => 'multilevel',

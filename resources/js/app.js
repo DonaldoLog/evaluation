@@ -19,6 +19,7 @@ Vue.use(VueSweetalert2);
 Vue.use(BootstrapVue)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('careers-component', require('./components/Careers.vue').default);
+Vue.component('groups-component', require('./components/Groups.vue').default);
 
 const app = new Vue({
     el: '#app'

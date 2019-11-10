@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Career;
+use App\Models\Group;
 use Illuminate\Support\Facades\Log;
 
-class CareerController extends Controller
+class GroupController extends Controller
 {
     public function index(){
-        return view('modules.careers.index');
+        return view('modules.groups.index');
     }
 
     public function store(Request $request) {
         try {
-            $exist = Career::where('name', $request->career['name'])->first();
+            $exist = Group::where('name', $request->group['name'])->first();
             if ($exist) {
-                return response()->json(['success' => false, 'message' => 'Ya existe esta carrera.']);
+                return response()->json(['success' => false, 'message' => 'Ya existe esta grupo.']);
             }
-            $carrer = new Career();
-            $carrer->name = $request->career['name'];
+            $carrer = new Group();
+            $carrer->name = $request->group['name'];
             $carrer->save();
             return response()->json(['success' => true]);
         } catch (\PDOException $th) {
@@ -28,9 +28,9 @@ class CareerController extends Controller
         }
     }
 
-    public function getCareers(Request $request) {
+    public function getGroups(Request $request) {
         $search = $request->search;
-        $query = Career::select('id', 'name')
+        $query = Group::select('id', 'name')->with('career')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -55,47 +55,47 @@ class CareerController extends Controller
         return $response;
     }
 
-    public function getCareer ($careerId) {
+    public function getGroup ($groupId) {
         try {
-            $career = Career::where('id', $careerId)->first();
-            if ($career) {
-                return response()->json(['success' => true, 'career' => $career], 200);
+            $group = Group::where('id', $groupId)->first();
+            if ($group) {
+                return response()->json(['success' => true, 'group' => $group], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Carrera no encontrada.'], 200);
+            return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
 
-    public function updateCareer (Request $request) {
+    public function updateGroup (Request $request) {
         try {
-            $exist = Career::where('name', $request->career['name'])
-            ->where('id', '!=', $request->career['id'])->first();
+            $exist = Group::where('name', $request->group['name'])
+            ->where('id', '!=', $request->group['id'])->first();
             if ($exist) {
-                return response()->json(['success' => false, 'message' => 'Ya existe esta carrera.'], 200);
+                return response()->json(['success' => false, 'message' => 'Ya existe esta grupo.'], 200);
             }
-            $career = Career::where('id', $request->career['id'])->first();
-            if ($career) {
-                $career->name = $request->career['name'];
-                $career->save();
+            $group = Group::where('id', $request->group['id'])->first();
+            if ($group) {
+                $group->name = $request->group['name'];
+                $group->save();
                 return response()->json(['success' => true], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Carrera no encontrada.'], 200);
+            return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
 
-    public function destroyCareer (Request $request) {
+    public function destroyGroup (Request $request) {
         try {
-            $career = Career::where('id', $request->career['id'])->first();
-            if ($career) {
-                $career->delete();
+            $group = Group::where('id', $request->group['id'])->first();
+            if ($group) {
+                $group->delete();
                 return response()->json(['success' => true], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Carrera no encontrada.'], 200);
+            return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);

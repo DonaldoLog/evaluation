@@ -23,3 +23,12 @@ Route::name('careers.')->prefix('careers')->group(function () {
     Route::post('/data', 'CareerController@getCareers');
     Route::post('/destroy', 'CareerController@destroyCareer')->name('.destroy');
 });
+
+Route::name('groups.')->prefix('groups')->group(function () {
+    Route::get('/index', 'GroupController@index')->name('.index');
+    Route::get('/{groupId}', 'GroupController@getGroup')->name('.get');
+    Route::post('/store', 'GroupController@store')->name('.store');
+    Route::post('/update', 'GroupController@updateGroup')->name('.update');
+    Route::post('/data', 'GroupController@getGroups');
+    Route::post('/destroy', 'GroupController@destroyGroup')->name('.destroy');
+});
