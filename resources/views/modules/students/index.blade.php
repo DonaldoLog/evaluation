@@ -14,7 +14,7 @@
 
 @section('content')
     <div id="app">
-        <groups-component careers-initial = '{{ $careers }}'></groups-component>
+        <students-component groups-initial = '{{ $groups }}'></students-component>
     </div>
 @stop
 

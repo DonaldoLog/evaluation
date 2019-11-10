@@ -21,18 +21,28 @@
             </template>
             <div v-show="colapsable === true">
             <b-card-body class="row">
-                <div class="form-group col-6">
+                <div class="form-student col-6">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="group.name" v-validate="{ required: true }">
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="student.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
-                <div class="form-group col-6">
-                    <label for="career">Grupo:</label>
-                    <v-select label="name" id="career" name="career" v-model="career" :options="careers" data-vv-as="career" v-validate="'required'"></v-select>
-                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('career')">{{ errors.first('career') }}</div>
+                <div class="form-student col-6">
+                    <label for="last_name">Apellidos</label>
+                    <input type="text" class="form-control form-control-sm" id="last_name" last_name="last_name" v-model="student.last_name" v-validate="{ required: true }">
+                    <div class="invalid-feedback" v-if="errors.has('last_name')">{{ errors.first('last_name') }}</div>
                 </div>
-                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeGroup">Guardar</button>
-                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateGroup">Actualizar</button>
+                <div class="form-student col-6">
+                    <label for="studentId">Matricula</label>
+                    <input type="text" class="form-control form-control-sm" id="studentId" studentId="studentId" v-model="student.studentId" v-validate="{ required: true }">
+                    <div class="invalid-feedback" v-if="errors.has('studentId')">{{ errors.first('studentId') }}</div>
+                </div>
+                <div class="form-student col-6">
+                    <label for="group">Grupo:</label>
+                    <v-select label="name" id="group" name="group" v-model="student.group" :options="groups" data-vv-as="group" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('group')">{{ errors.first('group') }}</div>
+                </div>
+                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeStudent">Guardar</button>
+                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateStudent">Actualizar</button>
             </b-card-body>
             </div>
 
@@ -41,10 +51,10 @@
              <div>
                 <div class="data-table">
                     <div class="row mb-2">
-                        <div class="input-group col-md-5">
+                        <div class="input-student col-md-5">
                             <input type="text" v-model="search" class="form-control" v-on:keyup.enter="searchBy">
-                            <div class="input-group-append" v-on:click="searchBy" style="cursor: pointer;">
-                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search" aria-hidden="true"></i></span>
+                            <div class="input-student-append" v-on:click="searchBy" style="cursor: pointer;">
+                                <span class="input-student-text" id="basic-addon2"><i class="fa fa-search" aria-hidden="true"></i></span>
                             </div>
                         </div>
                         <select name="perPage" v-model="perPage" id="perPage" class="col-md-5 form-control" v-on:change="changePerPage">
@@ -72,20 +82,21 @@
                                         </thead>
                                         <tbody>
                                             <template v-if="tableData.length > 0">
-                                                <template v-for="(group, index) in tableData">
+                                                <template v-for="(student, index) in tableData">
                                                         <tr :key="index">
-                                                            <td> {{ group.name }} </td>
-                                                            <td> {{ group.career.name }} </td>
+                                                            <td> {{ student.name }}  {{ student.last_name }}</td>
+                                                            <td> {{ student.studentId }} </td>
+                                                            <td> {{ student.group? student.group.name: 'EDITAR PARA ASIGNAR' }} </td>
                                                             <td>
-                                                                <button class="btn btn-secondary" @click="editGroup(group.id)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                <button class="btn btn-secondary" @click="destroyGroup(group)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                               <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+group.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
+                                                                <button class="btn btn-secondary" @click="editStudent(student.id)" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                <button class="btn btn-secondary" @click="destroyStudent(student)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                               <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+student.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                             </td>
                                                         </tr>
                                                 </template>
                                             </template>
                                             <template v-else>
-                                                <tr style="text-align:center"><td colspan="4" >No hay grupos.</td></tr>
+                                                <tr style="text-align:center"><td colspan="4" >No hay estudiantes.</td></tr>
                                             </template>
                                         </tbody>
                                     </table>
@@ -129,24 +140,30 @@ Vue.component('v-select', vSelect)
 
     },
     props: {
-        careersInitial: {}
+        groupsInitial: {}
     },
     data() {
       return {
           edit: false,
           loading: true,
           mainUrl: mainUrl,
-          group: {
-              name: ''
+          student: {
+              name: '',
+              last_name: '',
+              studentId: '',
+              student: {
+                  name: '',
+                  id: ''
+              }
           },
-          career: '',
-          careers: this.careersInitial? JSON.parse(this.careersInitial): null,
-          title: 'Grupos',
+          groups: this.groupsInitial? JSON.parse(this.groupsInitial): null,
+          title: 'Estudiantes',
           cargando: false,
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
-              {field: 'career', label: 'Grupo'},
+              {field: 'studentId', label: 'Matricula'},
+              {field: 'group', label: 'Grupo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -189,11 +206,11 @@ Vue.component('v-select', vSelect)
     methods: {
         add() {
             this.colapsable = true
-            this.group.name = ''
+            this.student.name = ''
         },
         cancel() {
             this.edit = false
-            this.group.name = ''
+            this.student.name = ''
             this.career = {
                 name: '',
                 id: ''
@@ -201,7 +218,7 @@ Vue.component('v-select', vSelect)
             this.colapsable = false
         },
         fetchData() {
-            let dataFetchUrl = `${this.mainUrl}/groups/data`;
+            let dataFetchUrl = `${this.mainUrl}/students/data`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -239,20 +256,19 @@ Vue.component('v-select', vSelect)
         searchBy() {
             this.fetchData()
         },
-        storeGroup () {
+        storeStudent () {
             this.$validator.validate().then(valid => {
                 if (valid) {
                     this.loading = true
-                    axios.post(`${this.mainUrl}/groups/store`, {
-                        group: this.group,
-                        career: this.career
+                    axios.post(`${this.mainUrl}/students/store`, {
+                        student: this.student
                     })
                     .then((response) => {
                         this.loading = false
                         if (response.data.success) {
                             Vue.swal({
                                 title: 'Éxito',
-                                text: "Grupo creado correctamente.",
+                                text: "Estudiante creado correctamente.",
                                 type: 'success',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
@@ -293,20 +309,22 @@ Vue.component('v-select', vSelect)
             });
 
         },
-        editGroup (carrerId) {
+        editStudent (id) {
             this.loading = true
             this.edit = true
-            axios.get(`${this.mainUrl}/groups/${carrerId}`)
+            axios.get(`${this.mainUrl}/students/${id}`)
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
-                    this.group = {
-                        name: res.data.group.name,
-                        id: res.data.group.id
-                    }
-                    this.career = {
-                        name: res.data.group.career.name,
-                        id: res.data.group.career.id
+                    this.student = {
+                        name: res.data.student.name,
+                        last_name: res.data.student.last_name,
+                        id: res.data.student.id,
+                        studentId: res.data.student.studentId,
+                        group: {
+                            name: res.data.student.group.name,
+                            id: res.data.student.group.id
+                        }
                     }
                     this.colapsable = true
                 } else {
@@ -326,15 +344,15 @@ Vue.component('v-select', vSelect)
                 )
             })
         },
-        updateGroup () {
+        updateStudent () {
             this.loading = true
-            axios.post(`${this.mainUrl}/groups/update`, { group: this.group, career: this.career })
+            axios.post(`${this.mainUrl}/students/update`, { student: this.student })
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
                     Vue.swal({
                         title: 'Éxito',
-                        text: "Grupo actualizada correctamente.",
+                        text: "Estudiante actualizado correctamente.",
                         type: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -363,10 +381,10 @@ Vue.component('v-select', vSelect)
                 )
             })
         },
-        destroyGroup (group) {
+        destroyStudent (student) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar el grupo de '+group.name+'?',
-                text: "Perdera todo lo relacionado al grupo y no se podra deshacer.",
+                title: '¿Estas seguro de eliminar a ' + student.studentId + '?',
+                text: "Perdera todo lo relacionado al estudiante y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -378,7 +396,7 @@ Vue.component('v-select', vSelect)
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara el grupo de ' + group.name + '.',
+                            title: 'Eliminara a ' + student.studentId + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -390,13 +408,13 @@ Vue.component('v-select', vSelect)
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/groups/destroy`, { group: group })
+                                    axios.post(`${this.mainUrl}/students/destroy`, { student: student })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {
                                             Vue.swal({
                                                 title: 'Éxito',
-                                                text: "Grupo eliminado correctamente.",
+                                                text: "Estudiante eliminado correctamente.",
                                                 type: 'success',
                                                 showCancelButton: false,
                                                 confirmButtonColor: '#3085d6',

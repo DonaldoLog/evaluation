@@ -34,19 +34,19 @@ Route::name('groups.')->prefix('groups')->group(function () {
 });
 
 Route::name('students.')->prefix('students')->group(function () {
-    Route::get('/index', 'GroupController@index')->name('.index');
-    Route::get('/{groupId}', 'GroupController@getGroup')->name('.get');
-    Route::post('/store', 'GroupController@store')->name('.store');
-    Route::post('/update', 'GroupController@updateGroup')->name('.update');
-    Route::post('/data', 'GroupController@getGroups');
-    Route::post('/destroy', 'GroupController@destroyGroup')->name('.destroy');
+    Route::get('/index', 'StudentController@index')->name('.index');
+    Route::get('/{groupId}', 'StudentController@getStudent')->name('.get');
+    Route::post('/store', 'StudentController@store')->name('.store');
+    Route::post('/update', 'StudentController@updateStudent')->name('.update');
+    Route::post('/data', 'StudentController@getStudents');
+    Route::post('/destroy', 'StudentController@destroyStudent')->name('.destroy');
 });
 
 Route::name('teachers.')->prefix('teachers')->group(function () {
-    Route::get('/index', 'GroupController@index')->name('.index');
-    Route::get('/{groupId}', 'GroupController@getGroup')->name('.get');
-    Route::post('/store', 'GroupController@store')->name('.store');
-    Route::post('/update', 'GroupController@updateGroup')->name('.update');
-    Route::post('/data', 'GroupController@getGroups');
-    Route::post('/destroy', 'GroupController@destroyGroup')->name('.destroy');
+    Route::get('/index', 'TeacherController@index')->name('.index');
+    Route::get('/{groupId}', 'TeacherController@getTeacher')->name('.get');
+    Route::post('/store', 'TeacherController@store')->name('.store');
+    Route::post('/update', 'TeacherController@updateTeacher')->name('.update');
+    Route::post('/data', 'TeacherController@getTeachers');
+    Route::post('/destroy', 'TeacherController@destroyTeacher')->name('.destroy');
 });
