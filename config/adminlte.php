@@ -185,12 +185,12 @@ return [
         ],
         [
             'text' => 'Estudiantes',
-            'url'  => 'admin/settings',
+            'url'  => 'students/index',
             'icon' => 'fas fa-user',
         ],
         [
             'text' => 'Maestros',
-            'url'  => 'admin/settings',
+            'url'  => 'teachers/index',
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [

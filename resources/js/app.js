@@ -20,6 +20,8 @@ Vue.use(BootstrapVue)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('careers-component', require('./components/Careers.vue').default);
 Vue.component('groups-component', require('./components/Groups.vue').default);
+Vue.component('students-component', require('./components/Students.vue').default);
+Vue.component('teachers-component', require('./components/Teachers.vue').default);
 
 const app = new Vue({
     el: '#app'
