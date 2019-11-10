@@ -17,6 +17,9 @@ Route::get('/', function () {
 
 Route::name('careers.')->prefix('careers')->group(function () {
     Route::get('/index', 'CareerController@index')->name('.index');
-    Route::post('/store', 'CareerController@store')->name('store');
+    Route::get('/{careerId}', 'CareerController@getCareer')->name('.get');
+    Route::post('/store', 'CareerController@store')->name('.store');
+    Route::post('/update', 'CareerController@updateCareer')->name('.update');
     Route::post('/data', 'CareerController@getCareers');
+    Route::post('/destroy', 'CareerController@destroyCareer')->name('.destroy');
 });

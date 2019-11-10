@@ -1953,12 +1953,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {},
   data: function data() {
     return {
+      edit: false,
       loading: true,
       mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
       career: {
@@ -2029,8 +2031,11 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     add: function add() {
       this.colapsable = true;
+      this.career.name = '';
     },
     cancel: function cancel() {
+      this.edit = false;
+      this.career.name = '';
       this.colapsable = false;
     },
     fetchData: function fetchData() {
@@ -2115,6 +2120,121 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           _this2.loading = false;
           Vue.swal('¡Atención!', 'Complete todos los campos.', 'warning');
+        }
+      });
+    },
+    editCareer: function editCareer(carrerId) {
+      var _this3 = this;
+
+      this.loading = true;
+      this.edit = true;
+      axios.get("".concat(this.mainUrl, "/careers/").concat(carrerId)).then(function (res) {
+        _this3.loading = false;
+
+        if (res.data.success) {
+          _this3.career = {
+            name: res.data.career.name,
+            id: res.data.career.id
+          };
+          _this3.colapsable = true;
+        } else {
+          Vue.swal('¡Error!', res.data.message, 'error');
+        }
+      })["catch"](function (err) {
+        _this3.loading = false;
+        Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
+      });
+    },
+    updateCareer: function updateCareer() {
+      var _this4 = this;
+
+      this.loading = true;
+      axios.post("".concat(this.mainUrl, "/careers/update"), {
+        career: this.career
+      }).then(function (res) {
+        _this4.loading = false;
+
+        if (res.data.success) {
+          Vue.swal({
+            title: 'Éxito',
+            text: "Carrera actualizada correctamente.",
+            type: 'success',
+            showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar',
+            allowEscapeKey: false,
+            allowOutsideClick: false
+          }).then(function (result) {
+            if (result.value) {
+              location.reload();
+            }
+          });
+        } else {
+          Vue.swal('¡Error!', res.data.message, 'error');
+        }
+      })["catch"](function (err) {
+        _this4.loading = false;
+        Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
+      });
+    },
+    destroyCareer: function destroyCareer(career) {
+      var _this5 = this;
+
+      Vue.swal({
+        title: '¿Estas seguro de eliminar la carrera de ' + career.name + '?',
+        text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+      }).then(function (result) {
+        if (result.value) {
+          Vue.swal({
+            title: 'Eliminara la carrera de ' + career.name + '.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then(function (result) {
+            if (result.value) {
+              _this5.loading = true;
+              axios.post("".concat(_this5.mainUrl, "/careers/destroy"), {
+                career: career
+              }).then(function (res) {
+                _this5.loading = false;
+
+                if (res.data.success) {
+                  Vue.swal({
+                    title: 'Éxito',
+                    text: "Carrera eliminada correctamente.",
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                  }).then(function (result) {
+                    if (result.value) {
+                      location.reload();
+                    }
+                  });
+                } else {
+                  Vue.swal('¡Error!', res.data.message, 'error');
+                }
+              })["catch"](function (err) {
+                _this5.loading = false;
+                Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
+              });
+            }
+          });
         }
       });
     }
@@ -63098,58 +63218,95 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm.colapsable
-            ? [
-                _c("b-card-body", [
-                  _c("div", { staticClass: "form-group col-12" }, [
-                    _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.career.name,
-                          expression: "career.name"
-                        },
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: { required: true },
-                          expression: "{ required: true}"
-                        }
-                      ],
-                      staticClass: "form-control form-control-sm",
-                      attrs: { type: "text", id: "name", name: "name" },
-                      domProps: { value: _vm.career.name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.career, "name", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.has("name")
-                      ? _c("div", { staticClass: "invalid-feedback" }, [
-                          _vm._v(_vm._s(_vm.errors.first("name")))
-                        ])
-                      : _vm._e()
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-secondary col-2 offset-5",
-                      on: { click: _vm.storeCareer }
-                    },
-                    [_vm._v("Guardar")]
-                  )
-                ])
+          _c(
+            "div",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.colapsable === true,
+                  expression: "colapsable === true"
+                }
               ]
-            : _vm._e()
+            },
+            [
+              _c("b-card-body", [
+                _c("div", { staticClass: "form-group col-12" }, [
+                  _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.career.name,
+                        expression: "career.name"
+                      },
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: { required: true },
+                        expression: "{ required: true }"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm",
+                    attrs: { type: "text", id: "name", name: "name" },
+                    domProps: { value: _vm.career.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.career, "name", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.has("name")
+                    ? _c("div", { staticClass: "invalid-feedback" }, [
+                        _vm._v(_vm._s(_vm.errors.first("name")))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "btn btn-secondary col-2 offset-5",
+                    on: { click: _vm.storeCareer }
+                  },
+                  [_vm._v("Guardar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.edit,
+                        expression: "edit"
+                      }
+                    ],
+                    staticClass: "btn btn-secondary col-2 offset-5",
+                    on: { click: _vm.updateCareer }
+                  },
+                  [_vm._v("Actualizar")]
+                )
+              ])
+            ],
+            1
+          )
         ],
         2
       ),
@@ -63331,7 +63488,12 @@ var render = function() {
                                           "button",
                                           {
                                             staticClass: "btn btn-secondary",
-                                            attrs: { title: "Editar" }
+                                            attrs: { title: "Editar" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.editCareer(career.id)
+                                              }
+                                            }
                                           },
                                           [
                                             _c("i", {
@@ -63344,31 +63506,16 @@ var render = function() {
                                           "button",
                                           {
                                             staticClass: "btn btn-secondary",
-                                            attrs: { title: "Eliminar" }
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass: "fa fa-trash"
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "a",
-                                          {
-                                            staticClass: "btn btn-secondary",
-                                            attrs: {
-                                              href:
-                                                _vm.mainUrl +
-                                                "/contrato-oficio/" +
-                                                career.id,
-                                              target: "_blank",
-                                              title: "Mas"
+                                            attrs: { title: "Eliminar" },
+                                            on: {
+                                              click: function($event) {
+                                                return _vm.destroyCareer(career)
+                                              }
                                             }
                                           },
                                           [
                                             _c("i", {
-                                              staticClass: "far fa-file"
+                                              staticClass: "fa fa-trash"
                                             })
                                           ]
                                         )

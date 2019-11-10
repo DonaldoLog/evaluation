@@ -19,16 +19,18 @@
                     </button>
                 </div>
             </template>
-            <template v-if="colapsable">
+            <div v-show="colapsable === true">
             <b-card-body>
                 <div class="form-group col-12">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="career.name" v-validate="{ required: true}">
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="career.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
-                <button class="btn btn-secondary col-2 offset-5" @click="storeCareer">Guardar</button>
+                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeCareer">Guardar</button>
+                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateCareer">Actualizar</button>
             </b-card-body>
-            </template>
+            </div>
+
         </b-card>
         <b-card>
              <div>
@@ -48,7 +50,6 @@
                     </div>
                     <div class="col-md-12">
                             <div class="card card-secondary">
-
                                 <div class="card-body">
                                     <table class="table table-striped responsive">
                                         <thead>
@@ -70,9 +71,9 @@
                                                         <tr :key="index">
                                                             <td> {{ career.name }} </td>
                                                             <td>
-                                                                <button class="btn btn-secondary" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                <button class="btn btn-secondary" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a>
+                                                                <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                               <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                             </td>
                                                         </tr>
                                                 </template>
@@ -124,6 +125,7 @@ import mainUrl from '../mainUrl'
     },
     data() {
       return {
+          edit: false,
           loading: true,
           mainUrl: mainUrl,
           career: {
@@ -176,8 +178,11 @@ import mainUrl from '../mainUrl'
     methods: {
         add() {
             this.colapsable = true
+            this.career.name = ''
         },
         cancel() {
+            this.edit = false
+            this.career.name = ''
             this.colapsable = false
         },
         fetchData() {
@@ -272,6 +277,138 @@ import mainUrl from '../mainUrl'
             });
 
         },
+        editCareer (carrerId) {
+            this.loading = true
+            this.edit = true
+            axios.get(`${this.mainUrl}/careers/${carrerId}`)
+            .then(res => {
+                this.loading = false
+                if (res.data.success) {
+                    this.career = {
+                        name: res.data.career.name,
+                        id: res.data.career.id
+                    }
+                    this.colapsable = true
+                } else {
+                    Vue.swal(
+                        '¡Error!',
+                        res.data.message,
+                        'error'
+                    )
+                }
+            })
+            .catch(err => {
+                this.loading = false
+                Vue.swal(
+                    '¡Error!',
+                    'Ha ocurrido un error, intente de nuevo.',
+                    'error'
+                )
+            })
+        },
+        updateCareer () {
+            this.loading = true
+            axios.post(`${this.mainUrl}/careers/update`, { career: this.career })
+            .then(res => {
+                this.loading = false
+                if (res.data.success) {
+                    Vue.swal({
+                        title: 'Éxito',
+                        text: "Carrera actualizada correctamente.",
+                        type: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Aceptar',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.value) {
+                            location.reload();
+                        }
+                    })
+                } else {
+                    Vue.swal(
+                        '¡Error!',
+                        res.data.message,
+                        'error'
+                    )
+                }
+            })
+            .catch(err => {
+                this.loading = false
+                Vue.swal(
+                    '¡Error!',
+                    'Ha ocurrido un error, intente de nuevo.',
+                    'error'
+                )
+            })
+        },
+        destroyCareer (career) {
+             Vue.swal({
+                title: '¿Estas seguro de eliminar la carrera de '+career.name+'?',
+                text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Eliminar',
+                cancelButtonText: 'Cancelar',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+                }).then((result) => {
+                    if (result.value) {
+                        Vue.swal({
+                            title: 'Eliminara la carrera de ' + career.name + '.',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Eliminar',
+                            cancelButtonText: 'Cancelar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                            }).then((result) => {
+                                if (result.value) {
+                                    this.loading = true
+                                    axios.post(`${this.mainUrl}/careers/destroy`, { career: career })
+                                    .then(res => {
+                                        this.loading = false
+                                        if (res.data.success) {
+                                            Vue.swal({
+                                                title: 'Éxito',
+                                                text: "Carrera eliminada correctamente.",
+                                                type: 'success',
+                                                showCancelButton: false,
+                                                confirmButtonColor: '#3085d6',
+                                                confirmButtonText: 'Aceptar',
+                                                allowEscapeKey: false,
+                                                allowOutsideClick: false
+                                            }).then((result) => {
+                                                if (result.value) {
+                                                    location.reload();
+                                                }
+                                            })
+                                        } else {
+                                            Vue.swal(
+                                                '¡Error!',
+                                                res.data.message,
+                                                'error'
+                                            )
+                                        }
+                                    })
+                                    .catch(err => {
+                                        this.loading = false
+                                        Vue.swal(
+                                            '¡Error!',
+                                            'Ha ocurrido un error, intente de nuevo.',
+                                            'error'
+                                        )
+                                    })
+                                }
+                        })
+                    }
+            })
+        }
      },
      mounted() {
          this.fetchData()

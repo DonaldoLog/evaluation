@@ -30,7 +30,7 @@ class CareerController extends Controller
 
     public function getCareers(Request $request) {
         $search = $request->search;
-        $query = Career::select('name')
+        $query = Career::select('id', 'name')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -46,12 +46,45 @@ class CareerController extends Controller
             'meta' => (object) [
                 'current_page' => $request->page,
                 'from' => $ignora + 1,
-                'last_page' => $lastPage + 1,
+                'last_page' => $lastPage,
                 'per_page' => $request->per_page,
                 'to' => $ignora + $request->per_page,
                 'total' => $total
             ],
         ];
         return $response;
+    }
+
+    public function getCareer ($careerId) {
+        try {
+            $career = Career::where('id', $careerId)->first();
+            if ($career) {
+                return response()->json(['success' => true, 'career' => $career], 200);
+            }
+            return response()->json(['success' => false, 'message' => 'Carrera no encontrada.'], 200);
+        } catch (\PDOException $th) {
+            Log::error($th);
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function updateCareer (Request $request) {
+        try {
+            $exist = Career::where('name', $request->career['name'])
+            ->where('id', '!=', $request->career['id'])->first();
+            if ($exist) {
+                return response()->json(['success' => false, 'message' => 'Ya existe esta carrera.'], 200);
+            }
+            $career = Career::where('id', $request->career['id'])->first();
+            if ($career) {
+                $career->name = $request->career['name'];
+                $career->save();
+                return response()->json(['success' => true], 200);
+            }
+            return response()->json(['success' => false, 'message' => 'Carrera no encontrada.'], 200);
+        } catch (\PDOException $th) {
+            Log::error($th);
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
     }
 }
