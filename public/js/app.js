@@ -3319,33 +3319,36 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
-  props: {
-    careersInitial: {}
-  },
+  props: {},
   data: function data() {
     return {
       edit: false,
       loading: true,
       mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
-      group: {
+      teacher: {
         name: ''
       },
       career: '',
       careers: this.careersInitial ? JSON.parse(this.careersInitial) : null,
-      title: 'Grupos',
+      title: 'Profesores',
       cargando: false,
       colapsable: false,
       columns: [{
         field: 'name',
         label: 'Nombre'
       }, {
-        field: 'career',
-        label: 'Grupo'
+        field: 'email',
+        label: 'Email'
       }],
       perPage: 10,
       currentPage: 1,
@@ -3405,21 +3408,19 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
   methods: {
     add: function add() {
       this.colapsable = true;
-      this.group.name = '';
+      this.teacher.name = '';
     },
     cancel: function cancel() {
       this.edit = false;
-      this.group.name = '';
-      this.career = {
-        name: '',
-        id: ''
-      };
+      this.teacher.name = '';
+      this.teacher.last_name = '';
+      this.teacher.email = '';
       this.colapsable = false;
     },
     fetchData: function fetchData() {
       var _this = this;
 
-      var dataFetchUrl = "".concat(this.mainUrl, "/groups/data");
+      var dataFetchUrl = "".concat(this.mainUrl, "/teachers/data");
       axios.post(dataFetchUrl, {
         page: this.currentPage,
         column: this.sortedColumn,
@@ -3462,22 +3463,21 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
     searchBy: function searchBy() {
       this.fetchData();
     },
-    storeGroup: function storeGroup() {
+    storeTeacher: function storeTeacher() {
       var _this2 = this;
 
       this.$validator.validate().then(function (valid) {
         if (valid) {
           _this2.loading = true;
-          axios.post("".concat(_this2.mainUrl, "/groups/store"), {
-            group: _this2.group,
-            career: _this2.career
+          axios.post("".concat(_this2.mainUrl, "/teachers/store"), {
+            teacher: _this2.teacher
           }).then(function (response) {
             _this2.loading = false;
 
             if (response.data.success) {
               Vue.swal({
                 title: 'Éxito',
-                text: "Grupo creado correctamente.",
+                text: "Profesor creado correctamente.",
                 type: 'success',
                 showCancelButton: false,
                 confirmButtonColor: '#3085d6',
@@ -3502,22 +3502,20 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
         }
       });
     },
-    editGroup: function editGroup(carrerId) {
+    editTeacher: function editTeacher(teacherId) {
       var _this3 = this;
 
       this.loading = true;
       this.edit = true;
-      axios.get("".concat(this.mainUrl, "/groups/").concat(carrerId)).then(function (res) {
+      axios.get("".concat(this.mainUrl, "/teachers/").concat(teacherId)).then(function (res) {
         _this3.loading = false;
 
         if (res.data.success) {
-          _this3.group = {
-            name: res.data.group.name,
-            id: res.data.group.id
-          };
-          _this3.career = {
-            name: res.data.group.career.name,
-            id: res.data.group.career.id
+          _this3.teacher = {
+            name: res.data.teacher.name,
+            id: res.data.teacher.id,
+            last_name: res.data.teacher.last_name,
+            email: res.data.teacher.email
           };
           _this3.colapsable = true;
         } else {
@@ -3528,20 +3526,19 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
         Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
       });
     },
-    updateGroup: function updateGroup() {
+    updateTeacher: function updateTeacher() {
       var _this4 = this;
 
       this.loading = true;
-      axios.post("".concat(this.mainUrl, "/groups/update"), {
-        group: this.group,
-        career: this.career
+      axios.post("".concat(this.mainUrl, "/teachers/update"), {
+        teacher: this.teacher
       }).then(function (res) {
         _this4.loading = false;
 
         if (res.data.success) {
           Vue.swal({
             title: 'Éxito',
-            text: "Grupo actualizada correctamente.",
+            text: "Profesor actualizada correctamente.",
             type: 'success',
             showCancelButton: false,
             confirmButtonColor: '#3085d6',
@@ -3561,12 +3558,12 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
         Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
       });
     },
-    destroyGroup: function destroyGroup(group) {
+    destroyTeacher: function destroyTeacher(teacher) {
       var _this5 = this;
 
       Vue.swal({
-        title: '¿Estas seguro de eliminar el grupo de ' + group.name + '?',
-        text: "Perdera todo lo relacionado al grupo y no se podra deshacer.",
+        title: '¿Estas seguro de eliminar al profesor ' + teacher.name + '?',
+        text: "Perdera todo lo relacionado al profesor y no se podra deshacer.",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -3578,7 +3575,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       }).then(function (result) {
         if (result.value) {
           Vue.swal({
-            title: 'Eliminara el grupo de ' + group.name + '.',
+            title: 'Eliminara al profesor' + teacher.name + '.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -3590,15 +3587,15 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           }).then(function (result) {
             if (result.value) {
               _this5.loading = true;
-              axios.post("".concat(_this5.mainUrl, "/groups/destroy"), {
-                group: group
+              axios.post("".concat(_this5.mainUrl, "/teachers/destroy"), {
+                teacher: teacher
               }).then(function (res) {
                 _this5.loading = false;
 
                 if (res.data.success) {
                   Vue.swal({
                     title: 'Éxito',
-                    text: "Grupo eliminado correctamente.",
+                    text: "Profesor eliminado correctamente.",
                     type: 'success',
                     showCancelButton: false,
                     confirmButtonColor: '#3085d6',
@@ -66630,7 +66627,7 @@ var render = function() {
             },
             [
               _c("b-card-body", { staticClass: "row" }, [
-                _c("div", { staticClass: "form-group col-6" }, [
+                _c("div", { staticClass: "form-teacher col-6" }, [
                   _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
                   _vm._v(" "),
                   _c("input", {
@@ -66638,8 +66635,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.group.name,
-                        expression: "group.name"
+                        value: _vm.teacher.name,
+                        expression: "teacher.name"
                       },
                       {
                         name: "validate",
@@ -66650,13 +66647,13 @@ var render = function() {
                     ],
                     staticClass: "form-control form-control-sm",
                     attrs: { type: "text", id: "name", name: "name" },
-                    domProps: { value: _vm.group.name },
+                    domProps: { value: _vm.teacher.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.group, "name", $event.target.value)
+                        _vm.$set(_vm.teacher, "name", $event.target.value)
                       }
                     }
                   }),
@@ -66668,52 +66665,87 @@ var render = function() {
                     : _vm._e()
                 ]),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "form-group col-6" },
-                  [
-                    _c("label", { attrs: { for: "career" } }, [
-                      _vm._v("Grupo:")
-                    ]),
-                    _vm._v(" "),
-                    _c("v-select", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      attrs: {
-                        label: "name",
-                        id: "career",
-                        name: "career",
-                        options: _vm.careers,
-                        "data-vv-as": "career"
+                _c("div", { staticClass: "form-teacher col-6" }, [
+                  _c("label", { attrs: { for: "last_name" } }, [
+                    _vm._v("Apellidos")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.teacher.last_name,
+                        expression: "teacher.last_name"
                       },
-                      model: {
-                        value: _vm.career,
-                        callback: function($$v) {
-                          _vm.career = $$v
-                        },
-                        expression: "career"
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: { required: true },
+                        expression: "{ required: true }"
                       }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.has("career")
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "invalid-feedback",
-                            staticStyle: { display: "block" }
-                          },
-                          [_vm._v(_vm._s(_vm.errors.first("career")))]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                ),
+                    ],
+                    staticClass: "form-control form-control-sm",
+                    attrs: {
+                      type: "text",
+                      id: "last_name",
+                      last_name: "last_name"
+                    },
+                    domProps: { value: _vm.teacher.last_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.teacher, "last_name", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.has("last_name")
+                    ? _c("div", { staticClass: "invalid-feedback" }, [
+                        _vm._v(_vm._s(_vm.errors.first("last_name")))
+                      ])
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-teacher col-6" }, [
+                  _c("label", { attrs: { for: "email" } }, [_vm._v("Email")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.teacher.email,
+                        expression: "teacher.email"
+                      },
+                      {
+                        name: "validate",
+                        rawName: "v-validate",
+                        value: { required: true },
+                        expression: "{ required: true }"
+                      }
+                    ],
+                    staticClass: "form-control form-control-sm",
+                    attrs: { type: "text", id: "email", email: "email" },
+                    domProps: { value: _vm.teacher.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.teacher, "email", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.has("email")
+                    ? _c("div", { staticClass: "invalid-feedback" }, [
+                        _vm._v(_vm._s(_vm.errors.first("email")))
+                      ])
+                    : _vm._e()
+                ]),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -66727,7 +66759,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "btn btn-secondary col-2 offset-5",
-                    on: { click: _vm.storeGroup }
+                    on: { click: _vm.storeTeacher }
                   },
                   [_vm._v("Guardar")]
                 ),
@@ -66744,7 +66776,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "btn btn-secondary col-2 offset-5",
-                    on: { click: _vm.updateGroup }
+                    on: { click: _vm.updateTeacher }
                   },
                   [_vm._v("Actualizar")]
                 )
@@ -66760,7 +66792,7 @@ var render = function() {
         _c("div", [
           _c("div", { staticClass: "data-table" }, [
             _c("div", { staticClass: "row mb-2" }, [
-              _c("div", { staticClass: "input-group col-md-5" }, [
+              _c("div", { staticClass: "input-teacher col-md-5" }, [
                 _c("input", {
                   directives: [
                     {
@@ -66795,7 +66827,7 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "input-group-append",
+                    staticClass: "input-teacher-append",
                     staticStyle: { cursor: "pointer" },
                     on: { click: _vm.searchBy }
                   },
@@ -66803,7 +66835,7 @@ var render = function() {
                     _c(
                       "span",
                       {
-                        staticClass: "input-group-text",
+                        staticClass: "input-teacher-text",
                         attrs: { id: "basic-addon2" }
                       },
                       [
@@ -66921,16 +66953,21 @@ var render = function() {
                         [
                           _vm.tableData.length > 0
                             ? [
-                                _vm._l(_vm.tableData, function(group, index) {
+                                _vm._l(_vm.tableData, function(teacher, index) {
                                   return [
                                     _c("tr", { key: index }, [
                                       _c("td", [
-                                        _vm._v(" " + _vm._s(group.name) + " ")
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(teacher.name) +
+                                            " " +
+                                            _vm._s(teacher.last_name)
+                                        )
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
                                         _vm._v(
-                                          " " + _vm._s(group.career.name) + " "
+                                          " " + _vm._s(teacher.email) + " "
                                         )
                                       ]),
                                       _vm._v(" "),
@@ -66942,7 +66979,9 @@ var render = function() {
                                             attrs: { title: "Editar" },
                                             on: {
                                               click: function($event) {
-                                                return _vm.editGroup(group.id)
+                                                return _vm.editTeacher(
+                                                  teacher.id
+                                                )
                                               }
                                             }
                                           },
@@ -66960,7 +66999,9 @@ var render = function() {
                                             attrs: { title: "Eliminar" },
                                             on: {
                                               click: function($event) {
-                                                return _vm.destroyGroup(group)
+                                                return _vm.destroyTeacher(
+                                                  teacher
+                                                )
                                               }
                                             }
                                           },
@@ -66981,7 +67022,7 @@ var render = function() {
                                   { staticStyle: { "text-align": "center" } },
                                   [
                                     _c("td", { attrs: { colspan: "4" } }, [
-                                      _vm._v("No hay grupos.")
+                                      _vm._v("No hay profesores.")
                                     ])
                                   ]
                                 )
