@@ -20,14 +20,19 @@
                 </div>
             </template>
             <div v-show="colapsable === true">
-            <b-card-body>
-                <div class="form-group col-12">
+            <b-card-body class="row">
+                <div class="form-group col-6">
                     <label for="name">Nombre</label>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="career.name" v-validate="{ required: true }">
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="group.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
-                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeCareer">Guardar</button>
-                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateCareer">Actualizar</button>
+                <div class="form-group col-6">
+                    <label for="career">Grupo:</label>
+                    <v-select label="name" id="career" name="career" v-model="career" :options="careers" data-vv-as="career" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('career')">{{ errors.first('career') }}</div>
+                </div>
+                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeGroup">Guardar</button>
+                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateGroup">Actualizar</button>
             </b-card-body>
             </div>
 
@@ -67,19 +72,20 @@
                                         </thead>
                                         <tbody>
                                             <template v-if="tableData.length > 0">
-                                                <template v-for="(career, index) in tableData">
+                                                <template v-for="(group, index) in tableData">
                                                         <tr :key="index">
-                                                            <td> {{ career.name }} </td>
+                                                            <td> {{ group.name }} </td>
+                                                            <td> {{ group.career.name }} </td>
                                                             <td>
-                                                                <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                               <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
+                                                                <button class="btn btn-secondary" @click="editGroup(group.id)" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                <button class="btn btn-secondary" @click="destroyGroup(group)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                               <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+group.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                             </td>
                                                         </tr>
                                                 </template>
                                             </template>
                                             <template v-else>
-                                                <tr style="text-align:center"><td colspan="4" >No hay careers.</td></tr>
+                                                <tr style="text-align:center"><td colspan="4" >No hay grupos.</td></tr>
                                             </template>
                                         </tbody>
                                     </table>
@@ -115,27 +121,32 @@
 
 <script>
 import mainUrl from '../mainUrl'
+import vSelect from 'vue-select'
+Vue.component('v-select', vSelect)
 
   export default {
     components: {
 
     },
     props: {
-
+        careersInitial: {}
     },
     data() {
       return {
           edit: false,
           loading: true,
           mainUrl: mainUrl,
-          career: {
+          group: {
               name: ''
           },
+          career: '',
+          careers: this.careersInitial? JSON.parse(this.careersInitial): null,
           title: 'Grupos',
           cargando: false,
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
+              {field: 'career', label: 'Grupo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -178,15 +189,19 @@ import mainUrl from '../mainUrl'
     methods: {
         add() {
             this.colapsable = true
-            this.career.name = ''
+            this.group.name = ''
         },
         cancel() {
             this.edit = false
-            this.career.name = ''
+            this.group.name = ''
+            this.career = {
+                name: '',
+                id: ''
+            }
             this.colapsable = false
         },
         fetchData() {
-            let dataFetchUrl = `${this.mainUrl}/careers/data`;
+            let dataFetchUrl = `${this.mainUrl}/groups/data`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -224,11 +239,12 @@ import mainUrl from '../mainUrl'
         searchBy() {
             this.fetchData()
         },
-        storeCareer () {
+        storeGroup () {
             this.$validator.validate().then(valid => {
                 if (valid) {
                     this.loading = true
-                    axios.post(`${this.mainUrl}/careers/store`, {
+                    axios.post(`${this.mainUrl}/groups/store`, {
+                        group: this.group,
                         career: this.career
                     })
                     .then((response) => {
@@ -236,7 +252,7 @@ import mainUrl from '../mainUrl'
                         if (response.data.success) {
                             Vue.swal({
                                 title: 'Éxito',
-                                text: "Carrera creado correctamente.",
+                                text: "Grupo creado correctamente.",
                                 type: 'success',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
@@ -277,16 +293,20 @@ import mainUrl from '../mainUrl'
             });
 
         },
-        editCareer (carrerId) {
+        editGroup (carrerId) {
             this.loading = true
             this.edit = true
-            axios.get(`${this.mainUrl}/careers/${carrerId}`)
+            axios.get(`${this.mainUrl}/groups/${carrerId}`)
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
+                    this.group = {
+                        name: res.data.group.name,
+                        id: res.data.group.id
+                    }
                     this.career = {
-                        name: res.data.career.name,
-                        id: res.data.career.id
+                        name: res.data.group.career.name,
+                        id: res.data.group.career.id
                     }
                     this.colapsable = true
                 } else {
@@ -306,15 +326,15 @@ import mainUrl from '../mainUrl'
                 )
             })
         },
-        updateCareer () {
+        updateGroup () {
             this.loading = true
-            axios.post(`${this.mainUrl}/careers/update`, { career: this.career })
+            axios.post(`${this.mainUrl}/groups/update`, { group: this.group, career: this.career })
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
                     Vue.swal({
                         title: 'Éxito',
-                        text: "Carrera actualizada correctamente.",
+                        text: "Grupo actualizada correctamente.",
                         type: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -343,10 +363,10 @@ import mainUrl from '../mainUrl'
                 )
             })
         },
-        destroyCareer (career) {
+        destroyGroup (group) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar la carrera de '+career.name+'?',
-                text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
+                title: '¿Estas seguro de eliminar el grupo de '+group.name+'?',
+                text: "Perdera todo lo relacionado al grupo y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -358,7 +378,7 @@ import mainUrl from '../mainUrl'
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara la carrera de ' + career.name + '.',
+                            title: 'Eliminara el grupo de ' + group.name + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -370,13 +390,13 @@ import mainUrl from '../mainUrl'
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/careers/destroy`, { career: career })
+                                    axios.post(`${this.mainUrl}/groups/destroy`, { group: group })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {
                                             Vue.swal({
                                                 title: 'Éxito',
-                                                text: "Carrera eliminada correctamente.",
+                                                text: "Grupo eliminado correctamente.",
                                                 type: 'success',
                                                 showCancelButton: false,
                                                 confirmButtonColor: '#3085d6',
@@ -411,7 +431,7 @@ import mainUrl from '../mainUrl'
         }
      },
      mounted() {
-         this.fetchData()
+        this.fetchData()
     },
   }
 </script>

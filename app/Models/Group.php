@@ -10,7 +10,7 @@ class Group extends Model
     use SoftDeletes;
     protected $table = 'groups';
 
-    public function career()
+    public function career ()
     {
         return $this->belongsTo('App\Models\Career', 'careerId', 'id');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Career;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use Illuminate\Support\Facades\Log;
@@ -9,7 +10,9 @@ use Illuminate\Support\Facades\Log;
 class GroupController extends Controller
 {
     public function index(){
-        return view('modules.groups.index');
+        $careers = Career::all();
+        return view('modules.groups.index')
+        ->with('careers', $careers);
     }
 
     public function store(Request $request) {
@@ -18,9 +21,10 @@ class GroupController extends Controller
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe esta grupo.']);
             }
-            $carrer = new Group();
-            $carrer->name = $request->group['name'];
-            $carrer->save();
+            $group = new Group();
+            $group->name = $request->group['name'];
+            $group->careerId = $request->career['id'];
+            $group->save();
             return response()->json(['success' => true]);
         } catch (\PDOException $th) {
             Log::error($th);
@@ -30,7 +34,7 @@ class GroupController extends Controller
 
     public function getGroups(Request $request) {
         $search = $request->search;
-        $query = Group::select('id', 'name')->with('career')
+        $query = Group::select('id', 'name', 'careerId')->with('career:id,name')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -57,7 +61,7 @@ class GroupController extends Controller
 
     public function getGroup ($groupId) {
         try {
-            $group = Group::where('id', $groupId)->first();
+            $group = Group::where('id', $groupId)->with('career')->first();
             if ($group) {
                 return response()->json(['success' => true, 'group' => $group], 200);
             }
@@ -78,6 +82,7 @@ class GroupController extends Controller
             $group = Group::where('id', $request->group['id'])->first();
             if ($group) {
                 $group->name = $request->group['name'];
+                $group->careerId = $request->career['id'];
                 $group->save();
                 return response()->json(['success' => true], 200);
             }
