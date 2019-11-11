@@ -72,6 +72,20 @@ class GroupController extends Controller
         }
     }
 
+    public function adminGroup ($groupId) {
+        try {
+            $group = Group::where('id', $groupId)->first();
+            if (!$group) {
+                return redirect()->route('groups.index');
+            }
+            return view('modules.groups.admin')
+            ->with('group', $group);
+        } catch (\PDOException $th) {
+            Log::error($th);
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
     public function updateGroup (Request $request) {
         try {
             $exist = Group::where('name', $request->group['name'])
@@ -99,6 +113,32 @@ class GroupController extends Controller
             if ($group) {
                 $group->delete();
                 return response()->json(['success' => true], 200);
+            }
+            return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
+        } catch (\PDOException $th) {
+            Log::error($th);
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function getTeachersByGroup ($groupId) {
+        try {
+            $group = Group::where('id', $groupId)->with('teachers')->first();
+            if ($group) {
+                return response()->json(['success' => true, 'group' => $group], 200);
+            }
+            return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
+        } catch (\PDOException $th) {
+            Log::error($th);
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function getStudentsByGroup ($groupId) {
+        try {
+            $group = Group::where('id', $groupId)->with('students')->first();
+            if ($group) {
+                return response()->json(['success' => true, 'group' => $group], 200);
             }
             return response()->json(['success' => false, 'message' => 'Grupo no encontrada.'], 200);
         } catch (\PDOException $th) {

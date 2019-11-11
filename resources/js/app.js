@@ -22,6 +22,7 @@ Vue.component('careers-component', require('./components/Careers.vue').default);
 Vue.component('groups-component', require('./components/Groups.vue').default);
 Vue.component('students-component', require('./components/Students.vue').default);
 Vue.component('teachers-component', require('./components/Teachers.vue').default);
+Vue.component('admin-group-component', require('./components/AdminGroup/AdminGroup.vue').default);
 
 const app = new Vue({
     el: '#app'

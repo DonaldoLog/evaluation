@@ -14,4 +14,14 @@ class Group extends Model
     {
         return $this->belongsTo('App\Models\Career', 'careerId', 'id');
     }
+
+    public function students()
+    {
+        return $this->hasMany('App\Models\Student', 'id', 'groupId');
+    }
+
+    public function teachers()
+    {
+        return $this->hasMany('App\Models\Teacher', 'id', 'groupId');
+    }
 }

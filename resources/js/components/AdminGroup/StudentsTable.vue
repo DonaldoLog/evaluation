@@ -8,7 +8,7 @@
             >
             <template slot="header">
                 <div class="float-left">
-                    <h4> {{ title }} </h4>
+                    <h4> Estudiantes </h4>
                 </div>
                 <div class="card-tools float-right">
                     <button v-show="!colapsable" @click="add()" type="button" class="btn btn-secondary" >
@@ -20,133 +20,112 @@
                 </div>
             </template>
             <div v-show="colapsable === true">
-            <b-card-body class="row">
-                <div class="form-group col-6">
-                    <label for="name">Nombre</label>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="group.name" v-validate="{ required: true }">
-                    <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
-                </div>
-                <div class="form-group col-6">
-                    <label for="career">Grupo:</label>
-                    <v-select label="name" id="career" name="career" v-model="career" :options="careers" data-vv-as="career" v-validate="'required'"></v-select>
-                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('career')">{{ errors.first('career') }}</div>
-                </div>
-                <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeGroup">Guardar</button>
-                <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateGroup">Actualizar</button>
-            </b-card-body>
-            </div>
-
-        </b-card>
-        <b-card>
-             <div>
-                <div class="data-table">
-                    <div class="row mb-2">
-                        <div class="input-group col-md-5">
-                            <input type="text" v-model="search" class="form-control" v-on:keyup.enter="searchBy">
-                            <div class="input-group-append" v-on:click="searchBy" style="cursor: pointer;">
-                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-search" aria-hidden="true"></i></span>
+                <b-card-body>
+                    <div class="data-table">
+                        <div class="row mb-2">
+                            <div class="input-group col-md-5">
+                                <input type="text" v-model="search" class="form-control" v-on:keyup.enter="searchBy">
+                                <div class="input-group-append" v-on:click="searchBy" style="cursor: pointer;">
+                                    <span class="input-group-text" id="basic-addon2"><i class="fa fa-search" aria-hidden="true"></i></span>
+                                </div>
                             </div>
+                            <select name="perPage" v-model="perPage" id="perPage" class="col-md-5 form-control" v-on:change="changePerPage">
+                                <option v-for="option in optionsPerPage" v-bind:value="option.value" :key="option.value">
+                                    {{ option.text }}
+                                </option>
+                            </select>
                         </div>
-                        <select name="perPage" v-model="perPage" id="perPage" class="col-md-5 form-control" v-on:change="changePerPage">
-                            <option v-for="option in optionsPerPage" v-bind:value="option.value" :key="option.value">
-                                {{ option.text }}
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-md-12">
-                            <div class="card card-secondary">
-                                <div class="card-body">
-                                    <table class="table table-striped responsive">
-                                        <thead>
-                                            <tr>
-                                                <th v-for="column in columns" :key="column['field']" @click="sortByColumn(column)"
-                                                    class="table-head">
-                                                    {{ column['label'] }}
-                                                    <span v-if="column['field'] === sortedColumn">
-                                                        <i v-if="order === 'asc' " class="fas fa-arrow-up"></i>
-                                                        <i v-else class="fas fa-arrow-down"></i>
-                                                    </span>
-                                                </th>
-                                                <th>Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <template v-if="tableData.length > 0">
-                                                <template v-for="(group, index) in tableData">
-                                                        <tr :key="index">
-                                                            <td> {{ group.name }} </td>
-                                                            <td> {{ group.career.name }} </td>
-                                                            <td>
-                                                                <button class="btn btn-secondary" @click="editGroup(group.id)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                <button class="btn btn-secondary" @click="destroyGroup(group)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <a class="btn btn-secondary" :href="mainUrl+'/groups/admin/'+group.id" target="_blank" title="Admin"><i class="fas fa-tools"></i></a>
-                                                            </td>
-                                                        </tr>
+                        <div class="col-md-12">
+                                <div class="card card-secondary">
+                                    <div class="card-body">
+                                        <table class="table table-striped responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th v-for="column in columns" :key="column['field']" @click="sortByColumn(column)"
+                                                        class="table-head">
+                                                        {{ column['label'] }}
+                                                        <span v-if="column['field'] === sortedColumn">
+                                                            <i v-if="order === 'asc' " class="fas fa-arrow-up"></i>
+                                                            <i v-else class="fas fa-arrow-down"></i>
+                                                        </span>
+                                                    </th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template v-if="tableData.length > 0">
+                                                    <template v-for="(career, index) in tableData">
+                                                            <tr :key="index">
+                                                                <td> {{ career.name }} </td>
+                                                                <td>
+                                                                    <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                    <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                                <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
+                                                                </td>
+                                                            </tr>
+                                                    </template>
                                                 </template>
-                                            </template>
-                                            <template v-else>
-                                                <tr style="text-align:center"><td colspan="4" >No hay grupos.</td></tr>
-                                            </template>
-                                        </tbody>
-                                    </table>
-                                    <nav v-if="pagination && tableData.length > 0">
-                                        <ul class="pagination">
-                                            <li class="page-item" :class="{'disabled' : currentPage === 1}">
-                                                <a class="page-link" href="#" @click.prevent="changePage(1)">Primera</a>
-                                            </li>
-                                            <li class="page-item" :class="{'disabled' : currentPage === 1}">
-                                                <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Anterior</a>
-                                            </li>
-                                            <li v-for="page in pagesNumber" class="page-item" :class="{'active': page == pagination.meta.current_page}" :key="page">
-                                                <a href="javascript:void(0)" @click.prevent="changePage(page)" class="page-link">{{ page }}</a>
-                                            </li>
-                                            <li class="page-item" :class="{'disabled': currentPage === pagination.meta.last_page }">
-                                                <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Siguiente</a>
-                                            </li>
-                                            <li class="page-item" :class="{'disabled' : currentPage === pagination.meta.last_page}">
-                                                <a class="page-link" href="#" @click.prevent="changePage(pagination.meta.last_page)">Última</a>
-                                            </li>
-                                            <span style="margin-top: 8px;"> &nbsp; <i>Mostrando {{ pagination.meta.from }} a {{ pagination.meta.to > pagination.meta.total? pagination.meta.total: pagination.meta.to }} de  {{ pagination.meta.total }} registros.</i></span>
-                                        </ul>
-                                    </nav>
+                                                <template v-else>
+                                                    <tr style="text-align:center"><td colspan="4" >No hay careers.</td></tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                        <nav v-if="pagination && tableData.length > 0">
+                                            <ul class="pagination">
+                                                <li class="page-item" :class="{'disabled' : currentPage === 1}">
+                                                    <a class="page-link" href="#" @click.prevent="changePage(1)">Primera</a>
+                                                </li>
+                                                <li class="page-item" :class="{'disabled' : currentPage === 1}">
+                                                    <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Anterior</a>
+                                                </li>
+                                                <li v-for="page in pagesNumber" class="page-item" :class="{'active': page == pagination.meta.current_page}" :key="page">
+                                                    <a href="javascript:void(0)" @click.prevent="changePage(page)" class="page-link">{{ page }}</a>
+                                                </li>
+                                                <li class="page-item" :class="{'disabled': currentPage === pagination.meta.last_page }">
+                                                    <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Siguiente</a>
+                                                </li>
+                                                <li class="page-item" :class="{'disabled' : currentPage === pagination.meta.last_page}">
+                                                    <a class="page-link" href="#" @click.prevent="changePage(pagination.meta.last_page)">Última</a>
+                                                </li>
+                                                <span style="margin-top: 8px;"> &nbsp; <i>Mostrando {{ pagination.meta.from }} a {{ pagination.meta.to > pagination.meta.total? pagination.meta.total: pagination.meta.to }} de  {{ pagination.meta.total }} registros.</i></span>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+
+                </b-card-body>
+            </div>
+
         </b-card>
     </div>
 </template>
 
 
 <script>
-import mainUrl from '../mainUrl'
-import vSelect from 'vue-select'
-Vue.component('v-select', vSelect)
+import mainUrl from '../../mainUrl'
 
   export default {
     components: {
 
     },
     props: {
-        careersInitial: {}
+
     },
     data() {
       return {
           edit: false,
           loading: true,
           mainUrl: mainUrl,
-          group: {
+          career: {
               name: ''
           },
-          career: '',
-          careers: this.careersInitial? JSON.parse(this.careersInitial): null,
-          title: 'Grupos',
+          title: 'Carreras',
           cargando: false,
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
-              {field: 'career', label: 'Grupo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -189,19 +168,15 @@ Vue.component('v-select', vSelect)
     methods: {
         add() {
             this.colapsable = true
-            this.group.name = ''
+            this.career.name = ''
         },
         cancel() {
             this.edit = false
-            this.group.name = ''
-            this.career = {
-                name: '',
-                id: ''
-            }
+            this.career.name = ''
             this.colapsable = false
         },
         fetchData() {
-            let dataFetchUrl = `${this.mainUrl}/groups/data`;
+            let dataFetchUrl = `${this.mainUrl}/careers/data`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -239,12 +214,11 @@ Vue.component('v-select', vSelect)
         searchBy() {
             this.fetchData()
         },
-        storeGroup () {
+        storeCareer () {
             this.$validator.validate().then(valid => {
                 if (valid) {
                     this.loading = true
-                    axios.post(`${this.mainUrl}/groups/store`, {
-                        group: this.group,
+                    axios.post(`${this.mainUrl}/careers/store`, {
                         career: this.career
                     })
                     .then((response) => {
@@ -252,7 +226,7 @@ Vue.component('v-select', vSelect)
                         if (response.data.success) {
                             Vue.swal({
                                 title: 'Éxito',
-                                text: "Grupo creado correctamente.",
+                                text: "Carrera creado correctamente.",
                                 type: 'success',
                                 showCancelButton: false,
                                 confirmButtonColor: '#3085d6',
@@ -293,20 +267,16 @@ Vue.component('v-select', vSelect)
             });
 
         },
-        editGroup (carrerId) {
+        editCareer (carrerId) {
             this.loading = true
             this.edit = true
-            axios.get(`${this.mainUrl}/groups/${carrerId}`)
+            axios.get(`${this.mainUrl}/careers/${carrerId}`)
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
-                    this.group = {
-                        name: res.data.group.name,
-                        id: res.data.group.id
-                    }
                     this.career = {
-                        name: res.data.group.career.name,
-                        id: res.data.group.career.id
+                        name: res.data.career.name,
+                        id: res.data.career.id
                     }
                     this.colapsable = true
                 } else {
@@ -326,15 +296,15 @@ Vue.component('v-select', vSelect)
                 )
             })
         },
-        updateGroup () {
+        updateCareer () {
             this.loading = true
-            axios.post(`${this.mainUrl}/groups/update`, { group: this.group, career: this.career })
+            axios.post(`${this.mainUrl}/careers/update`, { career: this.career })
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
                     Vue.swal({
                         title: 'Éxito',
-                        text: "Grupo actualizada correctamente.",
+                        text: "Carrera actualizada correctamente.",
                         type: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#3085d6',
@@ -363,10 +333,10 @@ Vue.component('v-select', vSelect)
                 )
             })
         },
-        destroyGroup (group) {
+        destroyCareer (career) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar el grupo de '+group.name+'?',
-                text: "Perdera todo lo relacionado al grupo y no se podra deshacer.",
+                title: '¿Estas seguro de eliminar la carrera de '+career.name+'?',
+                text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -378,7 +348,7 @@ Vue.component('v-select', vSelect)
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara el grupo de ' + group.name + '.',
+                            title: 'Eliminara la carrera de ' + career.name + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -390,13 +360,13 @@ Vue.component('v-select', vSelect)
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/groups/destroy`, { group: group })
+                                    axios.post(`${this.mainUrl}/careers/destroy`, { career: career })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {
                                             Vue.swal({
                                                 title: 'Éxito',
-                                                text: "Grupo eliminado correctamente.",
+                                                text: "Carrera eliminada correctamente.",
                                                 type: 'success',
                                                 showCancelButton: false,
                                                 confirmButtonColor: '#3085d6',
@@ -431,7 +401,7 @@ Vue.component('v-select', vSelect)
         }
      },
      mounted() {
-        this.fetchData()
+         this.fetchData()
     },
   }
 </script>

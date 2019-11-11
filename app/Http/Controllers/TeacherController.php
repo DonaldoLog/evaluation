@@ -65,7 +65,7 @@ class TeacherController extends Controller
             if ($teacher) {
                 return response()->json(['success' => true, 'teacher' => $teacher], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Maestro no encontrado.'], 200);
+            return response()->json(['success' => false, 'message' => 'Profesor no encontrado.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
@@ -87,7 +87,7 @@ class TeacherController extends Controller
                 $teacher->save();
                 return response()->json(['success' => true], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Maestro no encontrado.'], 200);
+            return response()->json(['success' => false, 'message' => 'Profesor no encontrado.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
@@ -101,7 +101,7 @@ class TeacherController extends Controller
                 $teacher->delete();
                 return response()->json(['success' => true], 200);
             }
-            return response()->json(['success' => false, 'message' => 'Maestro no encontrado.'], 200);
+            return response()->json(['success' => false, 'message' => 'Profesor no encontrado.'], 200);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
