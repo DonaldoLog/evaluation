@@ -36,11 +36,6 @@
                     <input type="text" class="form-control form-control-sm" id="studentId" studentId="studentId" v-model="student.studentId" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('studentId')">{{ errors.first('studentId') }}</div>
                 </div>
-                <div class="form-student col-6">
-                    <label for="group">Grupo:</label>
-                    <v-select label="name" id="group" name="group" v-model="student.group" :options="groups" data-vv-as="group" v-validate="'required'"></v-select>
-                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('group')">{{ errors.first('group') }}</div>
-                </div>
                 <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeStudent">Guardar</button>
                 <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateStudent">Actualizar</button>
             </b-card-body>
@@ -86,7 +81,6 @@
                                                         <tr :key="index">
                                                             <td> {{ student.name }}  {{ student.last_name }}</td>
                                                             <td> {{ student.studentId }} </td>
-                                                            <td> {{ student.group? student.group.name: 'EDITAR PARA ASIGNAR' }} </td>
                                                             <td>
                                                                 <button class="btn btn-secondary" @click="editStudent(student.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                 <button class="btn btn-secondary" @click="destroyStudent(student)" title="Eliminar"><i class="fa fa-trash"></i></button>
@@ -140,7 +134,6 @@ Vue.component('v-select', vSelect)
 
     },
     props: {
-        groupsInitial: {}
     },
     data() {
       return {
@@ -156,14 +149,12 @@ Vue.component('v-select', vSelect)
                   id: ''
               }
           },
-          groups: this.groupsInitial? JSON.parse(this.groupsInitial): null,
           title: 'Estudiantes',
           cargando: false,
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
               {field: 'studentId', label: 'Matricula'},
-              {field: 'group', label: 'Grupo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -321,10 +312,6 @@ Vue.component('v-select', vSelect)
                         last_name: res.data.student.last_name,
                         id: res.data.student.id,
                         studentId: res.data.student.studentId,
-                        group: {
-                            name: res.data.student.group.name,
-                            id: res.data.student.group.id
-                        }
                     }
                     this.colapsable = true
                 } else {

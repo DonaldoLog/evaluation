@@ -17,11 +17,11 @@ class Group extends Model
 
     public function students()
     {
-        return $this->hasMany('App\Models\Student', 'id', 'groupId');
+        return $this->belongsToMany('App\Models\Student', 'groups_teachers', 'groupId', 'studentId');
     }
 
     public function teachers()
     {
-        return $this->hasMany('App\Models\Teacher', 'id', 'groupId');
+        return $this->belongsToMany('App\Models\Teacher', 'groups_teachers', 'groupId', 'teacherId');
     }
 }

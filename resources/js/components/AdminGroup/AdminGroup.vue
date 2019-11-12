@@ -1,6 +1,6 @@
 <template>
     <div>
-        <teachers-table>
+        <teachers-table :teachers-initial=teachers :group-initial=group>
         </teachers-table>
          <students-table>
         </students-table>
@@ -19,11 +19,13 @@ import StudentsTable from '../../components/AdminGroup/StudentsTable'
         StudentsTable
     },
     props: {
-        groupInitial: ''
+        teachersInitial: {},
+        groupInitial: {}
     },
     data() {
       return {
           group: this.groupInitial? JSON.parse(this.groupInitial): null,
+          teachers: this.teachersInitial? JSON.parse(this.teachersInitial): null,
           edit: false,
           loading: true,
           mainUrl: mainUrl,

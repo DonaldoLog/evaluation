@@ -29,8 +29,10 @@ Route::name('groups.')->prefix('groups')->group(function () {
     Route::get('/admin/{groupId}', 'GroupController@adminGroup')->name('get');
     Route::get('/{groupId}', 'GroupController@getGroup')->name('get');
     Route::post('/store', 'GroupController@store')->name('store');
+    Route::post('/store/teacher', 'GroupController@storeTeacher')->name('teacher');
     Route::post('/update', 'GroupController@updateGroup')->name('update');
     Route::post('/data', 'GroupController@getGroups');
+    Route::post('/teachers/data/{groupId}', 'GroupController@getTeachersByGroup');
     Route::post('/destroy', 'GroupController@destroyGroup')->name('destroy');
 });
 

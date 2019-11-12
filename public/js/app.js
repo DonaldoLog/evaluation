@@ -1860,11 +1860,13 @@ __webpack_require__.r(__webpack_exports__);
     StudentsTable: _components_AdminGroup_StudentsTable__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
-    groupInitial: ''
+    teachersInitial: {},
+    groupInitial: {}
   },
   data: function data() {
     return {
       group: this.groupInitial ? JSON.parse(this.groupInitial) : null,
+      teachers: this.teachersInitial ? JSON.parse(this.teachersInitial) : null,
       edit: false,
       loading: true,
       mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -2300,6 +2302,26 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mainUrl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mainUrl */ "./resources/js/mainUrl.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2414,45 +2436,44 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
-  props: {},
+  props: {
+    teachersInitial: {},
+    groupInitial: {}
+  },
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
+      group: this.groupInitial,
+      teacher: {},
+      teachers: this.teachersInitial,
+      modal: false,
       edit: false,
       loading: true,
-      mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
-      career: {
-        name: ''
-      },
-      title: 'Carreras',
-      cargando: false,
-      colapsable: false,
-      columns: [{
-        field: 'name',
-        label: 'Nombre'
-      }],
-      perPage: 10,
-      currentPage: 1,
-      tableData: [],
-      pagination: {
-        meta: {
-          to: 1,
-          from: 1
-        }
-      },
-      order: 'asc',
-      sortedColumn: 'name',
-      search: '',
-      optionsPerPage: [{
-        value: 10,
-        text: "Mostrar 10"
-      }, {
-        value: 20,
-        text: "Mostrar 20"
-      }, {
-        value: 50,
-        text: "Mostrar 50"
-      }]
-    };
+      mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"]
+    }, _defineProperty(_ref, "teacher", {
+      name: ''
+    }), _defineProperty(_ref, "title", 'Carreras'), _defineProperty(_ref, "cargando", false), _defineProperty(_ref, "colapsable", false), _defineProperty(_ref, "columns", [{
+      field: 'name',
+      label: 'Nombre'
+    }, {
+      field: 'email',
+      label: 'Correo'
+    }]), _defineProperty(_ref, "perPage", 10), _defineProperty(_ref, "currentPage", 1), _defineProperty(_ref, "tableData", []), _defineProperty(_ref, "pagination", {
+      meta: {
+        to: 1,
+        from: 1
+      }
+    }), _defineProperty(_ref, "order", 'asc'), _defineProperty(_ref, "sortedColumn", 'name'), _defineProperty(_ref, "search", ''), _defineProperty(_ref, "optionsPerPage", [{
+      value: 10,
+      text: "Mostrar 10"
+    }, {
+      value: 20,
+      text: "Mostrar 20"
+    }, {
+      value: 50,
+      text: "Mostrar 50"
+    }]), _ref;
   },
   watch: {},
   computed: {
@@ -2486,27 +2507,30 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
+    modalShow: function modalShow() {
+      this.modal = !this.modal;
+    },
     add: function add() {
       this.colapsable = true;
-      this.career.name = '';
+      this.teacher.name = '';
     },
     cancel: function cancel() {
       this.edit = false;
-      this.career.name = '';
+      this.teacher.name = '';
       this.colapsable = false;
     },
     fetchData: function fetchData() {
       var _this = this;
 
-      var dataFetchUrl = "".concat(this.mainUrl, "/careers/data");
+      var dataFetchUrl = "".concat(this.mainUrl, "/groups/teachers/data/").concat(this.group.id);
       axios.post(dataFetchUrl, {
         page: this.currentPage,
         column: this.sortedColumn,
         order: this.order,
         per_page: this.perPage,
         search: this.search
-      }).then(function (_ref) {
-        var data = _ref.data;
+      }).then(function (_ref2) {
+        var data = _ref2.data;
         _this.pagination = data;
         _this.tableData = data.data;
 
@@ -2541,14 +2565,15 @@ __webpack_require__.r(__webpack_exports__);
     searchBy: function searchBy() {
       this.fetchData();
     },
-    storeCareer: function storeCareer() {
+    storeTeacher: function storeTeacher() {
       var _this2 = this;
 
       this.$validator.validate().then(function (valid) {
         if (valid) {
           _this2.loading = true;
-          axios.post("".concat(_this2.mainUrl, "/careers/store"), {
-            career: _this2.career
+          axios.post("".concat(_this2.mainUrl, "/groups/store/teacher"), {
+            teacher: _this2.teacher,
+            group: _this2.group
           }).then(function (response) {
             _this2.loading = false;
 
@@ -2580,18 +2605,18 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    editCareer: function editCareer(carrerId) {
+    editTeacher: function editTeacher(carrerId) {
       var _this3 = this;
 
       this.loading = true;
       this.edit = true;
-      axios.get("".concat(this.mainUrl, "/careers/").concat(carrerId)).then(function (res) {
+      axios.get("".concat(this.mainUrl, "/teachers/").concat(carrerId)).then(function (res) {
         _this3.loading = false;
 
         if (res.data.success) {
-          _this3.career = {
-            name: res.data.career.name,
-            id: res.data.career.id
+          _this3.teacher = {
+            name: res.data.teacher.name,
+            id: res.data.teacher.id
           };
           _this3.colapsable = true;
         } else {
@@ -2602,12 +2627,12 @@ __webpack_require__.r(__webpack_exports__);
         Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
       });
     },
-    updateCareer: function updateCareer() {
+    updateTeacher: function updateTeacher() {
       var _this4 = this;
 
       this.loading = true;
-      axios.post("".concat(this.mainUrl, "/careers/update"), {
-        career: this.career
+      axios.post("".concat(this.mainUrl, "/teachers/update"), {
+        teacher: this.teacher
       }).then(function (res) {
         _this4.loading = false;
 
@@ -2634,11 +2659,11 @@ __webpack_require__.r(__webpack_exports__);
         Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
       });
     },
-    destroyCareer: function destroyCareer(career) {
+    destroyTeacher: function destroyTeacher(teacher) {
       var _this5 = this;
 
       Vue.swal({
-        title: '¿Estas seguro de eliminar la carrera de ' + career.name + '?',
+        title: '¿Estas seguro de eliminar la carrera de ' + teacher.name + '?',
         text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
         type: 'warning',
         showCancelButton: true,
@@ -2651,7 +2676,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (result) {
         if (result.value) {
           Vue.swal({
-            title: 'Eliminara la carrera de ' + career.name + '.',
+            title: 'Eliminara la carrera de ' + teacher.name + '.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -2663,8 +2688,8 @@ __webpack_require__.r(__webpack_exports__);
           }).then(function (result) {
             if (result.value) {
               _this5.loading = true;
-              axios.post("".concat(_this5.mainUrl, "/careers/destroy"), {
-                career: career
+              axios.post("".concat(_this5.mainUrl, "/teachers/destroy"), {
+                teacher: teacher
               }).then(function (res) {
                 _this5.loading = false;
 
@@ -3735,20 +3760,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
-  props: {
-    groupsInitial: {}
-  },
+  props: {},
   data: function data() {
     return {
       edit: false,
@@ -3763,7 +3780,6 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           id: ''
         }
       },
-      groups: this.groupsInitial ? JSON.parse(this.groupsInitial) : null,
       title: 'Estudiantes',
       cargando: false,
       colapsable: false,
@@ -3773,9 +3789,6 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       }, {
         field: 'studentId',
         label: 'Matricula'
-      }, {
-        field: 'group',
-        label: 'Grupo'
       }],
       perPage: 10,
       currentPage: 1,
@@ -3944,11 +3957,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
             name: res.data.student.name,
             last_name: res.data.student.last_name,
             id: res.data.student.id,
-            studentId: res.data.student.studentId,
-            group: {
-              name: res.data.student.group.name,
-              id: res.data.student.group.id
-            }
+            studentId: res.data.student.studentId
           };
           _this3.colapsable = true;
         } else {
@@ -65374,7 +65383,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("teachers-table"), _vm._v(" "), _c("students-table")], 1)
+  return _c(
+    "div",
+    [
+      _c("teachers-table", {
+        attrs: { "teachers-initial": _vm.teachers, "group-initial": _vm.group }
+      }),
+      _vm._v(" "),
+      _c("students-table")
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -66154,7 +66173,7 @@ var render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.addTeacher()
+                              return _vm.modalShow()
                             }
                           }
                         },
@@ -66221,14 +66240,26 @@ var render = function() {
                                 _vm.tableData.length > 0
                                   ? [
                                       _vm._l(_vm.tableData, function(
-                                        career,
+                                        teacher,
                                         index
                                       ) {
                                         return [
                                           _c("tr", { key: index }, [
                                             _c("td", [
                                               _vm._v(
-                                                " " + _vm._s(career.name) + " "
+                                                " " +
+                                                  _vm._s(teacher.name) +
+                                                  " " +
+                                                  _vm._s(teacher.last_name) +
+                                                  " "
+                                              )
+                                            ]),
+                                            _vm._v(" "),
+                                            _c("td", [
+                                              _vm._v(
+                                                " " +
+                                                  _vm._s(teacher.email) +
+                                                  " "
                                               )
                                             ]),
                                             _vm._v(" "),
@@ -66241,8 +66272,8 @@ var render = function() {
                                                   attrs: { title: "Editar" },
                                                   on: {
                                                     click: function($event) {
-                                                      return _vm.editCareer(
-                                                        career.id
+                                                      return _vm.editTeacher(
+                                                        teacher.id
                                                       )
                                                     }
                                                   }
@@ -66262,8 +66293,8 @@ var render = function() {
                                                   attrs: { title: "Eliminar" },
                                                   on: {
                                                     click: function($event) {
-                                                      return _vm.destroyCareer(
-                                                        career
+                                                      return _vm.destroyTeacher(
+                                                        teacher
                                                       )
                                                     }
                                                   }
@@ -66291,7 +66322,7 @@ var render = function() {
                                           _c(
                                             "td",
                                             { attrs: { colspan: "4" } },
-                                            [_vm._v("No hay careers.")]
+                                            [_vm._v("No hay teachers.")]
                                           )
                                         ]
                                       )
@@ -66487,6 +66518,100 @@ var render = function() {
             ],
             1
           )
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
+          model: {
+            value: _vm.modal,
+            callback: function($$v) {
+              _vm.modal = $$v
+            },
+            expression: "modal"
+          }
+        },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              { staticClass: "form-group col-6" },
+              [
+                _c("label", { attrs: { for: "teacher" } }, [
+                  _vm._v("Profesor:")
+                ]),
+                _vm._v(" "),
+                _c("v-select", {
+                  directives: [
+                    {
+                      name: "validate",
+                      rawName: "v-validate",
+                      value: "required",
+                      expression: "'required'"
+                    }
+                  ],
+                  attrs: {
+                    label: "name",
+                    id: "teacher",
+                    name: "teacher",
+                    options: _vm.teachers,
+                    "data-vv-as": "teacher"
+                  },
+                  model: {
+                    value: _vm.teacher,
+                    callback: function($$v) {
+                      _vm.teacher = $$v
+                    },
+                    expression: "teacher"
+                  }
+                }),
+                _vm._v(" "),
+                _vm.errors.has("teacher")
+                  ? _c(
+                      "div",
+                      {
+                        staticClass: "invalid-feedback",
+                        staticStyle: { display: "block" }
+                      },
+                      [_vm._v(_vm._s(_vm.errors.first("teacher")))]
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("template", { slot: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.modalShow()
+                  }
+                }
+              },
+              [_c("a", [_vm._v(" Cancelar ")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.storeTeacher()
+                  }
+                }
+              },
+              [_c("a", [_vm._v(" Guardar ")])]
+            )
+          ])
         ],
         2
       )
@@ -68033,53 +68158,6 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c(
-                  "div",
-                  { staticClass: "form-student col-6" },
-                  [
-                    _c("label", { attrs: { for: "group" } }, [
-                      _vm._v("Grupo:")
-                    ]),
-                    _vm._v(" "),
-                    _c("v-select", {
-                      directives: [
-                        {
-                          name: "validate",
-                          rawName: "v-validate",
-                          value: "required",
-                          expression: "'required'"
-                        }
-                      ],
-                      attrs: {
-                        label: "name",
-                        id: "group",
-                        name: "group",
-                        options: _vm.groups,
-                        "data-vv-as": "group"
-                      },
-                      model: {
-                        value: _vm.student.group,
-                        callback: function($$v) {
-                          _vm.$set(_vm.student, "group", $$v)
-                        },
-                        expression: "student.group"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _vm.errors.has("group")
-                      ? _c(
-                          "div",
-                          {
-                            staticClass: "invalid-feedback",
-                            staticStyle: { display: "block" }
-                          },
-                          [_vm._v(_vm._s(_vm.errors.first("group")))]
-                        )
-                      : _vm._e()
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c(
                   "button",
                   {
                     directives: [
@@ -68300,18 +68378,6 @@ var render = function() {
                                       _c("td", [
                                         _vm._v(
                                           " " + _vm._s(student.studentId) + " "
-                                        )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", [
-                                        _vm._v(
-                                          " " +
-                                            _vm._s(
-                                              student.group
-                                                ? student.group.name
-                                                : "EDITAR PARA ASIGNAR"
-                                            ) +
-                                            " "
                                         )
                                       ]),
                                       _vm._v(" "),

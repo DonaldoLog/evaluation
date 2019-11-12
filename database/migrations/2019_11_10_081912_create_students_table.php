@@ -19,11 +19,9 @@ class CreateStudentsTable extends Migration
             $table->string('last_name');
             $table->string('studentId');
             $table->string('password');
-            $table->unsignedBigInteger('groupId');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('groupId')->references('id')->on('groups')->onDelete('cascade');
         });
     }
 

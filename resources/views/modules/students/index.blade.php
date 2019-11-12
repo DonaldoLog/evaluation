@@ -14,7 +14,7 @@
 
 @section('content')
     <div id="app">
-        <students-component groups-initial = '{{ $groups }}'></students-component>
+        <students-component></students-component>
     </div>
 @stop
 

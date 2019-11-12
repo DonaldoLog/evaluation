@@ -37,7 +37,7 @@
                                 </select>
                             </div>
                             <div class="col-1">
-                                <button @click="addTeacher()" type="button" class="btn btn-secondary" >
+                                <button @click="modalShow()" type="button" class="btn btn-secondary" >
                                     <a > <i class="fa fa-plus"></i></a>
                                 </button>
                             </div>
@@ -61,19 +61,20 @@
                                             </thead>
                                             <tbody>
                                                 <template v-if="tableData.length > 0">
-                                                    <template v-for="(career, index) in tableData">
+                                                    <template v-for="(teacher, index) in tableData">
                                                             <tr :key="index">
-                                                                <td> {{ career.name }} </td>
+                                                                <td> {{ teacher.name }} {{ teacher.last_name }} </td>
+                                                                <td> {{ teacher.email }} </td>
                                                                 <td>
-                                                                    <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                    <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
+                                                                    <button class="btn btn-secondary" @click="editTeacher(teacher.id)" title="Editar"> <i class="fa fa-edit"></i></button>
+                                                                    <button class="btn btn-secondary" @click="destroyTeacher(teacher)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                                <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+teacher.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                                 </td>
                                                             </tr>
                                                     </template>
                                                 </template>
                                                 <template v-else>
-                                                    <tr style="text-align:center"><td colspan="4" >No hay careers.</td></tr>
+                                                    <tr style="text-align:center"><td colspan="4" >No hay teachers.</td></tr>
                                                 </template>
                                             </tbody>
                                         </table>
@@ -105,6 +106,23 @@
                 </b-card-body>
             </div>
         </b-card>
+         <b-modal v-model="modal">
+             <div class="row">
+                  <div class="form-group col-6">
+                    <label for="teacher">Profesor:</label>
+                    <v-select label="name" id="teacher" name="teacher" v-model="teacher" :options="teachers" data-vv-as="teacher" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('teacher')">{{ errors.first('teacher') }}</div>
+                </div>
+             </div>
+             <template slot="modal-footer">
+                 <button @click="modalShow()" type="button" class="btn btn-secondary" >
+                    <a > Cancelar </a>
+                </button>
+                <button @click="storeTeacher()" type="button" class="btn btn-secondary" >
+                    <a > Guardar </a>
+                </button>
+             </template>
+         </b-modal>
     </div>
 </template>
 
@@ -117,14 +135,19 @@ import mainUrl from '../../mainUrl'
 
     },
     props: {
-
+        teachersInitial: {},
+        groupInitial: {}
     },
     data() {
       return {
+          group: this.groupInitial,
+          teacher: {},
+          teachers: this.teachersInitial,
+          modal: false,
           edit: false,
           loading: true,
           mainUrl: mainUrl,
-          career: {
+          teacher: {
               name: ''
           },
           title: 'Carreras',
@@ -132,6 +155,7 @@ import mainUrl from '../../mainUrl'
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
+              {field: 'email', label: 'Correo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -172,17 +196,20 @@ import mainUrl from '../../mainUrl'
         },
      },
     methods: {
+        modalShow () {
+            this.modal = !this.modal
+        },
         add() {
             this.colapsable = true
-            this.career.name = ''
+            this.teacher.name = ''
         },
         cancel() {
             this.edit = false
-            this.career.name = ''
+            this.teacher.name = ''
             this.colapsable = false
         },
         fetchData() {
-            let dataFetchUrl = `${this.mainUrl}/careers/data`;
+            let dataFetchUrl = `${this.mainUrl}/groups/teachers/data/${this.group.id}`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -220,12 +247,13 @@ import mainUrl from '../../mainUrl'
         searchBy() {
             this.fetchData()
         },
-        storeCareer () {
+        storeTeacher () {
             this.$validator.validate().then(valid => {
                 if (valid) {
                     this.loading = true
-                    axios.post(`${this.mainUrl}/careers/store`, {
-                        career: this.career
+                    axios.post(`${this.mainUrl}/groups/store/teacher`, {
+                        teacher: this.teacher,
+                        group: this.group
                     })
                     .then((response) => {
                         this.loading = false
@@ -273,16 +301,16 @@ import mainUrl from '../../mainUrl'
             });
 
         },
-        editCareer (carrerId) {
+        editTeacher (carrerId) {
             this.loading = true
             this.edit = true
-            axios.get(`${this.mainUrl}/careers/${carrerId}`)
+            axios.get(`${this.mainUrl}/teachers/${carrerId}`)
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
-                    this.career = {
-                        name: res.data.career.name,
-                        id: res.data.career.id
+                    this.teacher = {
+                        name: res.data.teacher.name,
+                        id: res.data.teacher.id
                     }
                     this.colapsable = true
                 } else {
@@ -302,9 +330,9 @@ import mainUrl from '../../mainUrl'
                 )
             })
         },
-        updateCareer () {
+        updateTeacher () {
             this.loading = true
-            axios.post(`${this.mainUrl}/careers/update`, { career: this.career })
+            axios.post(`${this.mainUrl}/teachers/update`, { teacher: this.teacher })
             .then(res => {
                 this.loading = false
                 if (res.data.success) {
@@ -339,9 +367,9 @@ import mainUrl from '../../mainUrl'
                 )
             })
         },
-        destroyCareer (career) {
+        destroyTeacher (teacher) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar la carrera de '+career.name+'?',
+                title: '¿Estas seguro de eliminar la carrera de '+teacher.name+'?',
                 text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
@@ -354,7 +382,7 @@ import mainUrl from '../../mainUrl'
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara la carrera de ' + career.name + '.',
+                            title: 'Eliminara la carrera de ' + teacher.name + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -366,7 +394,7 @@ import mainUrl from '../../mainUrl'
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/careers/destroy`, { career: career })
+                                    axios.post(`${this.mainUrl}/teachers/destroy`, { teacher: teacher })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {

@@ -11,9 +11,7 @@ use \Log;
 class StudentController extends Controller
 {
     public function index(){
-        $students = Group::all();
-        return view('modules.students.index')
-        ->with('groups', $students);
+        return view('modules.students.index');
     }
 
     public function store(Request $request) {
@@ -26,7 +24,6 @@ class StudentController extends Controller
             $student->name = $request->student['name'];
             $student->last_name = $request->student['last_name'];
             $student->studentId = $request->student['studentId'];
-            $student->groupId = $request->student['group']['id'];
             $student->password = bcrypt('evaluacion2020');
             $student->save();
             return response()->json(['success' => true]);
@@ -38,7 +35,7 @@ class StudentController extends Controller
 
     public function getStudents(Request $request) {
         $search = $request->search;
-        $query = Student::select('id', 'name', 'groupId', 'studentId', 'last_name')->with('group:id,name')
+        $query = Student::select('id', 'name', 'studentId', 'last_name')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -88,7 +85,6 @@ class StudentController extends Controller
                 $student->name = $request->student['name'];
                 $student->last_name = $request->student['last_name'];
                 $student->studentId = $request->student['studentId'];
-                $student->groupId = $request->student['group']['id'];
                 $student->save();
                 return response()->json(['success' => true], 200);
             }
