@@ -10,8 +10,8 @@ class Student extends Model
     use SoftDeletes;
     protected $table = 'students';
 
-    public function group ()
+    public function groups()
     {
-        return $this->belongsTo('App\Models\Group', 'groupId', 'id');
+        return $this->belongsToMany('App\Models\Group', 'groups_students', 'studentId', 'groupId');
     }
 }

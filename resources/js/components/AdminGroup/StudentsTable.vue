@@ -34,6 +34,11 @@
                                     {{ option.text }}
                                 </option>
                             </select>
+                            <div class="col-1">
+                                <button @click="modalShow()" type="button" class="btn btn-secondary" >
+                                    <a > <i class="fa fa-plus"></i></a>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-md-12">
                                 <div class="card card-secondary">
@@ -54,13 +59,13 @@
                                             </thead>
                                             <tbody>
                                                 <template v-if="tableData.length > 0">
-                                                    <template v-for="(career, index) in tableData">
+                                                    <template v-for="(student, index) in tableData">
                                                             <tr :key="index">
-                                                                <td> {{ career.name }} </td>
+                                                                <td> {{ student.name }} {{ student.last_name }} </td>
+                                                                <td> {{ student.studentId }} </td>
                                                                 <td>
-                                                                    <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
-                                                                    <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+career.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
+                                                                    <button class="btn btn-secondary" @click="destroyStudent(student)" title="Eliminar"><i class="fa fa-trash"></i></button>
+                                                                <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+student.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                                 </td>
                                                             </tr>
                                                     </template>
@@ -99,6 +104,37 @@
             </div>
 
         </b-card>
+         <b-modal v-model="modal">
+             <div class="row">
+                  <div class="form-group col-12">
+                    <label for="student">Estudiante:</label>
+                    <v-select label="name" id="student" name="student" v-model="student" :options="students" data-vv-as="student" v-validate="'required'">
+                        <template slot="no-options">
+                            SELECCIONAR
+                        </template>
+                        <template slot="option" slot-scope="option">
+                            <div class="d-center">
+                                {{ option.name }} {{ option.last_name }} - {{ option.studentId }}
+                            </div>
+                        </template>
+                        <template slot="selected-option" slot-scope="option">
+                        <div class="selected d-center">
+                            {{ option.name }} {{ option.last_name }} - {{ option.studentId }}
+                        </div>
+                        </template>
+                    </v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('student')">{{ errors.first('student') }}</div>
+                </div>
+             </div>
+             <template slot="modal-footer">
+                 <button @click="modalShow()" type="button" class="btn btn-secondary" >
+                    <a > Cancelar </a>
+                </button>
+                <button @click="storeStudent()" type="button" class="btn btn-secondary" >
+                    <a > Guardar </a>
+                </button>
+             </template>
+         </b-modal>
     </div>
 </template>
 
@@ -111,32 +147,38 @@ import mainUrl from '../../mainUrl'
 
     },
     props: {
-
+        studentsInitial: {},
+        groupInitial: {}
     },
     data() {
       return {
-          edit: false,
-          loading: true,
-          mainUrl: mainUrl,
-          career: {
-              name: ''
-          },
-          title: 'Carreras',
-          cargando: false,
-          colapsable: false,
-          columns: [
-              {field: 'name', label: 'Nombre'},
-          ],
-          perPage: 10,
-          currentPage: 1,
-          tableData: [],
-          pagination: {
-              meta: { to: 1, from: 1 }
-          },
-          order: 'asc',
-          sortedColumn: 'name',
-          search: '',
-          optionsPerPage: [{value: 10, text: "Mostrar 10"}, {value: 20, text: "Mostrar 20"}, {value: 50,text: "Mostrar 50"}],
+            group: this.groupInitial,
+            student: {},
+            students: this.studentsInitial,
+            modal: false,
+            edit: false,
+            loading: true,
+            mainUrl: mainUrl,
+            career: {
+                name: ''
+            },
+            title: 'Carreras',
+            cargando: false,
+            colapsable: false,
+            columns: [
+                {field: 'name', label: 'Nombre'},
+                {field: 'studentId', label: 'Matricula'},
+            ],
+            perPage: 10,
+            currentPage: 1,
+            tableData: [],
+            pagination: {
+                meta: { to: 1, from: 1 }
+            },
+            order: 'asc',
+            sortedColumn: 'name',
+            search: '',
+            optionsPerPage: [{value: 10, text: "Mostrar 10"}, {value: 20, text: "Mostrar 20"}, {value: 50,text: "Mostrar 50"}],
       }
     },
     watch: {
@@ -166,6 +208,9 @@ import mainUrl from '../../mainUrl'
         },
      },
     methods: {
+        modalShow () {
+            this.modal = !this.modal
+        },
         add() {
             this.colapsable = true
             this.career.name = ''
@@ -176,7 +221,7 @@ import mainUrl from '../../mainUrl'
             this.colapsable = false
         },
         fetchData() {
-            let dataFetchUrl = `${this.mainUrl}/careers/data`;
+            let dataFetchUrl = `${this.mainUrl}/groups/students/data/${this.group.id}`;
             axios.post(dataFetchUrl, {
                         page: this.currentPage,
                         column: this.sortedColumn,
@@ -214,12 +259,13 @@ import mainUrl from '../../mainUrl'
         searchBy() {
             this.fetchData()
         },
-        storeCareer () {
+        storeStudent () {
             this.$validator.validate().then(valid => {
                 if (valid) {
                     this.loading = true
-                    axios.post(`${this.mainUrl}/careers/store`, {
-                        career: this.career
+                    axios.post(`${this.mainUrl}/groups/store/student`, {
+                        student: this.student,
+                        group: this.group
                     })
                     .then((response) => {
                         this.loading = false
@@ -333,10 +379,10 @@ import mainUrl from '../../mainUrl'
                 )
             })
         },
-        destroyCareer (career) {
+        destroyStudent (student) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar la carrera de '+career.name+'?',
-                text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
+                title: '¿Estas seguro de eliminar a '+student.studentId+'?',
+                text: "Perdera todo lo relacionado al estudiante y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -348,7 +394,7 @@ import mainUrl from '../../mainUrl'
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara la carrera de ' + career.name + '.',
+                            title: 'Eliminara a ' + student.studentId + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -360,13 +406,16 @@ import mainUrl from '../../mainUrl'
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/careers/destroy`, { career: career })
+                                    axios.post(`${this.mainUrl}/groups/destroy/student`, {
+                                        group: this.group,
+                                        student: student
+                                        })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {
                                             Vue.swal({
                                                 title: 'Éxito',
-                                                text: "Carrera eliminada correctamente.",
+                                                text: "Estudiante eliminada correctamente.",
                                                 type: 'success',
                                                 showCancelButton: false,
                                                 confirmButtonColor: '#3085d6',

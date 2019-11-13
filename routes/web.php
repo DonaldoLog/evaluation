@@ -30,10 +30,14 @@ Route::name('groups.')->prefix('groups')->group(function () {
     Route::get('/{groupId}', 'GroupController@getGroup')->name('get');
     Route::post('/store', 'GroupController@store')->name('store');
     Route::post('/store/teacher', 'GroupController@storeTeacher')->name('teacher');
+    Route::post('/store/student', 'GroupController@storeStudent')->name('student');
     Route::post('/update', 'GroupController@updateGroup')->name('update');
     Route::post('/data', 'GroupController@getGroups');
     Route::post('/teachers/data/{groupId}', 'GroupController@getTeachersByGroup');
+    Route::post('/students/data/{groupId}', 'GroupController@getStudentsByGroup');
     Route::post('/destroy', 'GroupController@destroyGroup')->name('destroy');
+    Route::post('/destroy/student', 'GroupController@destroyStudentGroup')->name('destroy');
+    Route::post('/destroy/teacher', 'GroupController@destroyTeacherGroup')->name('destroy');
 });
 
 Route::name('students.')->prefix('students')->group(function () {

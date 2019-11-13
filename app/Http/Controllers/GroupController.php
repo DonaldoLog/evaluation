@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Career;
 use Illuminate\Http\Request;
 use App\Models\Group;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Log;
 
@@ -77,12 +78,14 @@ class GroupController extends Controller
         try {
             $group = Group::where('id', $groupId)->first();
             $teachers = Teacher::all();
+            $students = Student::all();
             if (!$group) {
                 return redirect()->route('groups.index');
             }
             return view('modules.groups.admin')
             ->with('group', $group)
-            ->with('teachers', $teachers);
+            ->with('teachers', $teachers)
+            ->with('students', $students);
         } catch (\PDOException $th) {
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
@@ -153,9 +156,11 @@ class GroupController extends Controller
         return $response;
     }
 
-    public function getStudentsByGroup (Request $request) {
+    public function getStudentsByGroup (Request $request, $groupId) {
         $search = $request->search;
-        $query = Group::select('id', 'name', 'careerId')->with('students')->where('id', $request->group['id'])
+        $query = Student::whereHas('groups', function($q) use ($groupId){
+                $q->where('groupId', $groupId);
+            })
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -188,6 +193,54 @@ class GroupController extends Controller
                 return response()->json(['success' => false, 'message' => 'Ya existe este profesor en el grupo.'], 200);
             }
             $group->teachers()->attach($request->teacher['id']);
+            $group->save();
+
+            return response()->json(['success' => true ], 200);
+        } catch (\PDOException $th) {
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function storeStudent (Request $request) {
+        try {
+            $group = Group::where('id', $request->group['id'])->first();
+            $exist = $group->students()->where('groups_students.studentId', $request->student['id'])->first();
+            if ($exist) {
+                return response()->json(['success' => false, 'message' => 'Ya existe este estudiante en el grupo.'], 200);
+            }
+            $group->students()->attach($request->student['id']);
+            $group->save();
+
+            return response()->json(['success' => true ], 200);
+        } catch (\PDOException $th) {
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function destroyStudentGroup(Request $request) {
+        try {
+            $group = Group::where('id', $request->group['id'])->first();
+            $exist = $group->students()->where('groups_students.studentId', $request->student['id'])->first();
+            if (!$exist) {
+                return response()->json(['success' => false, 'message' => 'No existe este estudiante en el grupo.'], 200);
+            }
+            $group->students()->detach($request->student['id']);
+            $group->save();
+
+            return response()->json(['success' => true ], 200);
+        } catch (\PDOException $th) {
+            return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
+        }
+    }
+
+    public function destroyTeacherGroup(Request $request) {
+        try {
+            $group = Group::where('id', $request->group['id'])->first();
+            $exist = $group->teachers()->where('groups_teachers.teacherId', $request->teacher['id'])->first();
+            if (!$exist) {
+                return response()->json(['success' => false, 'message' => 'No existe este profesor en el grupo.'], 200);
+            }
+            $group->teachers()->detach($request->teacher['id']);
             $group->save();
 
             return response()->json(['success' => true ], 200);

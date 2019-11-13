@@ -66,7 +66,6 @@
                                                                 <td> {{ teacher.name }} {{ teacher.last_name }} </td>
                                                                 <td> {{ teacher.email }} </td>
                                                                 <td>
-                                                                    <button class="btn btn-secondary" @click="editTeacher(teacher.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                     <button class="btn btn-secondary" @click="destroyTeacher(teacher)" title="Eliminar"><i class="fa fa-trash"></i></button>
                                                                 <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+teacher.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
                                                                 </td>
@@ -108,7 +107,7 @@
         </b-card>
          <b-modal v-model="modal">
              <div class="row">
-                  <div class="form-group col-6">
+                  <div class="form-group col-12">
                     <label for="teacher">Profesor:</label>
                     <v-select label="name" id="teacher" name="teacher" v-model="teacher" :options="teachers" data-vv-as="teacher" v-validate="'required'"></v-select>
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('teacher')">{{ errors.first('teacher') }}</div>
@@ -369,8 +368,8 @@ import mainUrl from '../../mainUrl'
         },
         destroyTeacher (teacher) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar la carrera de '+teacher.name+'?',
-                text: "Perdera todo lo relacionado a la carrera y no se podra deshacer.",
+                title: `¿Estas seguro de eliminar al profesor de ${teacher.name} ${teacher.last_name}?`,
+                text: "Perdera todo lo relacionado al profesor y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -382,7 +381,7 @@ import mainUrl from '../../mainUrl'
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara la carrera de ' + teacher.name + '.',
+                            title: `Eliminara al profesor ${teacher.name} ${teacher.last_name}.`,
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
@@ -394,13 +393,16 @@ import mainUrl from '../../mainUrl'
                             }).then((result) => {
                                 if (result.value) {
                                     this.loading = true
-                                    axios.post(`${this.mainUrl}/teachers/destroy`, { teacher: teacher })
+                                    axios.post(`${this.mainUrl}/groups/destroy/teacher `,{
+                                        teacher: teacher,
+                                        group: this.group
+                                    })
                                     .then(res => {
                                         this.loading = false
                                         if (res.data.success) {
                                             Vue.swal({
                                                 title: 'Éxito',
-                                                text: "Carrera eliminada correctamente.",
+                                                text: "Profesor eliminada correctamente.",
                                                 type: 'success',
                                                 showCancelButton: false,
                                                 confirmButtonColor: '#3085d6',
