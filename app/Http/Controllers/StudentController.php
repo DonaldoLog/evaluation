@@ -62,7 +62,7 @@ class StudentController extends Controller
 
     public function getStudent ($studentId) {
         try {
-            $student = Student::where('id', $studentId)->with('group')->first();
+            $student = Student::where('id', $studentId)->first();
             if ($student) {
                 return response()->json(['success' => true, 'student' => $student], 200);
             }
