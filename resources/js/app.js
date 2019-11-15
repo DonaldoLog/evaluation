@@ -20,6 +20,8 @@ Vue.use(BootstrapVue)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('careers-component', require('./components/Careers.vue').default);
 Vue.component('groups-component', require('./components/Groups.vue').default);
+Vue.component('forms-component', require('./components/Forms.vue').default);
+Vue.component('admin-form-component', require('./components/FormAdmin/AdminForm.vue').default);
 Vue.component('students-component', require('./components/Students.vue').default);
 Vue.component('teachers-component', require('./components/Teachers.vue').default);
 Vue.component('admin-group-component', require('./components/AdminGroup/AdminGroup.vue').default);

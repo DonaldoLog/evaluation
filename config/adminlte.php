@@ -194,6 +194,11 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Cuestionarios',
+            'url'  => 'forms/index',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [

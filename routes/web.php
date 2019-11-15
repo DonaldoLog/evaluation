@@ -57,3 +57,18 @@ Route::name('teachers.')->prefix('teachers')->group(function () {
     Route::post('/data', 'TeacherController@getTeachers');
     Route::post('/destroy', 'TeacherController@destroyTeacher')->name('destroy');
 });
+
+Route::name('forms.')->prefix('forms')->group(function () {
+    Route::get('/index', 'FormController@index')->name('index');
+    Route::get('/admin/{formId}', 'FormController@adminForm')->name('get');
+    Route::get('/{formId}', 'FormController@getForm')->name('get');
+    Route::post('/store', 'FormController@store')->name('store');
+    Route::post('/update', 'FormController@updateForm')->name('update');
+    Route::post('/data', 'FormController@getForms');
+    Route::post('/destroy', 'FormController@destroyForm')->name('destroy');
+    Route::post('/questions/data/{formId}', 'FormController@getQuestionsByForm');
+    Route::post('/store/question', 'FormController@storeQuestion')->name('question');
+    Route::post('/question/update', 'FormController@updateQuestion')->name('question');
+    Route::post('/question/destroy', 'FormController@destroyQuestion')->name('question');
+    Route::get('/question/{questionId}', 'FormController@getQuestion')->name('question');
+});
