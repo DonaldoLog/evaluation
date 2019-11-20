@@ -85772,7 +85772,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname, "/evaluation/");
+var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname, "/evaluation");
 /* harmony default export */ __webpack_exports__["default"] = (mainUrl);
 
 /***/ }),
