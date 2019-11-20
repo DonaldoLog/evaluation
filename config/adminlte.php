@@ -199,6 +199,11 @@ return [
             'icon' => 'fas fa-chalkboard-teacher',
         ],
         [
+            'text' => 'Evaluacion',
+            'url'  => 'evaluations/index',
+            'icon' => 'fas fa-chalkboard-teacher',
+        ],
+        [
             'text'    => 'multilevel',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [

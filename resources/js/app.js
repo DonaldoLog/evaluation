@@ -25,6 +25,7 @@ Vue.component('admin-form-component', require('./components/FormAdmin/AdminForm.
 Vue.component('students-component', require('./components/Students.vue').default);
 Vue.component('teachers-component', require('./components/Teachers.vue').default);
 Vue.component('admin-group-component', require('./components/AdminGroup/AdminGroup.vue').default);
+Vue.component('evaluation-component', require('./components/Evaluation.vue').default);
 
 const app = new Vue({
     el: '#app'

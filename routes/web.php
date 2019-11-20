@@ -72,3 +72,12 @@ Route::name('forms.')->prefix('forms')->group(function () {
     Route::post('/question/destroy', 'FormController@destroyQuestion')->name('question');
     Route::get('/question/{questionId}', 'FormController@getQuestion')->name('question');
 });
+
+Route::name('evaluations.')->prefix('evaluations')->group(function () {
+    Route::get('/index', 'EvaluationController@index')->name('index');
+    Route::get('/{evalationId}', 'EvaluationController@getEvaluation')->name('get');
+    Route::post('/store', 'EvaluationController@store')->name('store');
+    Route::post('/update', 'EvaluationController@updateEvaluation')->name('update');
+    Route::post('/data', 'EvaluationController@getEvaluations');
+    Route::post('/destroy', 'EvaluationController@destroyEvaluation')->name('destroy');
+});
