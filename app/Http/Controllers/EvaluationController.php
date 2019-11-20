@@ -10,7 +10,7 @@ use App\Models\Teacher;
 use App\Models\Poll;
 use \Log;
 use DB;
-
+use Carbon\Carbon;
 class EvaluationController extends Controller
 {
     public function index(){
@@ -26,7 +26,8 @@ class EvaluationController extends Controller
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe esta evaluacion.']);
             }
-
+            Evaluation::where('active', 1)->update(['active' => 0]);
+            Poll::whereNull('deleted_at')->update(['deleted_at' => Carbon::now()]);
             $evaluation = new Evaluation();
             $evaluation->name = $request->evaluation['name'];
             $evaluation->active = 1;
