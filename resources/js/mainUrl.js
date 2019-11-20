@@ -1,2 +1,2 @@
-const mainUrl = `${window.location.protocol}//${window.location.hostname}/evaluation`
+const mainUrl = `${window.location.protocol}//${window.location.hostname}`
 export default mainUrl
