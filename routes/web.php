@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('admin.dashboard');
+    return redirect('/careers/index');
 });
 
 Route::name('careers.')->prefix('careers')->middleware(['auth','is_admin'])->group(function () {
