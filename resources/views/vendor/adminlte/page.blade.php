@@ -140,51 +140,53 @@
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.classes_sidebar_nav', '')}}" data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') != 300) data-animation-speed="{{config('adminlte.sidebar_nav_animation_speed')}}" @endif @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
-                        @if (\Auth::user()->admin === 1)
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('careers.index')}}">
-                                <i class="fas fa-pencil-alt "></i>
-                                <p>Carreras</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('groups.index')}}">
-                                <i class="fas fa-users "></i>
-                                <p>Grupos / Semestres</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('students.index')}}">
-                                <i class="fas fa-user "></i>
-                                <p>Estudiantes</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('teachers.index')}}">
-                                <i class="fas fa-chalkboard-teacher "></i>
-                                <p>Maestros</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('forms.index')}}">
-                                <i class="fas fa-file"></i>
-                                <p>Cuestionarios</p>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link " href="{{route('evaluations.index')}}">
-                                <i class="fas fa-paste"></i>
-                                <p>Evaluacion</p>
-                            </a>
-                        </li>
-                        @else
-                        <li class="nav-item ">
-                                <a class="nav-link active" href="{{route('evaluation.index')}}">
+                        @auth
+                            @if (\Auth::user()->admin === 1)
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('careers.index')}}">
+                                    <i class="fas fa-pencil-alt "></i>
+                                    <p>Carreras</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('groups.index')}}">
+                                    <i class="fas fa-users "></i>
+                                    <p>Grupos / Semestres</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('students.index')}}">
+                                    <i class="fas fa-user "></i>
+                                    <p>Estudiantes</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('teachers.index')}}">
+                                    <i class="fas fa-chalkboard-teacher "></i>
+                                    <p>Maestros</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('forms.index')}}">
+                                    <i class="fas fa-file"></i>
+                                    <p>Cuestionarios</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('evaluations.index')}}">
                                     <i class="fas fa-paste"></i>
                                     <p>Evaluacion</p>
                                 </a>
                             </li>
-                        @endif
+                            @else
+                            <li class="nav-item ">
+                                    <a class="nav-link active" href="{{route('evaluation.index')}}">
+                                        <i class="fas fa-paste"></i>
+                                        <p>Evaluacion</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
                 </nav>
             </div>
