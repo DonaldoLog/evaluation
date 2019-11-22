@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('admin.dashboard');
 });
 
-Route::name('careers.')->prefix('careers')->middleware('auth')->group(function () {
+Route::name('careers.')->prefix('careers')->middleware(['auth','is_admin'])->group(function () {
     Route::get('/index', 'CareerController@index')->name('index');
     Route::get('/{careerId}', 'CareerController@getCareer')->name('get');
     Route::post('/store', 'CareerController@store')->name('store');
@@ -89,5 +89,7 @@ Route::name('evaluation.')->prefix('evaluation')->middleware('auth')->group(func
 });
 
 Auth::routes();
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/login', 'Auth\LoginController@login');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
