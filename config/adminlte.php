@@ -138,7 +138,6 @@ return [
 
     'login_url' => 'login',
 
-    'register_url' => 'register',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,11 +167,6 @@ return [
 
     'menu' => [
         /* ['header' => 'account_settings'], */
-        [
-            'text' => 'Usuarios',
-            'url'  => 'admin/user',
-            'icon' => 'fas fa-fw fa-users',
-        ],
         [
             'text' => 'Carreras',
             'url'  => 'careers/index',

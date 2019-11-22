@@ -25,6 +25,7 @@ class EvaluationStudentController extends Controller
         $teachers = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
         ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId')
+        ->whereNull('teachers.deleted_at')
         ->whereIn('groups_teachers.groupId', $groupIds)->get();
 
         $pollsCompleted = Completed::where('studentId', $student->id)->pluck('pollId');
@@ -41,7 +42,11 @@ class EvaluationStudentController extends Controller
                 $teacher->completed = false;
             }
         }
-        $done = $teachers->count() == sizeof($groupTeacherIdsCompleted);
+        if ($teachers->count() != 0) {
+            $done = $teachers->count() == sizeof($groupTeacherIdsCompleted);
+        } else {
+            $done = false;
+        }
         /* $questions = Form::where('id', $evaluation->formId)->with('questions')->get();
         dd($student,$teachers, $groupTeacherIdsCompleted, $questions); */
         //dd($teachers, $groupTeacherIdsCompleted);
@@ -60,6 +65,7 @@ class EvaluationStudentController extends Controller
         $teacher = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
         ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject')
+        ->whereNull('teachers.deleted_at')
         ->where('polls.id', $pollId)->first();
 
         return view('modules.evaluation.questions')

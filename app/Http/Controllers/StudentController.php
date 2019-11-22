@@ -36,6 +36,7 @@ class StudentController extends Controller
     public function getStudents(Request $request) {
         $search = $request->search;
         $query = User::select('id', 'name', 'studentId', 'last_name')
+            ->where('admin', 0)
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });

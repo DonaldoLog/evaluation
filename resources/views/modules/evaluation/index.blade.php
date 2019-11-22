@@ -9,7 +9,7 @@
 @stop
 
 @section('content_header')
-    <h1>Evaluacion!</h1>
+    <h1>Bienvenido</h1>
 @stop
 
 

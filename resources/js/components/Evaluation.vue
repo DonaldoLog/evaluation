@@ -26,7 +26,7 @@
                     <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="evaluation.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
-                 <div class="form-group col-6">
+                 <div class="form-group col-6" v-show="!edit">
                     <label for="forms">Formulario:</label>
                     <v-select label="name" id="forms" name="forms" v-model="form" :options="forms" data-vv-as="forms" v-validate="'required'"></v-select>
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('forms')">{{ errors.first('forms') }}</div>
@@ -78,11 +78,12 @@
                                             <template v-if="tableData.length > 0">
                                                 <template v-for="(evaluation, index) in tableData">
                                                         <tr :key="index">
+                                                            <td> {{ index + 1 }} </td>
                                                             <td> {{ evaluation.name }} </td>
+                                                            <td> {{ evaluation.active? 'Activa': 'x' }} </td>
                                                             <td>
                                                                 <button class="btn btn-secondary" @click="editEvaluation(evaluation.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                 <button class="btn btn-secondary" @click="destroyEvaluation(evaluation)" title="Eliminar"><i class="fa fa-trash"></i></button>
-                                                                <a class="btn btn-secondary" :href="mainUrl+'/evaluations/admin/'+evaluation.id" target="_blank" title="Admin"><i class="fas fa-tools"></i></a>
                                                             </td>
                                                         </tr>
                                                 </template>
@@ -149,7 +150,9 @@ Vue.component('v-select', vSelect)
           cargando: false,
           colapsable: false,
           columns: [
+              {field: '', label: ''},
               {field: 'name', label: 'Nombre'},
+              {field: '', label: 'Activa'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -245,46 +248,62 @@ Vue.component('v-select', vSelect)
         storeEvaluation () {
             this.$validator.validate().then(valid => {
                 if (valid) {
-                    this.loading = true
-                    axios.post(`${this.mainUrl}/evaluations/store`, {
-                        evaluation: this.evaluation,
-                        form: this.form
-                    })
-                    .then((response) => {
-                        this.loading = false
-                        if (response.data.success) {
-                            Vue.swal({
-                                title: 'Éxito',
-                                text: "Evaluacion creado correctamente.",
-                                type: 'success',
-                                showCancelButton: false,
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Aceptar',
-                                allowEscapeKey: false,
-                                allowOutsideClick: false
-                            }).then((result) => {
-                                if (result.value) {
-                                    location.reload();
-                                }
-                            })
+                    Vue.swal({
+                        title: '¿Estas seguro de crear una nueva evaluación?',
+                        text: "Perdera todo lo relacionado a la evaluacion en curso y no se podra deshacer.",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Continuar',
+                        cancelButtonText: 'Cancelar',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                        }).then((result) => {
+                            if (result.value) {
+                                   this.loading = true
+                                    axios.post(`${this.mainUrl}/evaluations/store`, {
+                                        evaluation: this.evaluation,
+                                        form: this.form
+                                    })
+                                    .then((response) => {
+                                        this.loading = false
+                                        if (response.data.success) {
+                                            Vue.swal({
+                                                title: 'Éxito',
+                                                text: "Evaluacion creado correctamente.",
+                                                type: 'success',
+                                                showCancelButton: false,
+                                                confirmButtonColor: '#3085d6',
+                                                confirmButtonText: 'Aceptar',
+                                                allowEscapeKey: false,
+                                                allowOutsideClick: false
+                                            }).then((result) => {
+                                                if (result.value) {
+                                                    location.reload();
+                                                }
+                                            })
 
-                        } else {
-                            Vue.swal(
-                                '¡Error!',
-                                response.data.message,
-                                'error'
-                            )
-                        }
-                    })
-                    .catch((error) => {
-                        this.loading = false
-                         Vue.swal(
-                            '¡Error!',
-                            'Ha ocurrido un error, intente de nuevo.',
-                            'error'
-                        )
-                    })
+                                        } else {
+                                            Vue.swal(
+                                                '¡Error!',
+                                                response.data.message,
+                                                'error'
+                                            )
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        this.loading = false
+                                        Vue.swal(
+                                            '¡Error!',
+                                            'Ha ocurrido un error, intente de nuevo.',
+                                            'error'
+                                        )
+                                    })
+                            } else {
 
+                            }
+                        })
                 } else {
                     this.loading = false
                     Vue.swal(
@@ -368,8 +387,8 @@ Vue.component('v-select', vSelect)
         },
         destroyEvaluation (evaluation) {
              Vue.swal({
-                title: '¿Estas seguro de eliminar el cuestionario '+evaluation.name+'?',
-                text: "Perdera todo lo relacionado al cuestionario y no se podra deshacer.",
+                title: '¿Estas seguro de eliminar la evaluacion '+evaluation.name+'?',
+                text: "Perdera todo lo relacionado a la evaluacion y no se podra deshacer.",
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -381,7 +400,7 @@ Vue.component('v-select', vSelect)
                 }).then((result) => {
                     if (result.value) {
                         Vue.swal({
-                            title: 'Eliminara el cuestionario ' + evaluation.name + '.',
+                            title: 'Eliminara la evaluacion ' + evaluation.name + '.',
                             type: 'warning',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',

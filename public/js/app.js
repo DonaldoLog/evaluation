@@ -3345,6 +3345,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -3368,8 +3369,14 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       cargando: false,
       colapsable: false,
       columns: [{
+        field: '',
+        label: ''
+      }, {
         field: 'name',
         label: 'Nombre'
+      }, {
+        field: '',
+        label: 'Activa'
       }],
       perPage: 10,
       currentPage: 1,
@@ -3491,34 +3498,49 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
 
       this.$validator.validate().then(function (valid) {
         if (valid) {
-          _this2.loading = true;
-          axios.post("".concat(_this2.mainUrl, "/evaluations/store"), {
-            evaluation: _this2.evaluation,
-            form: _this2.form
-          }).then(function (response) {
-            _this2.loading = false;
+          Vue.swal({
+            title: '¿Estas seguro de crear una nueva evaluación?',
+            text: "Perdera todo lo relacionado a la evaluacion en curso y no se podra deshacer.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Continuar',
+            cancelButtonText: 'Cancelar',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then(function (result) {
+            if (result.value) {
+              _this2.loading = true;
+              axios.post("".concat(_this2.mainUrl, "/evaluations/store"), {
+                evaluation: _this2.evaluation,
+                form: _this2.form
+              }).then(function (response) {
+                _this2.loading = false;
 
-            if (response.data.success) {
-              Vue.swal({
-                title: 'Éxito',
-                text: "Evaluacion creado correctamente.",
-                type: 'success',
-                showCancelButton: false,
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'Aceptar',
-                allowEscapeKey: false,
-                allowOutsideClick: false
-              }).then(function (result) {
-                if (result.value) {
-                  location.reload();
+                if (response.data.success) {
+                  Vue.swal({
+                    title: 'Éxito',
+                    text: "Evaluacion creado correctamente.",
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Aceptar',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                  }).then(function (result) {
+                    if (result.value) {
+                      location.reload();
+                    }
+                  });
+                } else {
+                  Vue.swal('¡Error!', response.data.message, 'error');
                 }
+              })["catch"](function (error) {
+                _this2.loading = false;
+                Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
               });
-            } else {
-              Vue.swal('¡Error!', response.data.message, 'error');
-            }
-          })["catch"](function (error) {
-            _this2.loading = false;
-            Vue.swal('¡Error!', 'Ha ocurrido un error, intente de nuevo.', 'error');
+            } else {}
           });
         } else {
           _this2.loading = false;
@@ -3589,8 +3611,8 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       var _this5 = this;
 
       Vue.swal({
-        title: '¿Estas seguro de eliminar el cuestionario ' + evaluation.name + '?',
-        text: "Perdera todo lo relacionado al cuestionario y no se podra deshacer.",
+        title: '¿Estas seguro de eliminar la evaluacion ' + evaluation.name + '?',
+        text: "Perdera todo lo relacionado a la evaluacion y no se podra deshacer.",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -3602,7 +3624,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       }).then(function (result) {
         if (result.value) {
           Vue.swal({
-            title: 'Eliminara el cuestionario ' + evaluation.name + '.',
+            title: 'Eliminara la evaluacion ' + evaluation.name + '.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -84464,7 +84486,17 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "form-group col-6" },
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "form-group col-6"
+                  },
                   [
                     _c("label", { attrs: { for: "forms" } }, [
                       _vm._v("Formulario:")
@@ -84730,8 +84762,22 @@ var render = function() {
                                   return [
                                     _c("tr", { key: index }, [
                                       _c("td", [
+                                        _vm._v(" " + _vm._s(index + 1) + " ")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
                                         _vm._v(
                                           " " + _vm._s(evaluation.name) + " "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(
+                                              evaluation.active ? "Activa" : "x"
+                                            ) +
+                                            " "
                                         )
                                       ]),
                                       _vm._v(" "),
@@ -84772,26 +84818,6 @@ var render = function() {
                                           [
                                             _c("i", {
                                               staticClass: "fa fa-trash"
-                                            })
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "a",
-                                          {
-                                            staticClass: "btn btn-secondary",
-                                            attrs: {
-                                              href:
-                                                _vm.mainUrl +
-                                                "/evaluations/admin/" +
-                                                evaluation.id,
-                                              target: "_blank",
-                                              title: "Admin"
-                                            }
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass: "fas fa-tools"
                                             })
                                           ]
                                         )

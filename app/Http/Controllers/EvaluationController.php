@@ -24,6 +24,7 @@ class EvaluationController extends Controller
         try {
             $exist = Evaluation::where('name', $request->evaluation['name'])->first();
             if ($exist) {
+                DB::rollback();
                 return response()->json(['success' => false, 'message' => 'Ya existe esta evaluacion.']);
             }
             Evaluation::where('active', 1)->update(['active' => 0]);
@@ -42,7 +43,6 @@ class EvaluationController extends Controller
                 $poll->evaluationId = $evaluation->id;
                 $poll->save();
             }
-            $polls = new Poll();
 
             DB::commit();
             return response()->json(['success' => true]);
@@ -55,7 +55,7 @@ class EvaluationController extends Controller
 
     public function getEvaluations(Request $request) {
         $search = $request->search;
-        $query = Evaluation::select('id', 'name')
+        $query = Evaluation::select('id', 'name', 'active')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -94,6 +94,7 @@ class EvaluationController extends Controller
     }
 
     public function updateEvaluation (Request $request) {
+        DB::beginTransaction();
         try {
             $exist = Evaluation::where('name', $request->evaluation['name'])
             ->where('id', '!=', $request->evaluation['id'])->first();
@@ -104,24 +105,36 @@ class EvaluationController extends Controller
             if ($evaluation) {
                 $evaluation->name = $request->evaluation['name'];
                 $evaluation->save();
+                DB::commit();
                 return response()->json(['success' => true], 200);
             }
             return response()->json(['success' => false, 'message' => 'Evaluacion no encontrado.'], 200);
         } catch (\PDOException $th) {
+            DB::rollback();
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
 
     public function destroyEvaluation (Request $request) {
+        DB::beginTransaction();
         try {
             $evaluation = Evaluation::where('id', $request->evaluation['id'])->first();
+            $polls = Poll::where('evaluationId', $evaluation->id)->get();
+            if ($polls) {
+                foreach ($polls as $key => $poll) {
+                    $poll->delete();
+                }
+            }
+
             if ($evaluation) {
                 $evaluation->delete();
+                DB::commit();
                 return response()->json(['success' => true], 200);
             }
             return response()->json(['success' => false, 'message' => 'Evaluacion no encontrado.'], 200);
         } catch (\PDOException $th) {
+            DB::rollback();
             Log::error($th);
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
