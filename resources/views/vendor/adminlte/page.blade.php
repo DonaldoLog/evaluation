@@ -150,7 +150,7 @@
                         <li class="nav-item ">
                             <a class="nav-link " href="{{route('groups.index')}}">
                                 <i class="fas fa-users "></i>
-                                <p>Grupos</p>
+                                <p>Grupos / Semestres</p>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -167,20 +167,20 @@
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="{{route('forms.index')}}">
-                                <i class="fas fa-chalkboard-teacher "></i>
+                                <i class="fas fa-file"></i>
                                 <p>Cuestionarios</p>
                             </a>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link " href="{{route('evaluations.index')}}">
-                                <i class="fas fa-chalkboard-teacher "></i>
+                                <i class="fas fa-paste"></i>
                                 <p>Evaluacion</p>
                             </a>
                         </li>
                         @else
                         <li class="nav-item ">
                                 <a class="nav-link active" href="{{route('evaluation.index')}}">
-                                    <i class="fas fa-chalkboard-teacher "></i>
+                                    <i class="fas fa-paste"></i>
                                     <p>Evaluacion</p>
                                 </a>
                             </li>
