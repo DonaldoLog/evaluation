@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Student;
+use App\User;
 use App\Models\Group;
 use App\Models\Career;
 use \Log;
@@ -16,11 +16,11 @@ class StudentController extends Controller
 
     public function store(Request $request) {
         try {
-            $exist = Student::where('studentId', $request->student['studentId'])->first();
+            $exist = User::where('studentId', $request->student['studentId'])->first();
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe esta matricula.']);
             }
-            $student = new Student();
+            $student = new User();
             $student->name = $request->student['name'];
             $student->last_name = $request->student['last_name'];
             $student->studentId = $request->student['studentId'];
@@ -35,7 +35,7 @@ class StudentController extends Controller
 
     public function getStudents(Request $request) {
         $search = $request->search;
-        $query = Student::select('id', 'name', 'studentId', 'last_name')
+        $query = User::select('id', 'name', 'studentId', 'last_name')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -62,7 +62,7 @@ class StudentController extends Controller
 
     public function getStudent ($studentId) {
         try {
-            $student = Student::where('id', $studentId)->first();
+            $student = User::where('id', $studentId)->first();
             if ($student) {
                 return response()->json(['success' => true, 'student' => $student], 200);
             }
@@ -75,12 +75,12 @@ class StudentController extends Controller
 
     public function updateStudent (Request $request) {
         try {
-            $exist = Student::where('studentId', $request->student['studentId'])
+            $exist = User::where('studentId', $request->student['studentId'])
             ->where('id', '!=', $request->student['id'])->first();
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe esta matricula.'], 200);
             }
-            $student = Student::where('id', $request->student['id'])->first();
+            $student = User::where('id', $request->student['id'])->first();
             if ($student) {
                 $student->name = $request->student['name'];
                 $student->last_name = $request->student['last_name'];
@@ -97,7 +97,7 @@ class StudentController extends Controller
 
     public function destroyStudent (Request $request) {
         try {
-            $student = Student::where('id', $request->student['id'])->first();
+            $student = User::where('id', $request->student['id'])->first();
             if ($student) {
                 $student->delete();
                 return response()->json(['success' => true], 200);

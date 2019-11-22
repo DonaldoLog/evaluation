@@ -88,7 +88,7 @@
                                                 </template>
                                             </template>
                                             <template v-else>
-                                                <tr style="text-align:center"><td colspan="4" >No hay grupos.</td></tr>
+                                                <tr style="text-align:center"><td colspan="4" >No hay evaluaciones.</td></tr>
                                             </template>
                                         </tbody>
                                     </table>

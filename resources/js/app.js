@@ -26,6 +26,8 @@ Vue.component('students-component', require('./components/Students.vue').default
 Vue.component('teachers-component', require('./components/Teachers.vue').default);
 Vue.component('admin-group-component', require('./components/AdminGroup/AdminGroup.vue').default);
 Vue.component('evaluation-component', require('./components/Evaluation.vue').default);
+Vue.component('evaluation-student-component', require('./components/Evaluation/Index.vue').default);
+Vue.component('questions-component', require('./components/Evaluation/Questions.vue').default);
 
 const app = new Vue({
     el: '#app'

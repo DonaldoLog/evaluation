@@ -17,7 +17,7 @@ class Group extends Model
 
     public function students()
     {
-        return $this->belongsToMany('App\Models\Student', 'groups_students', 'groupId', 'studentId');
+        return $this->belongsToMany('App\User', 'groups_students', 'groupId', 'studentId');
     }
 
     public function teachers()

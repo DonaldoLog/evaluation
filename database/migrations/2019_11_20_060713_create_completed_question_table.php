@@ -15,7 +15,15 @@ class CreateCompletedQuestionTable extends Migration
     {
         Schema::create('completed_question', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('score');
+            $table->unsignedBigInteger('questionId');
+            $table->unsignedBigInteger('pollId');
+            $table->unsignedBigInteger('studentId');
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('studentId')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('pollId')->references('id')->on('polls')->onDelete('cascade');
+            $table->foreign('questionId')->references('id')->on('questions')->onDelete('cascade');
         });
     }
 

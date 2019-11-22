@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Career;
 use Illuminate\Http\Request;
 use App\Models\Group;
-use App\Models\Student;
+use App\User;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Log;
 
@@ -78,7 +78,7 @@ class GroupController extends Controller
         try {
             $group = Group::where('id', $groupId)->first();
             $teachers = Teacher::all();
-            $students = Student::all();
+            $students = User::all();
             if (!$group) {
                 return redirect()->route('groups.index');
             }
@@ -132,6 +132,12 @@ class GroupController extends Controller
         $query = Teacher::whereHas('groups', function($q) use ($groupId){
                 $q->where('groupId', $groupId);
             })
+            ->with(array('groups' => function($query) use ($groupId)
+            {
+                 $query->where('groupId', $groupId)
+                ->withPivot('subject');
+           ;
+            }))
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });
@@ -158,7 +164,7 @@ class GroupController extends Controller
 
     public function getStudentsByGroup (Request $request, $groupId) {
         $search = $request->search;
-        $query = Student::whereHas('groups', function($q) use ($groupId){
+        $query = User::whereHas('groups', function($q) use ($groupId){
                 $q->where('groupId', $groupId);
             })
             ->when($search, function ($query, $search) {
@@ -192,7 +198,7 @@ class GroupController extends Controller
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe este profesor en el grupo.'], 200);
             }
-            $group->teachers()->attach($request->teacher['id']);
+            $group->teachers()->attach([$request->teacher['id'] => ['subject' => $request->subject]]);
             $group->save();
 
             return response()->json(['success' => true ], 200);

@@ -19,7 +19,7 @@ class CreateGroupsStudentsTable extends Migration
             $table->unsignedBigInteger('studentId');
             $table->timestamps();
             $table->foreign('groupId')->references('id')->on('groups')->onDelete('cascade');
-            $table->foreign('studentId')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('studentId')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

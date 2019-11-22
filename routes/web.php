@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('admin.dashboard');
 });
 
-Route::name('careers.')->prefix('careers')->group(function () {
+Route::name('careers.')->prefix('careers')->middleware('auth')->group(function () {
     Route::get('/index', 'CareerController@index')->name('index');
     Route::get('/{careerId}', 'CareerController@getCareer')->name('get');
     Route::post('/store', 'CareerController@store')->name('store');
@@ -24,7 +24,7 @@ Route::name('careers.')->prefix('careers')->group(function () {
     Route::post('/destroy', 'CareerController@destroyCareer')->name('destroy');
 });
 
-Route::name('groups.')->prefix('groups')->group(function () {
+Route::name('groups.')->prefix('groups')->middleware('auth')->group(function () {
     Route::get('/index', 'GroupController@index')->name('index');
     Route::get('/admin/{groupId}', 'GroupController@adminGroup')->name('get');
     Route::get('/{groupId}', 'GroupController@getGroup')->name('get');
@@ -40,7 +40,7 @@ Route::name('groups.')->prefix('groups')->group(function () {
     Route::post('/destroy/teacher', 'GroupController@destroyTeacherGroup')->name('destroy');
 });
 
-Route::name('students.')->prefix('students')->group(function () {
+Route::name('students.')->prefix('students')->middleware('auth')->group(function () {
     Route::get('/index', 'StudentController@index')->name('index');
     Route::get('/{studentId}', 'StudentController@getStudent')->name('get');
     Route::post('/store', 'StudentController@store')->name('store');
@@ -49,7 +49,7 @@ Route::name('students.')->prefix('students')->group(function () {
     Route::post('/destroy', 'StudentController@destroyStudent')->name('destroy');
 });
 
-Route::name('teachers.')->prefix('teachers')->group(function () {
+Route::name('teachers.')->prefix('teachers')->middleware('auth')->group(function () {
     Route::get('/index', 'TeacherController@index')->name('index');
     Route::get('/{teacherId}', 'TeacherController@getTeacher')->name('get');
     Route::post('/store', 'TeacherController@store')->name('store');
@@ -58,7 +58,7 @@ Route::name('teachers.')->prefix('teachers')->group(function () {
     Route::post('/destroy', 'TeacherController@destroyTeacher')->name('destroy');
 });
 
-Route::name('forms.')->prefix('forms')->group(function () {
+Route::name('forms.')->prefix('forms')->middleware('auth')->group(function () {
     Route::get('/index', 'FormController@index')->name('index');
     Route::get('/admin/{formId}', 'FormController@adminForm')->name('get');
     Route::get('/{formId}', 'FormController@getForm')->name('get');
@@ -73,7 +73,7 @@ Route::name('forms.')->prefix('forms')->group(function () {
     Route::get('/question/{questionId}', 'FormController@getQuestion')->name('question');
 });
 
-Route::name('evaluations.')->prefix('evaluations')->group(function () {
+Route::name('evaluations.')->prefix('evaluations')->middleware('auth')->group(function () {
     Route::get('/index', 'EvaluationController@index')->name('index');
     Route::get('/{evalationId}', 'EvaluationController@getEvaluation')->name('get');
     Route::post('/store', 'EvaluationController@store')->name('store');
@@ -81,3 +81,13 @@ Route::name('evaluations.')->prefix('evaluations')->group(function () {
     Route::post('/data', 'EvaluationController@getEvaluations');
     Route::post('/destroy', 'EvaluationController@destroyEvaluation')->name('destroy');
 });
+
+Route::name('evaluation.')->prefix('evaluation')->middleware('auth')->group(function () {
+    Route::get('/index', 'EvaluationStudentController@index')->name('index');
+    Route::get('/questions/{formId}', 'EvaluationStudentController@getQuestions')->name('get');
+    Route::post('/answers/store', 'EvaluationStudentController@storeAnswers')->name('answers');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

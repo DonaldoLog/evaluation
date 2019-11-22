@@ -65,6 +65,7 @@
                                                             <tr :key="index">
                                                                 <td> {{ teacher.name }} {{ teacher.last_name }} </td>
                                                                 <td> {{ teacher.email }} </td>
+                                                                <td> {{ teacher.groups[0].pivot.subject }} </td>
                                                                 <td>
                                                                     <button class="btn btn-secondary" @click="destroyTeacher(teacher)" title="Eliminar"><i class="fa fa-trash"></i></button>
                                                                 <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+teacher.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
@@ -112,6 +113,11 @@
                     <v-select label="name" id="teacher" name="teacher" v-model="teacher" :options="teachers" data-vv-as="teacher" v-validate="'required'"></v-select>
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('teacher')">{{ errors.first('teacher') }}</div>
                 </div>
+                <div class="form-group col-12">
+                    <label for="subject">Materia:</label>
+                    <input type="text" class="form-control form-control-sm" id="subject" name="subject" v-model="subject" v-validate="{ required: true }">
+                    <div class="invalid-feedback" v-if="errors.has('subject')">{{ errors.first('subject') }}</div>
+                </div>
              </div>
              <template slot="modal-footer">
                  <button @click="modalShow()" type="button" class="btn btn-secondary" >
@@ -139,6 +145,7 @@ import mainUrl from '../../mainUrl'
     },
     data() {
       return {
+          subject: '',
           group: this.groupInitial,
           teacher: {},
           teachers: this.teachersInitial,
@@ -155,6 +162,7 @@ import mainUrl from '../../mainUrl'
           columns: [
               {field: 'name', label: 'Nombre'},
               {field: 'email', label: 'Correo'},
+              {field: 'subject', label: 'Materia'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -252,7 +260,8 @@ import mainUrl from '../../mainUrl'
                     this.loading = true
                     axios.post(`${this.mainUrl}/groups/store/teacher`, {
                         teacher: this.teacher,
-                        group: this.group
+                        group: this.group,
+                        subject: this.subject,
                     })
                     .then((response) => {
                         this.loading = false
