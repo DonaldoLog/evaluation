@@ -9,6 +9,7 @@ use App\Models\Poll;
 use App\Models\Question;
 use App\Models\Form;
 use App\Models\Group;
+use App\Models\Career;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,13 +61,22 @@ class EvaluationStudentController extends Controller
         if ($completed) {
             return redirect('/evaluation/index');
         }
-        $evaluation = Evaluation::where('active', 1)->first();
-        $questions = Form::where('id', $evaluation->formId)->with('questions')->first()->questions;
         $teacher = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject')
+        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.groupId')
         ->whereNull('teachers.deleted_at')
         ->where('polls.id', $pollId)->first();
+        
+        $type = Group::where('id', $teacher->groupId)->first()->career->type;
+        $evaluation = Evaluation::where('active', 1)->first();
+        
+        if ($type == 1) {
+            $questions = Form::where('id', $evaluation->formId1)->with('questions')->first()->questions;
+        } else if ($type == 2){
+            $questions = Form::where('id', $evaluation->formId2)->with('questions')->first()->questions;
+        } else {
+            $questions = Form::where('id', $evaluation->formId3)->with('questions')->first()->questions;
+        }
 
         return view('modules.evaluation.questions')
         ->with('questions', $questions)

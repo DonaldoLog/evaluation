@@ -32,7 +32,9 @@ class EvaluationController extends Controller
             $evaluation = new Evaluation();
             $evaluation->name = $request->evaluation['name'];
             $evaluation->active = 1;
-            $evaluation->formId = $request->form['id'];
+            $evaluation->formId1 = $request->form['escolarizado']['id'];
+            $evaluation->formId2 = $request->form['sabatino']['id'];
+            $evaluation->formId3 = $request->form['enlinea']['id'];
             $evaluation->save();
 
             $groups = Group::get()->pluck('id');

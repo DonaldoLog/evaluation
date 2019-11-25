@@ -21,15 +21,25 @@
             </template>
             <div v-show="colapsable === true">
             <b-card-body class="row">
-                <div class="form-group col-12">
+                <div class="form-group col-6">
                     <label for="name">Nombre</label>
                     <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="evaluation.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
                  <div class="form-group col-6" v-show="!edit">
-                    <label for="forms">Formulario:</label>
-                    <v-select label="name" id="forms" name="forms" v-model="form" :options="forms" data-vv-as="forms" v-validate="'required'"></v-select>
+                    <label for="forms">Formulario escolarizado:</label>
+                    <v-select label="name" id="forms" name="forms" v-model="form.escolarizado" :options="forms" data-vv-as="forms" v-validate="'required'"></v-select>
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('forms')">{{ errors.first('forms') }}</div>
+                </div>
+                 <div class="form-group col-6" v-show="!edit">
+                    <label for="formssabatino">Formulario sabatino:</label>
+                    <v-select label="name" id="formssabatino" name="formssabatino" v-model="form.sabatino" :options="forms" data-vv-as="formssabatino" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('formssabatino')">{{ errors.first('formssabatino') }}</div>
+                </div>
+                 <div class="form-group col-6" v-show="!edit">
+                    <label for="formsenlinea">Formulario en linea:</label>
+                    <v-select label="name" id="formsenlinea" name="formsenlinea" v-model="form.enlinea" :options="forms" data-vv-as="formsenlinea" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('formsenlinea')">{{ errors.first('formsenlinea') }}</div>
                 </div>
                 <br>
                 <br>

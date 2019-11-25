@@ -155,7 +155,7 @@ class FormController extends Controller
             $question = new Question();
             $question->name = $request->question['name'];
             $question->formId = $request->form['id'];
-            $question->type = 1;
+            $question->type = $request->type['value'];
             $question->save();
 
             return response()->json(['success' => true ], 200);

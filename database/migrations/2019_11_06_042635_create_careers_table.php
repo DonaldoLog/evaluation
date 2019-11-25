@@ -16,6 +16,7 @@ class CreateCareersTable extends Migration
         Schema::create('careers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->integer('type');
             $table->timestamps();
             $table->softDeletes();
         });

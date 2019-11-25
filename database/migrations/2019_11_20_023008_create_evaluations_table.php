@@ -17,10 +17,14 @@ class CreateEvaluationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->boolean('active');
-            $table->unsignedBigInteger('formId');
+            $table->unsignedBigInteger('formId1');
+            $table->unsignedBigInteger('formId2');
+            $table->unsignedBigInteger('formId3');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('formId')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreign('formId1')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreign('formId2')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreign('formId3')->references('id')->on('forms')->onDelete('cascade');
         });
     }
 

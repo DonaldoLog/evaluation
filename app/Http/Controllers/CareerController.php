@@ -20,6 +20,7 @@ class CareerController extends Controller
             }
             $carrer = new Career();
             $carrer->name = $request->career['name'];
+            $carrer->type = $request->type['value'];
             $carrer->save();
             return response()->json(['success' => true]);
         } catch (\PDOException $th) {
@@ -30,7 +31,7 @@ class CareerController extends Controller
 
     public function getCareers(Request $request) {
         $search = $request->search;
-        $query = Career::select('id', 'name')
+        $query = Career::select('id', 'name', 'type')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'LIKE', '%' . $search . '%');
             });

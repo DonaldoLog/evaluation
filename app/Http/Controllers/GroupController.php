@@ -19,7 +19,7 @@ class GroupController extends Controller
 
     public function store(Request $request) {
         try {
-            $exist = Group::where('name', $request->group['name'])->first();
+            $exist = Group::where('name', $request->group['name'])->where('careerId', $request->career['id'])->first();
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe esta grupo.']);
             }

@@ -2917,12 +2917,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
   props: {},
   data: function data() {
     return {
+      types: [{
+        name: 'Escolarizado',
+        value: 1
+      }, {
+        name: 'Sabatido',
+        value: 2
+      }, {
+        name: 'En linea',
+        value: 3
+      }],
+      type: {
+        name: '',
+        value: ''
+      },
       edit: false,
       loading: true,
       mainUrl: _mainUrl__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -2935,6 +2955,9 @@ __webpack_require__.r(__webpack_exports__);
       columns: [{
         field: 'name',
         label: 'Nombre'
+      }, {
+        field: 'type',
+        label: 'Modalidad'
       }],
       perPage: 10,
       currentPage: 1,
@@ -3054,7 +3077,8 @@ __webpack_require__.r(__webpack_exports__);
         if (valid) {
           _this2.loading = true;
           axios.post("".concat(_this2.mainUrl, "/careers/store"), {
-            career: _this2.career
+            career: _this2.career,
+            type: _this2.type
           }).then(function (response) {
             _this2.loading = false;
 
@@ -3221,6 +3245,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mainUrl__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mainUrl */ "./resources/js/mainUrl.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
 /* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4096,6 +4130,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -4337,6 +4376,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -4347,6 +4392,14 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
   },
   data: function data() {
     return {
+      type: {},
+      types: [{
+        name: 'Puntaje',
+        value: 1
+      }, {
+        name: 'Abierta',
+        value: 2
+      }],
       form: this.formInitial ? JSON.parse(this.formInitial) : null,
       edit: false,
       loading: true,
@@ -4361,6 +4414,9 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       columns: [{
         field: 'name',
         label: 'Nombre'
+      }, {
+        field: 'type',
+        label: 'Tipo'
       }],
       perPage: 10,
       currentPage: 1,
@@ -4485,7 +4541,8 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
           _this2.loading = true;
           axios.post("".concat(_this2.mainUrl, "/forms/store/question"), {
             question: _this2.question,
-            form: _this2.form
+            form: _this2.form,
+            type: _this2.type
           }).then(function (response) {
             _this2.loading = false;
 
@@ -83890,6 +83947,63 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "form-group col-12"
+                  },
+                  [
+                    _c("label", { attrs: { for: "type" } }, [
+                      _vm._v("Modalidad:")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-select", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      attrs: {
+                        label: "name",
+                        id: "type",
+                        name: "type",
+                        options: _vm.types,
+                        "data-vv-as": "type"
+                      },
+                      model: {
+                        value: _vm.type,
+                        callback: function($$v) {
+                          _vm.type = $$v
+                        },
+                        expression: "type"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.has("type")
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "invalid-feedback",
+                            staticStyle: { display: "block" }
+                          },
+                          [_vm._v(_vm._s(_vm.errors.first("type")))]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
                   "button",
                   {
                     directives: [
@@ -84100,6 +84214,20 @@ var render = function() {
                                     _c("tr", { key: index }, [
                                       _c("td", [
                                         _vm._v(" " + _vm._s(career.name) + " ")
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(
+                                              career.type == 1
+                                                ? "Escolarizado"
+                                                : career.type == 2
+                                                ? "Sabatino"
+                                                : "En linea"
+                                            ) +
+                                            " "
+                                        )
                                       ]),
                                       _vm._v(" "),
                                       _c("td", [
@@ -84446,7 +84574,7 @@ var render = function() {
             },
             [
               _c("b-card-body", { staticClass: "row" }, [
-                _c("div", { staticClass: "form-group col-12" }, [
+                _c("div", { staticClass: "form-group col-6" }, [
                   _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
                   _vm._v(" "),
                   _c("input", {
@@ -84499,7 +84627,7 @@ var render = function() {
                   },
                   [
                     _c("label", { attrs: { for: "forms" } }, [
-                      _vm._v("Formulario:")
+                      _vm._v("Formulario escolarizado:")
                     ]),
                     _vm._v(" "),
                     _c("v-select", {
@@ -84519,11 +84647,11 @@ var render = function() {
                         "data-vv-as": "forms"
                       },
                       model: {
-                        value: _vm.form,
+                        value: _vm.form.escolarizado,
                         callback: function($$v) {
-                          _vm.form = $$v
+                          _vm.$set(_vm.form, "escolarizado", $$v)
                         },
-                        expression: "form"
+                        expression: "form.escolarizado"
                       }
                     }),
                     _vm._v(" "),
@@ -84535,6 +84663,120 @@ var render = function() {
                             staticStyle: { display: "block" }
                           },
                           [_vm._v(_vm._s(_vm.errors.first("forms")))]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "form-group col-6"
+                  },
+                  [
+                    _c("label", { attrs: { for: "formssabatino" } }, [
+                      _vm._v("Formulario sabatino:")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-select", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      attrs: {
+                        label: "name",
+                        id: "formssabatino",
+                        name: "formssabatino",
+                        options: _vm.forms,
+                        "data-vv-as": "formssabatino"
+                      },
+                      model: {
+                        value: _vm.form.sabatino,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "sabatino", $$v)
+                        },
+                        expression: "form.sabatino"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.has("formssabatino")
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "invalid-feedback",
+                            staticStyle: { display: "block" }
+                          },
+                          [_vm._v(_vm._s(_vm.errors.first("formssabatino")))]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "form-group col-6"
+                  },
+                  [
+                    _c("label", { attrs: { for: "formsenlinea" } }, [
+                      _vm._v("Formulario en linea:")
+                    ]),
+                    _vm._v(" "),
+                    _c("v-select", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      attrs: {
+                        label: "name",
+                        id: "formsenlinea",
+                        name: "formsenlinea",
+                        options: _vm.forms,
+                        "data-vv-as": "formsenlinea"
+                      },
+                      model: {
+                        value: _vm.form.enlinea,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "enlinea", $$v)
+                        },
+                        expression: "form.enlinea"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.has("formsenlinea")
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "invalid-feedback",
+                            staticStyle: { display: "block" }
+                          },
+                          [_vm._v(_vm._s(_vm.errors.first("formsenlinea")))]
                         )
                       : _vm._e()
                   ],
@@ -85228,28 +85470,67 @@ var render = function() {
               _c(
                 "tbody",
                 _vm._l(_vm.questions, function(question, index) {
-                  return _c("tr", [
-                    _c("td", [_vm._v(" " + _vm._s(index + 1) + " ")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(" " + _vm._s(question.name) + " ")]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
-                        _c("star-rating", {
-                          attrs: { "star-size": 30 },
-                          model: {
-                            value: question.score,
-                            callback: function($$v) {
-                              _vm.$set(question, "score", $$v)
-                            },
-                            expression: "question.score"
-                          }
-                        })
-                      ],
-                      1
-                    )
-                  ])
+                  return _c(
+                    "tr",
+                    [
+                      _c("td", [_vm._v(" " + _vm._s(index + 1) + " ")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(" " + _vm._s(question.name) + " ")]),
+                      _vm._v(" "),
+                      question.type == 1
+                        ? [
+                            _c(
+                              "td",
+                              [
+                                _c("star-rating", {
+                                  attrs: { "star-size": 30 },
+                                  model: {
+                                    value: question.score,
+                                    callback: function($$v) {
+                                      _vm.$set(question, "score", $$v)
+                                    },
+                                    expression: "question.score"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ]
+                        : _vm._e(),
+                      _vm._v(" "),
+                      question.type == 2
+                        ? [
+                            _c("td", [
+                              _c("textarea", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: question.score,
+                                    expression: "question.score"
+                                  }
+                                ],
+                                attrs: { rows: "2" },
+                                domProps: { value: question.score },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      question,
+                                      "score",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ]
+                        : _vm._e()
+                    ],
+                    2
+                  )
                 }),
                 0
               )
@@ -85425,7 +85706,7 @@ var render = function() {
             [
               _c("b-card-body", { staticClass: "row" }, [
                 _c("div", { staticClass: "form-group col-12" }, [
-                  _c("label", { attrs: { for: "name" } }, [_vm._v("Nombre")]),
+                  _c("label", { attrs: { for: "name" } }, [_vm._v("Pregunta")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
@@ -85461,6 +85742,61 @@ var render = function() {
                       ])
                     : _vm._e()
                 ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.edit,
+                        expression: "!edit"
+                      }
+                    ],
+                    staticClass: "form-group col-12"
+                  },
+                  [
+                    _c("label", { attrs: { for: "type" } }, [_vm._v("Tipo:")]),
+                    _vm._v(" "),
+                    _c("v-select", {
+                      directives: [
+                        {
+                          name: "validate",
+                          rawName: "v-validate",
+                          value: "required",
+                          expression: "'required'"
+                        }
+                      ],
+                      attrs: {
+                        label: "name",
+                        id: "type",
+                        name: "type",
+                        options: _vm.types,
+                        "data-vv-as": "type"
+                      },
+                      model: {
+                        value: _vm.type,
+                        callback: function($$v) {
+                          _vm.type = $$v
+                        },
+                        expression: "type"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.has("type")
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "invalid-feedback",
+                            staticStyle: { display: "block" }
+                          },
+                          [_vm._v(_vm._s(_vm.errors.first("type")))]
+                        )
+                      : _vm._e()
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "button",
@@ -85677,6 +86013,18 @@ var render = function() {
                                       _c("td", [
                                         _vm._v(
                                           " " + _vm._s(question.name) + " "
+                                        )
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(
+                                          " " +
+                                            _vm._s(
+                                              question.type == 1
+                                                ? "Puntaje"
+                                                : "Abierta"
+                                            ) +
+                                            " "
                                         )
                                       ]),
                                       _vm._v(" "),
@@ -101828,7 +102176,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname);
+var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname, "/evaluation/public");
 /* harmony default export */ __webpack_exports__["default"] = (mainUrl);
 
 /***/ }),

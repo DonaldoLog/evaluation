@@ -15,7 +15,7 @@ class CreateCompletedQuestionTable extends Migration
     {
         Schema::create('completed_question', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('score');
+            $table->string('score');
             $table->unsignedBigInteger('questionId');
             $table->unsignedBigInteger('pollId');
             $table->unsignedBigInteger('studentId');

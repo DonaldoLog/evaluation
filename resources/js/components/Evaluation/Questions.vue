@@ -24,7 +24,12 @@
                         <tr v-for="(question, index) in questions">
                             <td> {{ index + 1 }} </td>
                             <td> {{ question.name }} </td>
-                            <td> <star-rating v-model="question.score"  v-bind:star-size="30"></star-rating> </td>
+                            <template v-if="question.type == 1">
+                                <td> <star-rating v-model="question.score"  v-bind:star-size="30"></star-rating> </td>
+                            </template>
+                            <template v-if="question.type == 2">
+                                <td> <textarea rows="2" v-model="question.score"></textarea> </star-rating> </td>
+                            </template>
                         </tr>
                     </tbody>
                 </table>

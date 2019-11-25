@@ -26,6 +26,11 @@
                     <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="career.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
                 </div>
+                 <div class="form-group col-12" v-show="!edit">
+                    <label for="type">Modalidad:</label>
+                    <v-select label="name" id="type" name="type" v-model="type" :options="types" data-vv-as="type" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('type')">{{ errors.first('type') }}</div>
+                </div>
                 <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeCareer">Guardar</button>
                 <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateCareer">Actualizar</button>
             </b-card-body>
@@ -70,6 +75,7 @@
                                                 <template v-for="(career, index) in tableData">
                                                         <tr :key="index">
                                                             <td> {{ career.name }} </td>
+                                                            <td> {{ career.type == 1? 'Escolarizado': career.type == 2? 'Sabatino': 'En linea' }} </td>
                                                             <td>
                                                                 <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                 <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
@@ -125,6 +131,24 @@ import mainUrl from '../mainUrl'
     },
     data() {
       return {
+          types: [
+              {
+                name: 'Escolarizado',
+                value: 1
+              },
+               {
+                name: 'Sabatido',
+                value: 2
+              },
+               {
+                name: 'En linea',
+                value: 3
+              },
+            ],
+          type: {
+            name: '',
+            value: ''
+          },
           edit: false,
           loading: true,
           mainUrl: mainUrl,
@@ -136,6 +160,7 @@ import mainUrl from '../mainUrl'
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
+              {field: 'type', label: 'Modalidad'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -229,7 +254,8 @@ import mainUrl from '../mainUrl'
                 if (valid) {
                     this.loading = true
                     axios.post(`${this.mainUrl}/careers/store`, {
-                        career: this.career
+                        career: this.career,
+                        type: this.type,
                     })
                     .then((response) => {
                         this.loading = false

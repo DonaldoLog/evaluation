@@ -22,9 +22,14 @@
             <div v-show="colapsable === true">
             <b-card-body class="row">
                 <div class="form-group col-12">
-                    <label for="name">Nombre</label>
+                    <label for="name">Pregunta</label>
                     <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="question.name" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('name')">{{ errors.first('name') }}</div>
+                </div>
+                 <div class="form-group col-12" v-show="!edit">
+                    <label for="type">Tipo:</label>
+                    <v-select label="name" id="type" name="type" v-model="type" :options="types" data-vv-as="type" v-validate="'required'"></v-select>
+                    <div class="invalid-feedback" style="display: block;" v-if="errors.has('type')">{{ errors.first('type') }}</div>
                 </div>
                 <button v-show="!edit" class="btn btn-secondary col-2 offset-5" @click="storeQuestion">Guardar</button>
                 <button v-show="edit" class="btn btn-secondary col-2 offset-5" @click="updateQuestion">Actualizar</button>
@@ -70,6 +75,7 @@
                                                 <template v-for="(question, index) in tableData">
                                                         <tr :key="index">
                                                             <td> {{ question.name }} </td>
+                                                            <td> {{ question.type == 1? 'Puntaje': 'Abierta' }} </td>
                                                             <td>
                                                                 <button class="btn btn-secondary" @click="editQuestion(question.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                 <button class="btn btn-secondary" @click="destroyQuestion(question)" title="Eliminar"><i class="fa fa-trash"></i></button>
@@ -125,6 +131,17 @@ Vue.component('v-select', vSelect)
     },
     data() {
       return {
+          type: {},
+            types: [
+            {
+                name: 'Puntaje',
+                value: 1
+            },
+            {
+                name: 'Abierta',
+                value: 2
+            }
+            ],
           form: this.formInitial? JSON.parse(this.formInitial): null,
           edit: false,
           loading: true,
@@ -138,6 +155,7 @@ Vue.component('v-select', vSelect)
           colapsable: false,
           columns: [
               {field: 'name', label: 'Nombre'},
+              {field: 'type', label: 'Tipo'},
           ],
           perPage: 10,
           currentPage: 1,
@@ -236,7 +254,8 @@ Vue.component('v-select', vSelect)
                     this.loading = true
                     axios.post(`${this.mainUrl}/forms/store/question`, {
                         question: this.question,
-                        form: this.form
+                        form: this.form,
+                        type: this.type,
                     })
                     .then((response) => {
                         this.loading = false
