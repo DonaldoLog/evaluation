@@ -75,7 +75,7 @@
                                                 <template v-for="(career, index) in tableData">
                                                         <tr :key="index">
                                                             <td> {{ career.name }} </td>
-                                                            <td> {{ career.type == 1? 'Escolarizado': career.type == 2? 'Sabatino': 'En linea' }} </td>
+                                                            <td> {{ career.type == 1? 'Escolarizado': career.type == 2? 'En línea': 'Tutorías' }} </td>
                                                             <td>
                                                                 <button class="btn btn-secondary" @click="editCareer(career.id)" title="Editar"> <i class="fa fa-edit"></i></button>
                                                                 <button class="btn btn-secondary" @click="destroyCareer(career)" title="Eliminar"><i class="fa fa-trash"></i></button>
@@ -137,11 +137,11 @@ import mainUrl from '../mainUrl'
                 value: 1
               },
                {
-                name: 'Sabatido',
+                name: 'En línea',
                 value: 2
               },
                {
-                name: 'En linea',
+                name: 'Tutorías',
                 value: 3
               },
             ],

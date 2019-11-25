@@ -32,7 +32,7 @@
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('forms')">{{ errors.first('forms') }}</div>
                 </div>
                  <div class="form-group col-6" v-show="!edit">
-                    <label for="formssabatino">Formulario sabatino:</label>
+                    <label for="formssabatino">Formulario tutoria:</label>
                     <v-select label="name" id="formssabatino" name="formssabatino" v-model="form.sabatino" :options="forms" data-vv-as="formssabatino" v-validate="'required'"></v-select>
                     <div class="invalid-feedback" style="display: block;" v-if="errors.has('formssabatino')">{{ errors.first('formssabatino') }}</div>
                 </div>

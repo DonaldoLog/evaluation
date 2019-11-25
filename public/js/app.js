@@ -2933,10 +2933,10 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Escolarizado',
         value: 1
       }, {
-        name: 'Sabatido',
+        name: 'En línea',
         value: 2
       }, {
-        name: 'En linea',
+        name: 'Tutorías',
         value: 3
       }],
       type: {
@@ -84223,8 +84223,8 @@ var render = function() {
                                               career.type == 1
                                                 ? "Escolarizado"
                                                 : career.type == 2
-                                                ? "Sabatino"
-                                                : "En linea"
+                                                ? "En línea"
+                                                : "Tutorías"
                                             ) +
                                             " "
                                         )
@@ -84684,7 +84684,7 @@ var render = function() {
                   },
                   [
                     _c("label", { attrs: { for: "formssabatino" } }, [
-                      _vm._v("Formulario sabatino:")
+                      _vm._v("Formulario tutoria:")
                     ]),
                     _vm._v(" "),
                     _c("v-select", {
