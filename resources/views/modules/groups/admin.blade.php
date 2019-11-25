@@ -1,7 +1,7 @@
 
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Admin')
 
 @section('css')
     <script src="./../../css/app.css"></script>

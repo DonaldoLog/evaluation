@@ -9,7 +9,7 @@
 @stop
 
 @section('content_header')
-    <h1>Evaluacion!</h1>
+    <h1>Evaluación {{\Auth::user()->name}} {{\Auth::user()->last_name}}</h1>
 @stop
 
 

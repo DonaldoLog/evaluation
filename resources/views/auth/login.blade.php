@@ -5,14 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header">{{ __('Iniciar') }}</div>
 
                 <div class="card-body">
+                    <div class="text-center">
+                        <img src="{{asset('images/upn.jpg')}}" width="20%" height="20%">
+                    </div>
+                    <br>
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="form-group row">
-                            <label for="studentId" class="col-md-4 col-form-label text-md-right">{{ __('Usuario') }}</label>
+                            <label for="studentId" class="col-md-3 col-form-label text-md-right">{{ __('Usuario') }}</label>
 
                             <div class="col-md-6">
                                 <input id="studentId" type="studentId" class="form-control @error('studentId') is-invalid @enderror" name="studentId" value="{{ old('studentId') }}" required autocomplete="studentId" autofocus>
@@ -26,7 +31,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
+                            <label for="password" class="col-md-3 col-form-label text-md-right">{{ __('Contraseña') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -45,7 +50,7 @@
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                     <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
+                                        {{ __('Recuerdame') }}
                                     </label>
                                 </div>
                             </div>

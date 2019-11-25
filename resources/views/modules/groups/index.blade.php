@@ -1,7 +1,7 @@
 
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Grupos/Semestre')
 
 @section('css')
     <script src="./../css/app.css"></script>
@@ -9,7 +9,7 @@
 @stop
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <h1>Grupos/Semestre</h1>
 @stop
 
 @section('content')

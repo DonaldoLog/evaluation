@@ -14,6 +14,9 @@
 Route::get('/', function () {
     return redirect('/careers/index');
 });
+Route::get('/home', function () {
+    return redirect('/careers/index');
+});
 
 Route::name('careers.')->prefix('careers')->middleware(['auth','is_admin'])->group(function () {
     Route::get('/index', 'CareerController@index')->name('index');
