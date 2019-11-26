@@ -2491,6 +2491,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {},
@@ -2502,6 +2514,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var _ref;
 
     return _ref = {
+      tutoria: 0,
       subject: '',
       group: this.groupInitial,
       teacher: {},
@@ -2636,7 +2649,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           axios.post("".concat(_this2.mainUrl, "/groups/store/teacher"), {
             teacher: _this2.teacher,
             group: _this2.group,
-            subject: _this2.subject
+            subject: _this2.subject,
+            tutoria: _this2.tutoria
           }).then(function (response) {
             _this2.loading = false;
 
@@ -2934,11 +2948,13 @@ __webpack_require__.r(__webpack_exports__);
         value: 1
       }, {
         name: 'En línea',
-        value: 2
-      }, {
-        name: 'Tutorías',
         value: 3
-      }],
+      }
+      /* {
+       name: 'Tutorías',
+       value: 2
+      }, */
+      ],
       type: {
         name: '',
         value: ''
@@ -83767,7 +83783,38 @@ var render = function() {
                     _vm._v(_vm._s(_vm.errors.first("subject")))
                   ])
                 : _vm._e()
-            ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "form-group col-12" },
+              [
+                _c("label", { attrs: { for: "subject" } }, [
+                  _vm._v("Materia:")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "b-form-checkbox",
+                  {
+                    attrs: {
+                      id: "tutoria",
+                      name: "tutoria",
+                      value: "1",
+                      "unchecked-value": "0"
+                    },
+                    model: {
+                      value: _vm.tutoria,
+                      callback: function($$v) {
+                        _vm.tutoria = $$v
+                      },
+                      expression: "tutoria"
+                    }
+                  },
+                  [_vm._v("\n                Tutoria\n                ")]
+                )
+              ],
+              1
+            )
           ]),
           _vm._v(" "),
           _c("template", { slot: "modal-footer" }, [
@@ -102176,7 +102223,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname);
+var mainUrl = "".concat(window.location.protocol, "//").concat(window.location.hostname, "/evaluation/public");
 /* harmony default export */ __webpack_exports__["default"] = (mainUrl);
 
 /***/ }),

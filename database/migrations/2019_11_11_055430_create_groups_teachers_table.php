@@ -18,6 +18,7 @@ class CreateGroupsTeachersTable extends Migration
             $table->unsignedBigInteger('groupId');
             $table->unsignedBigInteger('teacherId');
             $table->string('subject');
+            $table->boolean('tutoria')->default(false);
             $table->timestamps();
             $table->foreign('groupId')->references('id')->on('groups')->onDelete('cascade');
             $table->foreign('teacherId')->references('id')->on('teachers')->onDelete('cascade');

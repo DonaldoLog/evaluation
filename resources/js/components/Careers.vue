@@ -138,12 +138,12 @@ import mainUrl from '../mainUrl'
               },
                {
                 name: 'En línea',
-                value: 2
-              },
-               {
-                name: 'Tutorías',
                 value: 3
               },
+               /* {
+                name: 'Tutorías',
+                value: 2
+              }, */
             ],
           type: {
             name: '',

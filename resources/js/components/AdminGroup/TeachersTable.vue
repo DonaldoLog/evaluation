@@ -118,6 +118,18 @@
                     <input type="text" class="form-control form-control-sm" id="subject" name="subject" v-model="subject" v-validate="{ required: true }">
                     <div class="invalid-feedback" v-if="errors.has('subject')">{{ errors.first('subject') }}</div>
                 </div>
+                <div class="form-group col-12">
+                    <label for="subject">Materia:</label>
+                    <b-form-checkbox
+                        id="tutoria"
+                        v-model="tutoria"
+                        name="tutoria"
+                        value=1
+                        unchecked-value=0
+                    >
+                    Tutoria
+                    </b-form-checkbox>
+                </div>
              </div>
              <template slot="modal-footer">
                  <button @click="modalShow()" type="button" class="btn btn-secondary" >
@@ -145,6 +157,7 @@ import mainUrl from '../../mainUrl'
     },
     data() {
       return {
+          tutoria: 0,
           subject: '',
           group: this.groupInitial,
           teacher: {},
@@ -262,6 +275,7 @@ import mainUrl from '../../mainUrl'
                         teacher: this.teacher,
                         group: this.group,
                         subject: this.subject,
+                        tutoria: this.tutoria,
                     })
                     .then((response) => {
                         this.loading = false

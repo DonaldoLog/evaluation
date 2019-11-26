@@ -63,18 +63,17 @@ class EvaluationStudentController extends Controller
         }
         $teacher = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.groupId')
+        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.groupId', 'groups_teachers.tutoria')
         ->whereNull('teachers.deleted_at')
         ->where('polls.id', $pollId)->first();
-        
+
         $type = Group::where('id', $teacher->groupId)->first()->career->type;
         $evaluation = Evaluation::where('active', 1)->first();
-        
-        if ($type == 1) {
-            $questions = Form::where('id', $evaluation->formId1)->with('questions')->first()->questions;
-        } else if ($type == 2){
+        if ($teacher->tutoria == 1) {
             $questions = Form::where('id', $evaluation->formId2)->with('questions')->first()->questions;
-        } else {
+        } else if ($type == 1) {//esc
+            $questions = Form::where('id', $evaluation->formId1)->with('questions')->first()->questions;
+        } else if ($type == 3){//online
             $questions = Form::where('id', $evaluation->formId3)->with('questions')->first()->questions;
         }
 

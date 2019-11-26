@@ -198,7 +198,7 @@ class GroupController extends Controller
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe este profesor en el grupo.'], 200);
             }
-            $group->teachers()->attach([$request->teacher['id'] => ['subject' => $request->subject]]);
+            $group->teachers()->attach([$request->teacher['id'] => ['subject' => $request->subject, 'tutoria' => $request->tutoria]]);
             $group->save();
 
             return response()->json(['success' => true ], 200);
