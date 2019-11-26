@@ -15,5 +15,10 @@ class DatabaseSeeder extends Seeder
         $this->call(Forms::class);
         $this->call(QuestionSeeder::class);
         $this->call(PedagogiaSeeder::class);
+        $this->call(PsicologiaEduSeeder::class);
+        $this->call(LIEEscolarizadoSeeder::class);
+        $this->call(LEIPEnLineaSeeder::class);
+        $this->call(LIEEnLineaSeeder::class);
+        $this->call(MEBSeeder::class);
     }
 }

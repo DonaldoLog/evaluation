@@ -5297,7 +5297,7 @@ Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
       },
       career: '',
       careers: this.careersInitial ? JSON.parse(this.careersInitial) : null,
-      title: 'Grupos',
+      title: '',
       cargando: false,
       colapsable: false,
       columns: [{
@@ -83789,9 +83789,7 @@ var render = function() {
               "div",
               { staticClass: "form-group col-12" },
               [
-                _c("label", { attrs: { for: "subject" } }, [
-                  _vm._v("Materia:")
-                ]),
+                _c("label", { attrs: { for: "subject" } }),
                 _vm._v(" "),
                 _c(
                   "b-form-checkbox",

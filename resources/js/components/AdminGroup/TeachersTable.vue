@@ -119,7 +119,7 @@
                     <div class="invalid-feedback" v-if="errors.has('subject')">{{ errors.first('subject') }}</div>
                 </div>
                 <div class="form-group col-12">
-                    <label for="subject">Materia:</label>
+                    <label for="subject"></label>
                     <b-form-checkbox
                         id="tutoria"
                         v-model="tutoria"

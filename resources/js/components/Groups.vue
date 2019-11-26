@@ -141,7 +141,7 @@ Vue.component('v-select', vSelect)
           },
           career: '',
           careers: this.careersInitial? JSON.parse(this.careersInitial): null,
-          title: 'Grupos',
+          title: '',
           cargando: false,
           colapsable: false,
           columns: [

@@ -1,7 +1,7 @@
 
 @extends('adminlte::page')
 
-@section('title', 'Grupos/Semestre')
+@section('title', 'Semestre/Modulo/Grupo')
 
 @section('css')
     <script src="./../css/app.css"></script>
@@ -9,7 +9,7 @@
 @stop
 
 @section('content_header')
-    <h1>Grupos/Semestre</h1>
+    <h1>Semestre/Modulo/Grupo</h1>
 @stop
 
 @section('content')
