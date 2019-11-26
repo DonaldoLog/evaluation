@@ -487,7 +487,7 @@ class PedagogiaSeeder extends Seeder
 
         /* 1a */
         $teacher = Teacher::firstOrCreate(['name' => 'JESÚS G. DÍAZ MELGAREJO']);
-        Group::where('id', 1)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 1)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
         Group::where('id', 3)->first()->teachers()->attach([$teacher->id => ['subject' => 'INTRODUCCIÓN A LA PSICOLOGÍA']]);
         Group::where('id', 4)->first()->teachers()->attach([$teacher->id => ['subject' => 'INTRODUCCIÓN A LA PSICOLOGÍA']]);
         Group::where('id', 5)->first()->teachers()->attach([$teacher->id => ['subject' => 'PSICOLOGÍA SOCIAL: GRUPOS Y APRENDIZAJE']]);
@@ -511,7 +511,7 @@ class PedagogiaSeeder extends Seeder
         $teacher = Teacher::firstOrCreate(['name' => 'MA. DEL CARMEN MENDOZA OLIVARES']);
         Group::where('id', 1)->first()->teachers()->attach([$teacher->id => ['subject' => 'INTRODUCCIÓN A LA PSICOLOGÍA']]);
         Group::where('id', 2)->first()->teachers()->attach([$teacher->id => ['subject' => 'INTRODUCCIÓN A LA PSICOLOGÍA']]);
-        Group::where('id', 5)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 5)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
         Group::where('id', 6)->first()->teachers()->attach([$teacher->id => ['subject' => 'PSICOLOGÍA SOCIAL: GRUPOS Y APRENDIZAJE']]);
 
 
@@ -525,7 +525,7 @@ class PedagogiaSeeder extends Seeder
 
         $teacher = Teacher::firstOrCreate(['name' => 'MA. DANAE HERNANDEZ LOPEZ']);
         Group::where('id', 1)->first()->teachers()->attach([$teacher->id => ['subject' => 'CIENCIA Y SOCIEDAD']]);
-        Group::where('id', 2)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 2)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
 
 
 
@@ -549,7 +549,7 @@ class PedagogiaSeeder extends Seeder
 
         /* 1c */
         $teacher = Teacher::firstOrCreate(['name' => 'JUDITH SALAZAR MURRIETA']);
-        Group::where('id', 3)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 3)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
         Group::where('id', 8)->first()->teachers()->attach([$teacher->id => ['subject' => 'COMUNICACIÓN, CULTURA Y EDUCACIÓN']]);
         Group::where('id', 9)->first()->teachers()->attach([$teacher->id => ['subject' => 'COMUNICACIÓN, CULTURA Y EDUCACIÓN']]);
 
@@ -562,7 +562,7 @@ class PedagogiaSeeder extends Seeder
 
         /* 1d */
         $teacher = Teacher::firstOrCreate(['name' => 'MA. MAGDALENA TORRES VILLA']);
-        Group::where('id', 4)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 4)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
         Group::where('id', 10)->first()->teachers()->attach([$teacher->id => ['subject' => 'CURSO O SEMINARIO OPTATIVO 7- I']]);
         Group::where('id', 11)->first()->teachers()->attach([$teacher->id => ['subject' => 'CURSO O SEMINARIO OPTATIVO 7- I']]);
 
@@ -588,14 +588,14 @@ class PedagogiaSeeder extends Seeder
         $teacher = Teacher::firstOrCreate(['name' => 'OLIVER MORA JUAREZ']);
         Group::where('id', 5)->first()->teachers()->attach([$teacher->id => ['subject' => 'ASPECTOS SOCIALES DE LA EDUCACIÓN']]);
         Group::where('id', 6)->first()->teachers()->attach([$teacher->id => ['subject' => 'ASPECTOS SOCIALES DE LA EDUCACIÓN']]);
-        Group::where('id', 8)->first()->teachers()->attach([$teacher->id => ['subject' => 'T U T O R I AS']]);
+        Group::where('id', 8)->first()->teachers()->attach([$teacher->id => ['subject' => 'T U T O R I AS', 'tutoria' => 1]]);
 
 
 
 
         $teacher = Teacher::firstOrCreate(['name' => 'VICTOR MANUEL CASTILLO VERA']);
         Group::where('id', 5)->first()->teachers()->attach([$teacher->id => ['subject' => 'TEORÍA PEDAGÓGICA CONTEMPORÁNEA']]);
-        Group::where('id', 6)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 6)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
         Group::where('id', 8)->first()->teachers()->attach([$teacher->id => ['subject' => 'INVESTIGACIÓN EDUCATIVA I']]);
         Group::where('id', 9)->first()->teachers()->attach([$teacher->id => ['subject' => 'INVESTIGACIÓN EDUCATIVA I']]);
 
@@ -607,7 +607,7 @@ class PedagogiaSeeder extends Seeder
         Group::where('id', 7)->first()->teachers()->attach([$teacher->id => ['subject' => 'ESTADÍSTICA DESCRIPTIVA EN EDUCACIÓN']]);
         /* 3c */
         $teacher = Teacher::firstOrCreate(['name' => 'LETICIA TORRES LÓPEZ']);
-        Group::where('id', 7)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS']]);
+        Group::where('id', 7)->first()->teachers()->attach([$teacher->id => ['subject' => 'TUTORIAS', 'tutoria' => 1]]);
 
 
         $teacher = Teacher::firstOrCreate(['name' => 'MA. TEODORA ALONSO MANZANO']);
@@ -626,7 +626,7 @@ class PedagogiaSeeder extends Seeder
 
         /* 5b */
         $teacher = Teacher::firstOrCreate(['name' => 'BLANCA NORMA IBARRA TEPEPA']);
-        Group::where('id', 9)->first()->teachers()->attach([$teacher->id => ['subject' => 'T U T O R I AS']]);
+        Group::where('id', 9)->first()->teachers()->attach([$teacher->id => ['subject' => 'T U T O R I AS', 'tutoria' => 1]]);
 
 
         /* 7a */
