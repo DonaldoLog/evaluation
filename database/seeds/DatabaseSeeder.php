@@ -20,5 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call(LEIPEnLineaSeeder::class);
         $this->call(LIEEnLineaSeeder::class);
         $this->call(MEBSeeder::class);
+        $this->call(AdminEducativaSeeder::class);
+        $this->call(LEPPMIAyotoxcoSeeder::class);
+        $this->call(LEPPMIGPEVictoria::class);
+        $this->call(LEPPMIZapotitlan::class);
+        $this->call(LEPPMIHueyapan::class);
+        $this->call(MEMSSeeder::class);
+        $this->call(LIEHueyapanSeeder::class);
+        $this->call(MEBEspecializacionSeeder::class);
     }
 }
