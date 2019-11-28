@@ -25,7 +25,7 @@ class LEIPEnLineaSeeder extends Seeder
             ['id' => 24, 'name' => '1MN2', 'careerId' => 4],
             ['id' => 25, 'name' => '5MN1', 'careerId' => 4],
             ['id' => 26, 'name' => '9NM1', 'careerId' => 4],
-            ['id' => 27, 'name' => 'DNM1', 'careerId' => 4],
+            ['id' => 27, 'name' => 'DNM1', 'careerId' => 4],//13
         ]);
 
         /* 1NM1 */

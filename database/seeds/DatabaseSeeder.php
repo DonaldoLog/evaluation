@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MEMSSeeder::class);
         $this->call(LIEHueyapanSeeder::class);
         $this->call(MEBEspecializacionSeeder::class);
+        $this->call(GroupTeacherSeeder::class);
     }
 }

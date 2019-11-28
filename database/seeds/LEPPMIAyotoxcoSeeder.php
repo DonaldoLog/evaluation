@@ -88,15 +88,15 @@ class LEPPMIAyotoxcoSeeder extends Seeder
             ['studentId' => '20182121093', 'name' => 'CORTES LOBATO EDGAR ODIN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121116', 'name' => 'DE LUNA SERRANO FERNANDA ODET','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121117', 'name' => 'DIAZ HERNANDEZ MARCO ANTONIO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121175', 'name' => 'ESPINOZA PEREZ ROBERTO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121178', 'name' => 'GARCIA GOMEZ AGUSTINA ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121183', 'name' => 'GARCIA LOPEZ LIZBET SOLEDAD','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121197', 'name' => 'GARCIA RAMOS PEDRO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121206', 'name' => 'GOMEZ VICENE HECTOR EFRAÍN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121187', 'name' => 'GONZALEZ SIMÓN LUIS MIGUEL','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121284', 'name' => 'JIMENEZ OLMEDO VICTOR MANUEL','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            ['studentId' => '20182121361', 'name' => 'LOPEZ MENDEZ LUIS ABDIAS','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            //['studentId' => '20182121366', 'name' => 'MORA GUZMAN JUAN CARLOS','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121137', 'name' => 'ESPINOZA PEREZ ROBERTO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121175', 'name' => 'GARCIA GOMEZ AGUSTINA ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121178', 'name' => 'GARCIA LOPEZ LIZBET SOLEDAD','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121183', 'name' => 'GARCIA RAMOS PEDRO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121197', 'name' => 'GOMEZ VICENE HECTOR EFRAÍN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121206', 'name' => 'GONZALEZ SIMÓN LUIS MIGUEL','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121187', 'name' => 'JIMENEZ OLMEDO VICTOR MANUEL','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121284', 'name' => 'LOPEZ MENDEZ LUIS ABDIAS','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121361', 'name' => 'MORA GUZMAN JUAN CARLOS','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121366', 'name' => 'MORALES PEREZ PERLA YASMIN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121374', 'name' => 'MORENO SANCHEZ ELISA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121406', 'name' => 'PERALTA ROJAS KATY NATALY','password' => bcrypt('evaluacion2020'), 'admin' => 0],
@@ -175,7 +175,7 @@ class LEPPMIAyotoxcoSeeder extends Seeder
             ['studentId' => '20172121203', 'name' => 'LIBRADO HERNANDEZ MARIA GUADALUPE','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20172121209', 'name' => 'LÓPEZ FRANCISCO JAQUELIN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20172121238', 'name' => 'MARTIN GARCIA NAYELY','password' => bcrypt('evaluacion2020'), 'admin' => 0],
-            //['studentId' => '20192121307', 'name' => 'PARRA GONZALEZ KARINA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121307', 'name' => 'PARRA GONZALEZ KARINA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20172121313', 'name' => 'PERALTA JIMENEZ ANA LUISA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20172121324', 'name' => 'PEREZ MUÑOZ LILIANA ELIZABETH','password' => bcrypt('evaluacion2020'), 'admin' => 0],
             //['studentId' => '20172121341', 'name' => 'RAMIREZ GARCIA ILSE JOSELINE','password' => bcrypt('evaluacion2020'), 'admin' => 0],
@@ -193,8 +193,24 @@ class LEPPMIAyotoxcoSeeder extends Seeder
         Group::where('id', 59)->first()->students()->attach($insertedIds);
 
         /* 5b */
-        /* $users =[
-
+        $users =[
+            ['studentId' => '20172121072', 'name' => 'JORGE LUIS CRUZ GARCÍA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121090', 'name' => 'ARELY DIEGO DE LUNA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121093', 'name' => 'LESLEY ESPINOZA APARICIO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121094', 'name' => 'MAYRA DENI ESPINOZA GAONA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '16942991', 'name' => 'VICTOR HUGO GARCÍA SALAZAR','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121133', 'name' => 'NERI ANDREA GONZÁLEZ MALDONADO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121158', 'name' => 'SELENE HERNÁNDEZ CRUZ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121184', 'name' => 'YASMÍN JIMÉNEZ DOMÍNGUEZ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121190', 'name' => 'OSWALDO JUÁREZ GUEVARA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121233', 'name' => 'KARLA MALPICA SIMBRÓN','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121237', 'name' => 'KAREN MARTÍN DE LA CRUZ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121268', 'name' => 'LIZBETH MENDOZA NICOLÁS','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121356', 'name' => 'DAVID ALBERTO RAMOS VÁZQUEZ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121376', 'name' => 'LORENZO ANTONIO ROQUE GÓMEZ','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121401', 'name' => 'JORGE LEONARDO SANTIAGO GARCÍA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '16943301', 'name' => 'JULIO BRANDÓN TREJO MONTERO','password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20172121430', 'name' => 'CLARA VÁZQUEZ GARCÍA','password' => bcrypt('evaluacion2020'), 'admin' => 0],
         ];
         $insertedIds = [];
         for ($i = 0; $i < sizeOf($users); $i++) {
@@ -202,7 +218,7 @@ class LEPPMIAyotoxcoSeeder extends Seeder
             $id = $user->id;
             array_push($insertedIds, $id);
         }
-        Group::where('id', 60)->first()->students()->attach($insertedIds); */
+        Group::where('id', 60)->first()->students()->attach($insertedIds);
 
 
         /* 7 */

@@ -20,8 +20,8 @@ class MEBEspecializacionSeeder extends Seeder
         ]);
 
         Group::insert([
-            ['id' => 28, 'name' => '1A', 'careerId' => 16],
-            ['id' => 29, 'name' => '1B', 'careerId' => 16],
+            ['id' => 28, 'name' => '1EM1', 'careerId' => 16],
+            ['id' => 29, 'name' => '1EM2', 'careerId' => 16],
             ['id' => 30, 'name' => '1EM3', 'careerId' => 16],
             ['id' => 31, 'name' => '2', 'careerId' => 16],
         ]);
