@@ -40,7 +40,7 @@ class GroupTeacherSeeder extends Seeder
             $teacher = Teacher::firstOrCreate(['id' => 4, 'name' => 'Héctor Sánchez Méndez']);
             Group::where('id', 23)->first()->teachers()->attach([$teacher->id => ['subject' => 'Experiencias educativas e identidad']]);
             Group::where('id', 24)->first()->teachers()->attach([$teacher->id => ['subject' => 'Sujetos, procesos educativos y grupales']]);
-            Group::where('id', 83)->first()->teachers()->attach([$teacher->id => ['subject' => 'Educación e historicidad']]);
+            Group::where('id', 90)->first()->teachers()->attach([$teacher->id => ['subject' => 'Educación e historicidad']]);
 
             $teacher = Teacher::firstOrCreate(['id' => 5, 'name' => 'Cecilia Aros Alberto ']);
             Group::where('id', 23)->first()->teachers()->attach([$teacher->id => ['subject' => 'Experiencias educativas e identidad']]);
