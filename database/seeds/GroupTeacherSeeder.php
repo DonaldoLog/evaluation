@@ -40,6 +40,7 @@ class GroupTeacherSeeder extends Seeder
             $teacher = Teacher::firstOrCreate(['id' => 4, 'name' => 'Héctor Sánchez Méndez']);
             Group::where('id', 23)->first()->teachers()->attach([$teacher->id => ['subject' => 'Experiencias educativas e identidad']]);
             Group::where('id', 24)->first()->teachers()->attach([$teacher->id => ['subject' => 'Sujetos, procesos educativos y grupales']]);
+            Group::where('id', 83)->first()->teachers()->attach([$teacher->id => ['subject' => 'Educación e historicidad']]);
 
             $teacher = Teacher::firstOrCreate(['id' => 5, 'name' => 'Cecilia Aros Alberto ']);
             Group::where('id', 23)->first()->teachers()->attach([$teacher->id => ['subject' => 'Experiencias educativas e identidad']]);
@@ -52,6 +53,8 @@ class GroupTeacherSeeder extends Seeder
 
             $teacher = Teacher::firstOrCreate(['id' => 7, 'name' => 'Mtra. Leticia Vega Ramos']);
             Group::where('id', 22)->first()->teachers()->attach([$teacher->id => ['subject' => 'Seminario de titulación 1']]);
+            Group::where('id', 27)->first()->teachers()->attach([$teacher->id => ['subject' => 'Campos de formación y acción educativa']]);
+            Group::where('id', 82)->first()->teachers()->attach([$teacher->id => ['subject' => 'Contenidos particulares de cada campo de formación y acción educativa ']]);
 
             $teacher = Teacher::firstOrCreate(['id' => 8, 'name' => 'Francisco Daniel Gómez Moran']);
             Group::where('id', 25)->first()->teachers()->attach([$teacher->id => ['subject' => 'Experiencia educativa multidimensional ']]);

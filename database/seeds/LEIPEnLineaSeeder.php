@@ -26,6 +26,9 @@ class LEIPEnLineaSeeder extends Seeder
             ['id' => 25, 'name' => '5MN1', 'careerId' => 4],
             ['id' => 26, 'name' => '9NM1', 'careerId' => 4],
             ['id' => 27, 'name' => 'DNM1', 'careerId' => 4],//13
+            ['id' => 83, 'name' => '6NM1', 'careerId' => 4],//6
+            ['id' => 84, 'name' => '2NM2', 'careerId' => 4],//2
+            ['id' => 85, 'name' => 'ENM1', 'careerId' => 4],//14
         ]);
 
         /* 1NM1 */
@@ -158,6 +161,80 @@ class LEIPEnLineaSeeder extends Seeder
 
          /* DNM1 */
         $users =[
+            ['studentId' => '20162121306', 'name' => 'Julián ', 'last_name' => 'Fernández Torres', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20162121308', 'name' => 'María Janet', 'last_name' => 'García Sánchez', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20162121312', 'name' => 'Marisol', 'last_name' => 'Mateo Espíritu', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20162121313', 'name' => 'Noemí ', 'last_name' => 'Pérez Hernández', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20152121202', 'name' => 'Guadalupe ', 'last_name' => 'Sánchez Gaona', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+        ];
+        $insertedIds = [];
+        for ($i = 0; $i < sizeOf($users); $i++) {
+            $user = User::firstOrCreate($users[$i]);
+            $id = $user->id;
+            array_push($insertedIds, $id);
+        }
+        Group::where('id', 26)->first()->students()->attach($insertedIds);
+
+         /* 6NM1 */
+         $users =[
+            ['studentId' => '20182121586', 'name' => 'JORGE', 'last_name' => 'CORTÉS CASTAÑEDA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121587', 'name' => 'ALEJANDRA', 'last_name' => 'ENCINAS DOMÍNGUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121572', 'name' => 'CELIDA', 'last_name' => 'GALICIA PÉREZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121573', 'name' => 'GABRIELA YACXIRY', 'last_name' => 'GONZÁLEZ LOMA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121575', 'name' => 'ANA DANIELA ', 'last_name' => 'MONTIEL HERNÁNDEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121577', 'name' => 'EFRAÍN', 'last_name' => 'OLAYA JUÁREZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121578', 'name' => 'ALAN YAIR', 'last_name' => 'PERALTA NIEMBRO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20182121581', 'name' => 'BLANCA GRACIELA', 'last_name' => 'RUBIO HERNÁNDEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+        ];
+        $insertedIds = [];
+        for ($i = 0; $i < sizeOf($users); $i++) {
+            $user = User::firstOrCreate($users[$i]);
+            $id = $user->id;
+            array_push($insertedIds, $id);
+        }
+        Group::where('id', 26)->first()->students()->attach($insertedIds);
+
+        /* 2NM2 */
+        $users =[
+            ['studentId' => '20192121731', 'name' => 'VIRGINA ', 'last_name' => 'ALFONSO RAMÍREZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121736', 'name' => 'LUZ MARÍA ', 'last_name' => 'CARCÁMO ENRÍQUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121738', 'name' => 'MOISÉS AMI', 'last_name' => 'CASTRO ÁRCOS', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121740', 'name' => 'MARÍA ISABEL', 'last_name' => 'CORTÉZ MARQUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121742', 'name' => 'DANIA', 'last_name' => 'GARCÍA CRUZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121464', 'name' => 'TONATIUH', 'last_name' => 'DÍAZ SALAZAR', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121744', 'name' => 'YONERY', 'last_name' => 'DOMÍNGUEZ  SÁNCHEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121748', 'name' => 'LEONARDO', 'last_name' => 'FLORES PERDOMO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121749', 'name' => 'MARÍA DEL CONSUELO', 'last_name' => 'GÓMEZ RÍOS', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121751', 'name' => 'ESTEFANÍA', 'last_name' => 'GUZMÁN OREA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121753', 'name' => 'CELIA', 'last_name' => 'HERNÁNDEZ RODRÍGUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121754', 'name' => 'FERNANDO ', 'last_name' => 'HERNÁNDEZ SÁNCHEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121758', 'name' => 'ARACELY', 'last_name' => 'LARA SALAZAR', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121759', 'name' => 'ORLANDO', 'last_name' => 'LEÓN CONTRERAS', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121761', 'name' => 'DIANA CONSUELO', 'last_name' => 'LOEZA ARMAS', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121763', 'name' => 'KARLA CELESTE ', 'last_name' => 'LUNA LÓPEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121766', 'name' => 'ANGÉLICA', 'last_name' => 'MARTÍNEZ DOMÍNGUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121772', 'name' => 'DIEGO VALENTÍN', 'last_name' => 'MONTERO PICAZO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121773', 'name' => 'KARLA GUADALUPE', 'last_name' => 'MORENO MENDOZA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121776', 'name' => 'XOCHITL', 'last_name' => 'OLMOS HERNÁNDEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121779', 'name' => 'KARINA', 'last_name' => 'PÉREZ GARCÍA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121780', 'name' => 'MARÍA LIZETH', 'last_name' => 'RAMIRO LEÓN', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121781', 'name' => 'GEORGINA', 'last_name' => 'REYES PABLO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121783', 'name' => 'JOEL', 'last_name' => 'RIVERA IBARRA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121788', 'name' => 'AMELIA YAMENI', 'last_name' => 'ROMERO ROMERO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121789', 'name' => 'ADRIANA', 'last_name' => 'SÁNCHEZ GUERRERO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121791', 'name' => 'ALONDRA', 'last_name' => 'VEGA ÁLFARO', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            ['studentId' => '20192121793', 'name' => 'YUSUANI', 'last_name' => 'ZARAGOZA LEÓN', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+        ];
+        $insertedIds = [];
+        for ($i = 0; $i < sizeOf($users); $i++) {
+            $user = User::firstOrCreate($users[$i]);
+            $id = $user->id;
+            array_push($insertedIds, $id);
+        }
+        Group::where('id', 26)->first()->students()->attach($insertedIds);
+
+         /* ENM1 */
+         $users =[
             ['studentId' => '20162121306', 'name' => 'Julián ', 'last_name' => 'Fernández Torres', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20162121308', 'name' => 'María Janet', 'last_name' => 'García Sánchez', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20162121312', 'name' => 'Marisol', 'last_name' => 'Mateo Espíritu', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],

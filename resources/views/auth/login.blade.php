@@ -22,7 +22,7 @@
                             <div class="col-md-6">
                                 <input id="studentId" type="studentId" class="form-control @error('studentId') is-invalid @enderror" name="studentId" value="{{ old('studentId') }}" required autocomplete="studentId" autofocus>
 
-                                @error('email')
+                                @error('studentId')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
