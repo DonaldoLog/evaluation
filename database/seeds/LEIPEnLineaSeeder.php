@@ -176,7 +176,7 @@ class LEIPEnLineaSeeder extends Seeder
         Group::where('id', 26)->first()->students()->attach($insertedIds);
 
          /* 6NM1 */
-         $users =[
+         /* $users =[
             ['studentId' => '20182121586', 'name' => 'JORGE', 'last_name' => 'CORTÉS CASTAÑEDA', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121587', 'name' => 'ALEJANDRA', 'last_name' => 'ENCINAS DOMÍNGUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121572', 'name' => 'CELIDA', 'last_name' => 'GALICIA PÉREZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
@@ -192,10 +192,10 @@ class LEIPEnLineaSeeder extends Seeder
             $id = $user->id;
             array_push($insertedIds, $id);
         }
-        Group::where('id', 26)->first()->students()->attach($insertedIds);
+        Group::where('id', 83)->first()->students()->attach($insertedIds); */
 
         /* 2NM2 */
-        $users =[
+       /*  $users =[
             ['studentId' => '20192121731', 'name' => 'VIRGINA ', 'last_name' => 'ALFONSO RAMÍREZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20192121736', 'name' => 'LUZ MARÍA ', 'last_name' => 'CARCÁMO ENRÍQUEZ', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20192121738', 'name' => 'MOISÉS AMI', 'last_name' => 'CASTRO ÁRCOS', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
@@ -231,10 +231,10 @@ class LEIPEnLineaSeeder extends Seeder
             $id = $user->id;
             array_push($insertedIds, $id);
         }
-        Group::where('id', 26)->first()->students()->attach($insertedIds);
+        Group::where('id', 26)->first()->students()->attach($insertedIds); */
 
          /* ENM1 */
-         $users =[
+         /* $users =[
             ['studentId' => '20162121306', 'name' => 'Julián ', 'last_name' => 'Fernández Torres', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20162121308', 'name' => 'María Janet', 'last_name' => 'García Sánchez', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20162121312', 'name' => 'Marisol', 'last_name' => 'Mateo Espíritu', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
@@ -247,6 +247,6 @@ class LEIPEnLineaSeeder extends Seeder
             $id = $user->id;
             array_push($insertedIds, $id);
         }
-        Group::where('id', 26)->first()->students()->attach($insertedIds);
+        Group::where('id', 26)->first()->students()->attach($insertedIds); */
     }
 }
