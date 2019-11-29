@@ -119,7 +119,7 @@ class LEIPEnLineaSeeder extends Seeder
 
         /* 5MN1 */
         $users =[
-            ['studentId' => '20182121586', 'name' => 'Jorge', 'last_name' => 'Cortés Castañeda', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
+            //['studentId' => '20182121586', 'name' => 'Jorge', 'last_name' => 'Cortés Castañeda', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121587', 'name' => 'Alejandra', 'last_name' => 'Encinas Domínguez', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121572', 'name' => 'Celida', 'last_name' => 'Galicia Pérez', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
             ['studentId' => '20182121573', 'name' => 'Gabriela Yacxiry', 'last_name' => 'González Loma', 'password' => bcrypt('evaluacion2020'), 'admin' => 0],
