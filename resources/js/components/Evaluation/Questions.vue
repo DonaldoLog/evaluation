@@ -12,6 +12,29 @@
             </div>
             </template>
             <b-card-body class="row">
+                <template v-if="teacher.tutoria ==1">
+                    Instrucciones cuestionario tutorías <br>
+                    A continuación, se te presentan una serie de pregutnas relacionadas con la actividad tutorial, contesta seleccionando aquella opción que más se acerque a tu respuesta. Recuerda que tus respuestas serán tratadas con alto grado de confidencialidad y no afectarán tu calificación.
+Instrucciones: Seleccionar la estrella de acuerdo a la siguiente escala. La opción que elijas corresponde al grado de satisfacción respecto a cada criterio evaluado.
+<br> 1 Estrella: Altamente en desacuerdo.
+<br>2 Estrellas: En desacuerdo.
+<br>3 Estrellas: Indiferente.
+<br>4 Estrellas: De acuerdo.
+<br>5 Estrellas: Altamente de acuerdo.
+                </template>
+                <template v-else>
+                    <p>
+                        La Universidad Pedagógica Nacional Unidad 212, Teziutlán. Invita a la comunidad estudiantil a participar de forma activa en el proceso de evaluación docente correspondiente al periodo agosto-diciembre 2019. Esta evaluación es totalmente anónima y permitirá a tus docentes detectar fortalezas y áreas de oportunidad para mejorar la atención académica.
+Asigna una calificación a tu profesor de manera objetiva y ética, recuerda que tus respuestas serán tratadas con alto grado de confidencialidad y no afectarán tu calificación.
+Instrucciones: Seleccionar la estrella de acuerdo a la siguiente escala. La opción que elijas corresponde al grado de satisfacción respecto a cada criterio evaluado.
+<br> 1 Estrella: Altamente en desacuerdo.
+<br>2 Estrellas: En desacuerdo.
+<br>3 Estrellas: Indiferente.
+<br>4 Estrellas: De acuerdo.
+<br>5 Estrellas: Altamente de acuerdo.
+                    </p>
+
+                </template>
                 <table class="table table-striped responsive">
                     <thead>
                         <tr>

@@ -79,6 +79,7 @@ class EvaluationStudentController extends Controller
 
         return view('modules.evaluation.questions')
         ->with('questions', $questions)
+        ->with('evaluation', $evaluation)
         ->with('teacher', $teacher);
     }
 

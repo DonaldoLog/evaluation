@@ -4151,6 +4151,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -85500,100 +85523,147 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("b-card-body", { staticClass: "row" }, [
-            _c("table", { staticClass: "table table-striped responsive" }, [
-              _c("thead", [
-                _c("tr", [
-                  _c("th"),
-                  _vm._v(" "),
-                  _c("th", [_vm._v(" Pregunta ")]),
-                  _vm._v(" "),
-                  _c("th", [_vm._v(" Puntos ")])
-                ])
+          _c(
+            "b-card-body",
+            { staticClass: "row" },
+            [
+              _vm.teacher.tutoria == 1
+                ? [
+                    _vm._v(
+                      "\n                    Instrucciones cuestionario tutorías "
+                    ),
+                    _c("br"),
+                    _vm._v(
+                      "\n                    A continuación, se te presentan una serie de pregutnas relacionadas con la actividad tutorial, contesta seleccionando aquella opción que más se acerque a tu respuesta. Recuerda que tus respuestas serán tratadas con alto grado de confidencialidad y no afectarán tu calificación.\nInstrucciones: Seleccionar la estrella de acuerdo a la siguiente escala. La opción que elijas corresponde al grado de satisfacción respecto a cada criterio evaluado.\n"
+                    ),
+                    _c("br"),
+                    _vm._v(" 1 Estrella: Altamente en desacuerdo.\n"),
+                    _c("br"),
+                    _vm._v("2 Estrellas: En desacuerdo.\n"),
+                    _c("br"),
+                    _vm._v("3 Estrellas: Indiferente.\n"),
+                    _c("br"),
+                    _vm._v("4 Estrellas: De acuerdo.\n"),
+                    _c("br"),
+                    _vm._v(
+                      "5 Estrellas: Altamente de acuerdo.\n                "
+                    )
+                  ]
+                : [
+                    _c("p", [
+                      _vm._v(
+                        "\n                        La Universidad Pedagógica Nacional Unidad 212, Teziutlán. Invita a la comunidad estudiantil a participar de forma activa en el proceso de evaluación docente correspondiente al periodo agosto-diciembre 2019. Esta evaluación es totalmente anónima y permitirá a tus docentes detectar fortalezas y áreas de oportunidad para mejorar la atención académica.\nAsigna una calificación a tu profesor de manera objetiva y ética, recuerda que tus respuestas serán tratadas con alto grado de confidencialidad y no afectarán tu calificación.\nInstrucciones: Seleccionar la estrella de acuerdo a la siguiente escala. La opción que elijas corresponde al grado de satisfacción respecto a cada criterio evaluado.\n"
+                      ),
+                      _c("br"),
+                      _vm._v(" 1 Estrella: Altamente en desacuerdo.\n"),
+                      _c("br"),
+                      _vm._v("2 Estrellas: En desacuerdo.\n"),
+                      _c("br"),
+                      _vm._v("3 Estrellas: Indiferente.\n"),
+                      _c("br"),
+                      _vm._v("4 Estrellas: De acuerdo.\n"),
+                      _c("br"),
+                      _vm._v(
+                        "5 Estrellas: Altamente de acuerdo.\n                    "
+                      )
+                    ])
+                  ],
+              _vm._v(" "),
+              _c("table", { staticClass: "table table-striped responsive" }, [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th"),
+                    _vm._v(" "),
+                    _c("th", [_vm._v(" Pregunta ")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v(" Puntos ")])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.questions, function(question, index) {
+                    return _c(
+                      "tr",
+                      [
+                        _c("td", [_vm._v(" " + _vm._s(index + 1) + " ")]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(" " + _vm._s(question.name) + " ")]),
+                        _vm._v(" "),
+                        question.type == 1
+                          ? [
+                              _c(
+                                "td",
+                                [
+                                  _c("star-rating", {
+                                    attrs: { "star-size": 30 },
+                                    model: {
+                                      value: question.score,
+                                      callback: function($$v) {
+                                        _vm.$set(question, "score", $$v)
+                                      },
+                                      expression: "question.score"
+                                    }
+                                  })
+                                ],
+                                1
+                              )
+                            ]
+                          : _vm._e(),
+                        _vm._v(" "),
+                        question.type == 2
+                          ? [
+                              _c("td", [
+                                _c("textarea", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: question.score,
+                                      expression: "question.score"
+                                    }
+                                  ],
+                                  attrs: { rows: "2" },
+                                  domProps: { value: question.score },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        question,
+                                        "score",
+                                        $event.target.value
+                                      )
+                                    }
+                                  }
+                                })
+                              ])
+                            ]
+                          : _vm._e()
+                      ],
+                      2
+                    )
+                  }),
+                  0
+                )
               ]),
               _vm._v(" "),
               _c(
-                "tbody",
-                _vm._l(_vm.questions, function(question, index) {
-                  return _c(
-                    "tr",
-                    [
-                      _c("td", [_vm._v(" " + _vm._s(index + 1) + " ")]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(" " + _vm._s(question.name) + " ")]),
-                      _vm._v(" "),
-                      question.type == 1
-                        ? [
-                            _c(
-                              "td",
-                              [
-                                _c("star-rating", {
-                                  attrs: { "star-size": 30 },
-                                  model: {
-                                    value: question.score,
-                                    callback: function($$v) {
-                                      _vm.$set(question, "score", $$v)
-                                    },
-                                    expression: "question.score"
-                                  }
-                                })
-                              ],
-                              1
-                            )
-                          ]
-                        : _vm._e(),
-                      _vm._v(" "),
-                      question.type == 2
-                        ? [
-                            _c("td", [
-                              _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: question.score,
-                                    expression: "question.score"
-                                  }
-                                ],
-                                attrs: { rows: "2" },
-                                domProps: { value: question.score },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      question,
-                                      "score",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          ]
-                        : _vm._e()
-                    ],
-                    2
-                  )
-                }),
-                0
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary col-4 offset-4",
-                on: {
-                  click: function($event) {
-                    return _vm.finish()
+                "button",
+                {
+                  staticClass: "btn btn-primary col-4 offset-4",
+                  on: {
+                    click: function($event) {
+                      return _vm.finish()
+                    }
                   }
-                }
-              },
-              [_vm._v(" Terminar ")]
-            )
-          ])
+                },
+                [_vm._v(" Terminar ")]
+              )
+            ],
+            2
+          )
         ],
         2
       )

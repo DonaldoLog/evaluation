@@ -66,7 +66,7 @@ public function login(Request $request)
         // attempt to log
         if (Auth::attempt(['studentId' => $request->studentId, 'password' => $request->password ], $request->remember)) {
             // if successful -> redirect forward
-            return redirect()->intended(route('user.overview'));
+            return redirect()->intended('./');
         }
 
         // if unsuccessful -> redirect back
