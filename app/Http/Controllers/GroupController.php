@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Career;
+use App\Models\Completed;
+use App\Models\CompletedQuestion;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\User;
 use App\Models\Teacher;
+use App\Models\Poll;
 use Illuminate\Support\Facades\Log;
-
+use DB;
 class GroupController extends Controller
 {
     public function index(){
@@ -192,17 +196,27 @@ class GroupController extends Controller
     }
 
     public function storeTeacher (Request $request) {
+        DB::beginTransaction();
         try {
             $group = Group::where('id', $request->group['id'])->first();
             $exist = $group->teachers()->where('teacherId', $request->teacher['id'])->first();
             if ($exist) {
                 return response()->json(['success' => false, 'message' => 'Ya existe este profesor en el grupo.'], 200);
             }
-            $group->teachers()->attach([$request->teacher['id'] => ['subject' => $request->subject, 'tutoria' => $request->tutoria]]);
-            $group->save();
-
+            $eval = Evaluation::where('active', 1)->first();
+            $groupTeacherId = DB::table('groups_teachers')->insertGetId(
+                ['subject' => $request->subject, 'tutoria' => $request->tutoria, 'groupId' => $group->id, 'teacherId' => $request->teacher['id']]
+            );
+            if ($eval) {
+                $poll = new Poll();
+                $poll->groupTeacherId = $groupTeacherId;
+                $poll->evaluationId = $eval->id;
+                $poll->save();
+            }
+            DB::commit();
             return response()->json(['success' => true ], 200);
         } catch (\PDOException $th) {
+            DB::rollback();
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
@@ -224,33 +238,55 @@ class GroupController extends Controller
     }
 
     public function destroyStudentGroup(Request $request) {
+        DB::beginTransaction();
         try {
             $group = Group::where('id', $request->group['id'])->first();
             $exist = $group->students()->where('groups_students.studentId', $request->student['id'])->first();
             if (!$exist) {
                 return response()->json(['success' => false, 'message' => 'No existe este estudiante en el grupo.'], 200);
             }
+
+            $eval = Evaluation::where('active', 1)->first();
+            if ($eval) {
+                $teachers = $group->teachers->pluck('id');
+                $groupTeacher = DB::table('groups_teachers')->whereIn('teacherId', $teachers)->where('groupId', $group->id)->get()->pluck('id');
+                $polls = Poll::whereIn('groupTeacherId', $groupTeacher)->get()->pluck('id');
+                $completed = Completed::where('studentId', $request->student['id'])->whereIn('pollId', $polls)->delete();
+                $completedQuestions = CompletedQuestion::where('studentId', $request->student['id'])->whereIn('pollId', $polls)->delete();
+            }
             $group->students()->detach($request->student['id']);
             $group->save();
-
+            DB::commit();
             return response()->json(['success' => true ], 200);
         } catch (\PDOException $th) {
+            DB::rollback();
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
 
     public function destroyTeacherGroup(Request $request) {
+        DB::beginTransaction();
         try {
             $group = Group::where('id', $request->group['id'])->first();
             $exist = $group->teachers()->where('groups_teachers.teacherId', $request->teacher['id'])->first();
             if (!$exist) {
+                DB::rollback();
                 return response()->json(['success' => false, 'message' => 'No existe este profesor en el grupo.'], 200);
+            }
+
+            $eval = Evaluation::where('active', 1)->first();
+            if ($eval) {
+                $groupTeacher = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id']])->first();
+                $poll = Poll::where(['groupTeacherId' => $groupTeacher->id, 'evaluationId' => $eval->id])->delete();
+                $completed = Completed::where('pollId', $poll->id)->delete();
+                $completedQuestions = CompletedQuestion::where('pollId', $poll->id)->delete();
             }
             $group->teachers()->detach($request->teacher['id']);
             $group->save();
-
+            DB::commit();
             return response()->json(['success' => true ], 200);
         } catch (\PDOException $th) {
+            DB::rollback();
             return response()->json(['success' => false, 'error' => $th, 'message' => 'Ha ocurrido un error.'], 200);
         }
     }
