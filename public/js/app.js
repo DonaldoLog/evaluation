@@ -83464,10 +83464,7 @@ var render = function() {
                                             _c("td", [
                                               _vm._v(
                                                 " " +
-                                                  _vm._s(
-                                                    teacher.groups[0].pivot
-                                                      .subject
-                                                  ) +
+                                                  _vm._s(teacher.subject) +
                                                   " "
                                               )
                                             ]),

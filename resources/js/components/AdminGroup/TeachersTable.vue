@@ -65,7 +65,7 @@
                                                             <tr :key="index">
                                                                 <td> {{ teacher.name }} {{ teacher.last_name }} </td>
                                                                 <td> {{ teacher.email }} </td>
-                                                                <td> {{ teacher.groups[0].pivot.subject }} </td>
+                                                                <td> {{ teacher.subject }} </td>
                                                                 <td>
                                                                     <button class="btn btn-secondary" @click="destroyTeacher(teacher)" title="Eliminar"><i class="fa fa-trash"></i></button>
                                                                 <!--  <a class="btn btn-secondary" :href="mainUrl+'/contrato-oficio/'+teacher.id" target="_blank" title="Mas"><i class="far fa-file"></i></a> -->
