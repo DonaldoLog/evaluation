@@ -20,6 +20,7 @@ class StudentController extends Controller
             $user->password = bcrypt($user->studentId);
             $user->save();
         }
+        return "done";
     }
 
     public function store(Request $request) {

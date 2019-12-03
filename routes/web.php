@@ -45,12 +45,12 @@ Route::name('groups.')->prefix('groups')->middleware(['auth','is_admin'])->group
 
 Route::name('students.')->prefix('students')->middleware(['auth','is_admin'])->group(function () {
     Route::get('/index', 'StudentController@index')->name('index');
+    Route::get('/password', 'StudentController@password')->name('destroy');
     Route::get('/{studentId}', 'StudentController@getStudent')->name('get');
     Route::post('/store', 'StudentController@store')->name('store');
     Route::post('/update', 'StudentController@updateStudent')->name('update');
     Route::post('/data', 'StudentController@getStudents');
     Route::post('/destroy', 'StudentController@destroyStudent')->name('destroy');
-    Route::get('/password', 'StudentController@password')->name('destroy');
 });
 
 Route::name('teachers.')->prefix('teachers')->middleware(['auth','is_admin'])->group(function () {
