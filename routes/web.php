@@ -40,7 +40,7 @@ Route::name('groups.')->prefix('groups')->middleware(['auth','is_admin'])->group
     Route::post('/students/data/{groupId}', 'GroupController@getStudentsByGroup');
     Route::post('/destroy', 'GroupController@destroyGroup')->name('destroy');
     Route::post('/destroy/student', 'GroupController@destroyStudentGroup')->name('destroy');
-    Route::post('/destroy/teacher', 'GroupController@destroyTeacherGroup')->name('destroy');
+    Route::post('/destroy/teacher', 'GroupController@password');
 });
 
 Route::name('students.')->prefix('students')->middleware(['auth','is_admin'])->group(function () {
@@ -50,6 +50,7 @@ Route::name('students.')->prefix('students')->middleware(['auth','is_admin'])->g
     Route::post('/update', 'StudentController@updateStudent')->name('update');
     Route::post('/data', 'StudentController@getStudents');
     Route::post('/destroy', 'StudentController@destroyStudent')->name('destroy');
+    Route::post('/password', 'StudentController@password')->name('destroy');
 });
 
 Route::name('teachers.')->prefix('teachers')->middleware(['auth','is_admin'])->group(function () {

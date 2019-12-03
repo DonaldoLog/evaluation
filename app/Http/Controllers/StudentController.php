@@ -14,6 +14,14 @@ class StudentController extends Controller
         return view('modules.students.index');
     }
 
+    public function password () {
+        $users = User::where('studentId', '!=', 0000)->get();
+        foreach ($users as $key => $user) {
+            $user->password = bcrypt($user->studentId);
+            $user->save();
+        }
+    }
+
     public function store(Request $request) {
         try {
             $exist = User::where('studentId', $request->student['studentId'])->first();
