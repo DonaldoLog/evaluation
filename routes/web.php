@@ -50,7 +50,7 @@ Route::name('students.')->prefix('students')->middleware(['auth','is_admin'])->g
     Route::post('/update', 'StudentController@updateStudent')->name('update');
     Route::post('/data', 'StudentController@getStudents');
     Route::post('/destroy', 'StudentController@destroyStudent')->name('destroy');
-    Route::post('/password', 'StudentController@password')->name('destroy');
+    Route::get('/password', 'StudentController@password')->name('destroy');
 });
 
 Route::name('teachers.')->prefix('teachers')->middleware(['auth','is_admin'])->group(function () {
