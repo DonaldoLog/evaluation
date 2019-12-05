@@ -40,7 +40,7 @@ Route::name('groups.')->prefix('groups')->middleware(['auth','is_admin'])->group
     Route::post('/students/data/{groupId}', 'GroupController@getStudentsByGroup');
     Route::post('/destroy', 'GroupController@destroyGroup')->name('destroy');
     Route::post('/destroy/student', 'GroupController@destroyStudentGroup')->name('destroy');
-    Route::post('/destroy/teacher', 'GroupController@password');
+    Route::post('/destroy/teacher', 'GroupController@destroyTeacherGroup');
 });
 
 Route::name('students.')->prefix('students')->middleware(['auth','is_admin'])->group(function () {
