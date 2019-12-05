@@ -27,8 +27,8 @@ class EvaluationController extends Controller
                 DB::rollback();
                 return response()->json(['success' => false, 'message' => 'Ya existe esta evaluacion.']);
             }
-            Evaluation::where('active', 1)->update(['active' => 0]);
-            Poll::whereNull('deleted_at')->update(['deleted_at' => Carbon::now()]);
+            DB::table('evaluations')->update(['active' => 0, 'deleted_at' => Carbon::now()]);
+            DB::table('polls')->update(['deleted_at' => Carbon::now()]);
             $evaluation = new Evaluation();
             $evaluation->name = $request->evaluation['name'];
             $evaluation->active = 1;

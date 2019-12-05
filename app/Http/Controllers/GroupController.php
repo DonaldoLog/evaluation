@@ -133,7 +133,7 @@ class GroupController extends Controller
 
     public function getTeachersByGroup (Request $request, $groupId) {
         $search = $request->search;
-        $query = DB::table('groups_teachers')->where(['groupId' => $groupId])
+        $query = DB::table('groups_teachers')->where(['groupId' => $groupId])->select('groups_teachers.*','groups_teachers.id as groupTeacherId', 'teachers.*')
         ->leftjoin('teachers','teachers.id', 'groups_teachers.teacherId')
             ->when($search, function ($query, $search) {
                 return $query->where('teachers.name', 'LIKE', '%' . $search . '%');
@@ -262,7 +262,7 @@ class GroupController extends Controller
         try {
             $group = Group::where('id', $request->group['id'])->first();
 
-            $exist = $group->teachers()->where(['groups_teachers.teacherId' => $request->teacher['id'], 'subject' => $request->teacher['subject']])->first();
+            $exist = $group->teachers()->where(['groups_teachers.teacherId' => $request->teacher['id'], 'subject' => $request->teacher['subject'], 'id' =>  $request->teacher['groupTeacherId']])->first();
             if (!$exist) {
                 DB::rollback();
                 return response()->json(['success' => false, 'message' => 'No existe este profesor con materia en el grupo.'], 200);
@@ -270,13 +270,13 @@ class GroupController extends Controller
 
             $eval = Evaluation::where('active', 1)->first();
             if ($eval) {
-                $groupTeacher = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id'],'subject' => $request->teacher['subject']])->first();
+                $groupTeacher = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id'],'subject' => $request->teacher['subject'], 'id' =>  $request->teacher['groupTeacherId']])->first();
                 $poll = Poll::where(['groupTeacherId' => $groupTeacher->id, 'evaluationId' => $eval->id])->first();
                 $completed = Completed::where('pollId', $poll->id)->delete();
                 $poll->delete();
                 $completedQuestions = CompletedQuestion::where('pollId', $poll->id)->delete();
             }
-            $groupTeacher = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id'],'subject' => $request->teacher['subject']])->delete();
+            $groupTeacher = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id'],'subject' => $request->teacher['subject'], 'id' =>  $request->teacher['groupTeacherId']])->delete();
             DB::commit();
             return response()->json(['success' => true ], 200);
         } catch (\PDOException $th) {

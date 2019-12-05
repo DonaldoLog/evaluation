@@ -25,8 +25,9 @@ class EvaluationStudentController extends Controller
         })->pluck('id')->toArray();
         $teachers = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId')
+        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId', 'polls.deleted_at')
         ->whereNull('teachers.deleted_at')
+        ->whereNull('polls.deleted_at')
         ->whereIn('groups_teachers.groupId', $groupIds)->get();
 
         $pollsCompleted = Completed::where('studentId', $student->id)->pluck('pollId');
