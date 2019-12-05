@@ -33,7 +33,7 @@ class StudentController extends Controller
             $student->name = $request->student['name'];
             $student->last_name = $request->student['last_name'];
             $student->studentId = $request->student['studentId'];
-            $student->password = bcrypt('evaluacion2020');
+            $student->password = bcrypt($request->student['studentId']);
             $student->save();
             return response()->json(['success' => true]);
         } catch (\PDOException $th) {
