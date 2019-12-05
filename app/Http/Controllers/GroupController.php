@@ -262,7 +262,7 @@ class GroupController extends Controller
         try {
             $group = Group::where('id', $request->group['id'])->first();
 
-            $exist = $group->teachers()->where(['groups_teachers.teacherId' => $request->teacher['id'], 'subject' => $request->teacher['subject'], 'groups_teachers.id' =>  $request->teacher['groupTeacherId']])->first();
+            $exist = DB::table('groups_teachers')->where(['groupId' => $group->id, 'teacherId' => $request->teacher['id'],'subject' => $request->teacher['subject'], 'groups_teachers.id' =>  $request->teacher['groupTeacherId']])->first();
             if (!$exist) {
                 DB::rollback();
                 return response()->json(['success' => false, 'message' => 'No existe este profesor con materia en el grupo.'], 200);
