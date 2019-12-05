@@ -176,14 +176,14 @@
                             <li class="nav-item ">
                                 <a class="nav-link " href="{{route('evaluations.index')}}">
                                     <i class="fas fa-paste"></i>
-                                    <p>Evaluacion</p>
+                                    <p>Evaluación</p>
                                 </a>
                             </li>
                             @else
                             <li class="nav-item ">
                                     <a class="nav-link active" href="{{route('evaluation.index')}}">
                                         <i class="fas fa-paste"></i>
-                                        <p>Evaluacion</p>
+                                        <p>Evaluación</p>
                                     </a>
                                 </li>
                             @endif

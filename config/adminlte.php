@@ -30,8 +30,8 @@ return [
     |
     */
 
-    'logo' => 'Evaluation',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => 'Evaluación',
+    'logo_img' => 'images/buho.jpg',
     'logo_img_class' => 'brand-image-xl',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
