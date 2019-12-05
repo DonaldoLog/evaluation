@@ -21,6 +21,8 @@
                             <th>  </th>
                             <th> Profesor </th>
                             <th> Materia </th>
+                            <th> Semestre/modulo </th>
+                            <th> Carrera </th>
                             <th>  </th>
                         </tr>
                     </thead>
@@ -29,6 +31,8 @@
                             <td> {{ index + 1 }} </td>
                             <td> {{ teacher.name }} {{ teacher.last_name }} </td>
                             <td> {{ teacher.subject }} </td>
+                            <td> {{ teacher.group }} </td>
+                            <td> {{ teacher.career }} </td>
                             <td v-if="!teacher.completed"> <a class="btn btn-primary" :href="`${mainUrl}/evaluation/questions/${teacher.id}`"> Continuar </a> </td>
                             <td v-else> <button class="btn btn-primary" disabled> Terminado </button> </td>
                         </tr>

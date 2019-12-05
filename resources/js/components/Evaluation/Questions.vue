@@ -8,7 +8,7 @@
             >
             <template slot="header">
             <div class="float-left">
-                <h4> {{ teacher.name }} {{ teacher.last_name }} - {{ teacher.subject }} </h4>
+                <h4> {{ teacher.name }} {{ teacher.last_name }} - {{ teacher.subject }} - {{ teacher.group }} - {{ teacher.career }} </h4>
             </div>
             </template>
             <b-card-body class="row">

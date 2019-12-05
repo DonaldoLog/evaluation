@@ -25,7 +25,9 @@ class EvaluationStudentController extends Controller
         })->pluck('id')->toArray();
         $teachers = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId', 'polls.deleted_at')
+        ->join('groups', 'groups.id', 'groups_teachers.groupId')
+        ->join('careers', 'careers.id', 'groups.careerId')
+        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId', 'polls.deleted_at', 'groups.name as group', 'careers.name as career')
         ->whereNull('teachers.deleted_at')
         ->whereNull('polls.deleted_at')
         ->whereIn('groups_teachers.groupId', $groupIds)->get();
@@ -64,7 +66,9 @@ class EvaluationStudentController extends Controller
         }
         $teacher = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.groupId', 'groups_teachers.tutoria')
+        ->join('groups', 'groups.id', 'groups_teachers.groupId')
+        ->join('careers', 'careers.id', 'groups.careerId')
+        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.groupId', 'groups_teachers.tutoria', 'groups.name as group', 'careers.name as career')
         ->whereNull('teachers.deleted_at')
         ->where('polls.id', $pollId)->first();
 

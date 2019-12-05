@@ -3784,6 +3784,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 Vue.component('v-select', vue_select__WEBPACK_IMPORTED_MODULE_1___default.a);
@@ -85399,6 +85403,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("th", [_vm._v(" Materia ")]),
                   _vm._v(" "),
+                  _c("th", [_vm._v(" Semestre/modulo ")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v(" Carrera ")]),
+                  _vm._v(" "),
                   _c("th")
                 ])
               ]),
@@ -85420,6 +85428,10 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("td", [_vm._v(" " + _vm._s(teacher.subject) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(teacher.group) + " ")]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(" " + _vm._s(teacher.career) + " ")]),
                     _vm._v(" "),
                     !teacher.completed
                       ? _c("td", [
@@ -85514,6 +85526,10 @@ var render = function() {
                     _vm._s(_vm.teacher.last_name) +
                     " - " +
                     _vm._s(_vm.teacher.subject) +
+                    " - " +
+                    _vm._s(_vm.teacher.group) +
+                    " - " +
+                    _vm._s(_vm.teacher.career) +
                     " "
                 )
               ])
