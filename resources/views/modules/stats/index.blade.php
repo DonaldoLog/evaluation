@@ -14,14 +14,9 @@
 
 
 @section('content')
-@if ($evaluation)
 <div id="app">
-    <evaluation-student-component teachers-initial = '{{ $teachers }}' done-initial = '{{ $done }}'></evaluation-student-component>
+    <stats-component careers-initial = '{{ $careers }}' evaluation-initial = '{{ $evaluation }}'></stats-component>
 </div>
-    @else
-    <h2> Ninguna evaluacion disponible</h2>
-@endif
-
 @stop
 
 @section('js')

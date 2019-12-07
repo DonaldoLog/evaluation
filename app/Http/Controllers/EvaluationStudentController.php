@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\Form;
 use App\Models\Group;
 use App\Models\Career;
+use App\Models\CompletedEval;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,43 +20,69 @@ use Illuminate\Support\Facades\DB;
 class EvaluationStudentController extends Controller
 {
     public function index () {
-        $student = User::where('id', Auth::user()->id)->with('groups')->first();
-        $groupIds = Group::whereHas('students', function($q) use ($student){
-            $q->where('groups_students.studentId', $student->id);
-        })->pluck('id')->toArray();
-        $teachers = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
-        ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->join('groups', 'groups.id', 'groups_teachers.groupId')
-        ->join('careers', 'careers.id', 'groups.careerId')
-        ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId', 'polls.deleted_at', 'groups.name as group', 'careers.name as career')
-        ->whereNull('teachers.deleted_at')
-        ->whereNull('polls.deleted_at')
-        ->whereIn('groups_teachers.groupId', $groupIds)->get();
+        $evaluation = Evaluation::where('active', 1)->first();
+        if ($evaluation) {
+            $student = User::where('id', Auth::user()->id)->with('groups')->first();
+            $groupIds = Group::whereHas('students', function($q) use ($student){
+                $q->where('groups_students.studentId', $student->id);
+            })->pluck('id')->toArray();
+            $teachers = Poll::join('groups_teachers', 'groups_teachers.id', 'polls.groupTeacherId')
+            ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
+            ->join('groups', 'groups.id', 'groups_teachers.groupId')
+            ->join('careers', 'careers.id', 'groups.careerId')
+            ->select('polls.id', 'teachers.name', 'teachers.last_name', 'groups_teachers.subject', 'groups_teachers.id as groupTeacherId', 'polls.deleted_at', 'groups.name as group', 'careers.name as career')
+            ->whereNull('teachers.deleted_at')
+            ->whereNull('polls.deleted_at')
+            ->whereIn('groups_teachers.groupId', $groupIds)
+            ->where('polls.evaluationId', $evaluation->id)->get();
 
-        $pollsCompleted = Completed::where('studentId', $student->id)->pluck('pollId');
-        $groupTeacherIdsCompleted = Poll::whereIn('id', $pollsCompleted)->get()->pluck('id')->toArray();
-        /* $teacherCompleted = Teacher::whereHas('groups', function($q) use ($groupTeacherIdsCompleted){
-            $q->whereIn('groups_teachers.id', $groupTeacherIdsCompleted);
-        })
-        ->pluck('id')->toArray(); */
+            $pollsCompleted = Completed::where('studentId', $student->id)->pluck('pollId');
+            $groupTeacherIdsCompleted = Poll::whereIn('id', $pollsCompleted)->get()->pluck('id')->toArray();
+            /* $teacherCompleted = Teacher::whereHas('groups', function($q) use ($groupTeacherIdsCompleted){
+                $q->whereIn('groups_teachers.id', $groupTeacherIdsCompleted);
+            })
+            ->pluck('id')->toArray(); */
 
-        foreach ($teachers as $teacher) {
-            if (in_array($teacher->id, $groupTeacherIdsCompleted)) {
-                $teacher->completed = true;
-            } else {
-                $teacher->completed = false;
+            foreach ($teachers as $teacher) {
+                if (in_array($teacher->id, $groupTeacherIdsCompleted)) {
+                    $teacher->completed = true;
+                } else {
+                    $teacher->completed = false;
+                }
             }
-        }
-        if ($teachers->count() != 0) {
-            $done = $teachers->count() == sizeof($groupTeacherIdsCompleted);
+            if ($teachers->count() != 0) {
+                $done = $teachers->count() == sizeof($groupTeacherIdsCompleted);
+                if ($done === true && $evaluation) {
+                    $groupIds = Group::whereHas('students', function($q) use ($student){
+                        $q->where('groups_students.studentId', $student->id);
+                    })->groupBy('groups.id')->pluck('groups.id')->toArray();
+                    $completed = CompletedEval::where(['studentId' => $student->id, 'evaluationId' => $evaluation->id])
+                    ->whereIn('groupId', $groupIds)->first();
+                    if (!$completed) {
+                        foreach ($groupIds as $groupId) {
+                            $completed = new CompletedEval();
+                            $completed->studentId = $student->id;
+                            $completed->groupId = $groupId;
+                            $completed->evaluationId = $evaluation->id;
+                            $completed->save();
+                        }
+                    }
+                }
+            } else {
+                $done = false;
+            }
+            $evaluation = true;
         } else {
             $done = false;
+            $teachers = [];
+            $evaluation = false;
         }
         /* $questions = Form::where('id', $evaluation->formId)->with('questions')->get();
         dd($student,$teachers, $groupTeacherIdsCompleted, $questions); */
         //dd($teachers, $groupTeacherIdsCompleted);
         return view('modules.evaluation.index')
         ->with('teachers', $teachers)
+        ->with('evaluation', $evaluation)
         ->with('done', $done);
     }
 
