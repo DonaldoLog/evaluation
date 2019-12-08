@@ -20,6 +20,6 @@
 @stop
 
 @section('js')
-    <script src="./../../js/app.js"></script>
+    <script src="./../../js/app.js?val=2020"></script>
     <script> console.log('Hi!'); </script>
 @stop
