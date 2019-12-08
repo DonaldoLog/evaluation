@@ -87,7 +87,7 @@
                                         <tbody>
                                             <template v-if="tableData.length > 0">
                                                 <template v-for="(evaluation, index) in tableData">
-                                                        <tr :key="index">
+                                                        <tr :key="`eval${index}`">
                                                             <td> {{ index + 1 }} </td>
                                                             <td> {{ evaluation.name }} </td>
                                                             <td> {{ evaluation.active? 'Activa': 'x' }} </td>
@@ -335,10 +335,6 @@ Vue.component('v-select', vSelect)
                     this.evaluation = {
                         name: res.data.evaluation.name,
                         id: res.data.evaluation.id
-                    }
-                    this.form = {
-                        name: res.data.evaluation.form.name,
-                        id: res.data.evaluation.id,
                     }
                     this.colapsable = true
                 } else {

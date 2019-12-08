@@ -179,6 +179,12 @@
                                     <p>Evaluación</p>
                                 </a>
                             </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('stats.index')}}">
+                                    <i class="fas fa-archive"></i>
+                                    <p>Estadisticas</p>
+                                </a>
+                            </li>
                             @else
                             <li class="nav-item ">
                                     <a class="nav-link active" href="{{route('evaluation.index')}}">

@@ -9,6 +9,7 @@
             <template slot="header">
             <div class="float-left">
                 <h4> {{ evaluation.name }} </h4>
+                <h3> Estado de la evaluación de docentes </h3>
             </div>
             </template>
             <b-card-body class="row">
@@ -24,7 +25,7 @@
                         <tr v-for="(career, index) in careers">
                             <td> {{ index + 1 }} </td>
                             <td> {{ career.name }} </td>
-                            <td> <a class="btn btn-primary" :href="`${mainUrl}/stats/career/${career.id}/${evaluation.id}`"> Descargar </a> </td>
+                            <td> <a class="btn btn-primary" target="_blank" :href="`${mainUrl}/stats/career/${career.id}/${evaluation.id}`"> Descargar </a> </td>
                         </tr>
                     </tbody>
                 </table>
