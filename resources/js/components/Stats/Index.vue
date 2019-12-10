@@ -13,6 +13,22 @@
             </div>
             </template>
             <b-card-body class="row">
+                <div class="col-12">
+                    <hr>
+                </div>
+                <p> Dinamico: </p>
+                <div class="col-12 form-group row">
+                    <div class="col-10">
+                        <v-select multiple v-model="careersSelected" :options="careers"  label="name" :multiple="true"></v-select>
+                    </div>
+                    <div class="col-2">
+                        <button @click="dinamicStat()" class="btn btn-primary"> Descargar </button>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <p> Por carrera: </p>
                 <table class="table table-striped responsive">
                     <thead>
                         <tr>
@@ -42,11 +58,11 @@
 <script>
 import mainUrl from '../../mainUrl'
 import vSelect from 'vue-select'
+
 Vue.component('v-select', vSelect)
 
   export default {
     components: {
-
     },
     props: {
         careersInitial: {},
@@ -54,6 +70,7 @@ Vue.component('v-select', vSelect)
     },
     data() {
       return {
+          careersSelected: [],
           evaluation: this.evaluationInitial? JSON.parse(this.evaluationInitial): null,
           careers: this.careersInitial? JSON.parse(this.careersInitial): null,
           form: {},
@@ -347,6 +364,14 @@ Vue.component('v-select', vSelect)
                         })
                     }
             })
+        },
+        dinamicStat() {
+            let careersIds = '';
+            this.careersSelected.forEach(element => {
+                careersIds += `${element.id}-`
+            });
+            careersIds = careersIds.substring(0, careersIds.length - 1);
+            window.open(`${this.mainUrl}/stats/dinamic-career/${this.evaluation.id}/${careersIds}`, '_blank');
         }
      },
      mounted() {
@@ -354,3 +379,4 @@ Vue.component('v-select', vSelect)
     },
   }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

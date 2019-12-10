@@ -99,4 +99,5 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::name('stats.')->prefix('stats')->middleware(['auth','is_admin'])->group(function () {
     Route::get('/index', 'StatsController@index')->name('index');
     Route::get('/career/{careerId}/{evaluationId}', 'StatsController@careerInfo')->name('career.info');
+    Route::get('/dinamic-career/{evaluationId}/{careerIds}', 'StatsController@dinamicCareerInfo')->name('dinamic.career.info');
 });

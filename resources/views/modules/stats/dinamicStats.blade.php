@@ -69,7 +69,11 @@ table.blueTable tfoot .links a{
 <body>
 
     <h2 style="text-align: center"> UNIVERSIDAD PEDAGÓGICA NACIONAL TEZIUTLÁN </h2>
-    <h3 style="text-align: center"> Carrera: {{ strtoupper($career->name) }} </h3>
+    <h3 style="text-align: center"> Carreras:
+        @foreach ($careers as $key => $career)
+            {{ $key + 1 }} {{ strtoupper($career->name) }} <br>
+        @endforeach
+    </h3>
     <table class="blueTable">
         <thead>
             <tr>

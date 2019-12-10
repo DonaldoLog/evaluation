@@ -38,7 +38,26 @@ class StatsController extends Controller
         $career = Career::where('id', $careerId)->first();
         $data = [ 'students' => $students, 'career' => $career];
         $pdf = PDF::loadView('modules.stats.stats',$data);
-        return $pdf->stream('ticket.pdf');
+        return $pdf->stream('evaluacion.pdf');
+       /*  $pdf = PDF::loadView('modules.stats.stats', $data);
+        return $pdf->download('invoice.pdf'); */
+    }
+
+    public function dinamicCareerInfo ($evaluationId, $careerId) {
+        $careerIds = explode('-',$careerId);
+        $evaluation = Evaluation::where('id', $evaluationId)->first();
+        $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
+        $groupsIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)->pluck('groupId')->toArray();
+        $groupsIds = Group::whereIn('id', $groupsIds)->whereIn('careerId', $careerIds)->get()->pluck('id')->toArray();
+        $students = User::leftjoin('completed_eval', 'completed_eval.studentId', 'users.id')
+        ->leftjoin('groups_students', 'groups_students.studentId', 'users.id')
+        ->whereIn('groups_students.groupId', $groupsIds)
+        ->select('users.name', 'users.studentId', 'users.last_name', 'completed_eval.id as completedId')
+        ->get();
+        $careers = Career::whereIn('id', $careerIds)->get();
+        $data = [ 'students' => $students, 'careers' => $careers];
+        $pdf = PDF::loadView('modules.stats.dinamicStats',$data);
+        return $pdf->stream('evaluaciones.pdf');
        /*  $pdf = PDF::loadView('modules.stats.stats', $data);
         return $pdf->download('invoice.pdf'); */
     }
