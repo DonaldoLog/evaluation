@@ -182,7 +182,13 @@
                             <li class="nav-item ">
                                 <a class="nav-link " href="{{route('stats.index')}}">
                                     <i class="fas fa-archive"></i>
-                                    <p>Estadisticas</p>
+                                    <p>Estadisticas carreras</p>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('stats.index.teachers')}}">
+                                    <i class="fas fa-archive"></i>
+                                    <p>Estadisticas profesores</p>
                                 </a>
                             </li>
                             @else
