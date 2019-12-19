@@ -358,6 +358,8 @@ div.page_break + div.page_break{
                 @endforeach
             </tbody>
         </table>
+        <br>
+        <br>
         <table style="font-size: 12px; width: 100%;" align="center">
             <tr align="center">
                 <th>_____________________________</th>
