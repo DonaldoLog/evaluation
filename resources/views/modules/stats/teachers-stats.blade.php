@@ -358,6 +358,23 @@ div.page_break + div.page_break{
                 @endforeach
             </tbody>
         </table>
+        <table style="font-size: 12px; width: 100%;" align="center">
+            <tr align="center">
+                <th>_____________________________</th>
+                <th>_____________________________</th>
+                <th>_____________________________</th>
+            </tr>
+            <tr align="center">
+                <th>Mtro. Ernesto C. Marín Alarcón</th>
+                <th>Dra. Edith Lyions López</th>
+                <th>Docente</th>
+            </tr>
+            <tr align="center">
+                <th>Director UPN-212</th>
+                <th>Subdirectora UPN-212</th>
+                <th>UPN-212</th>
+            </tr>
+        </table>
         <table style="padding-left: 70%; font-size: 10px;">
             <tbody style="border: solid 1px #000000;">
                 <tr>
