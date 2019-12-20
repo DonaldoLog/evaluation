@@ -117,7 +117,48 @@ class StatsController extends Controller
         /* if ($answersTutorias->count() == 0 && $answers->count() == 0) {
             return redirect('./');
         } */
-        $data = ['answersOpen' => $answersOpen, 'answersTutoriasOpen' => $answersTutoriasOpen, 'careersTutoria' => $careersTutoria, 'careers' => $careers, 'teacher' => $teacher, 'answers' => $answers, 'answersTutorias' => $answersTutorias, 'groups' => $groups, 'groupsTutoria' => $groupsTutoria];
+        //$data = ['answersOpen' => $answersOpen, 'answersTutoriasOpen' => $answersTutoriasOpen, 'careersTutoria' => $careersTutoria, 'careers' => $careers, 'teacher' => $teacher, 'answers' => $answers, 'answersTutorias' => $answersTutorias, 'groups' => $groups, 'groupsTutoria' => $groupsTutoria];
+
+        //$view =  \View::make('modules.stats.teachers-stats', compact(['answersOpen','answersTutoriasOpen','careersTutoria','careers','teacher','answers','answersTutorias','groups','groupsTutoria']))->render();
+        $total = 0.0;
+        $questionsGraph[] = ['Num', 'Valor'];
+        if ($answers->count() > 0) {
+            foreach ($answers as $key => $answer) {
+                $total +=  number_format((float)($answer->sum) / $answer->totalStudents, 2, '.', '');
+                $answer->total =  number_format((float)($answer->sum) / $answer->totalStudents, 2, '.', '');
+                $questionsGraph[++$key] = [$key.'', (float)$answer->total];
+            }
+            $total = number_format((float)($total / $answers->count()), 2, '.', '');
+        }
+
+        $questionsGraphTuto[] = ['Num', 'Valor'];
+        $total2 = 0.0;
+        if ($answersTutorias->count() > 0) {
+            foreach ($answersTutorias as $key => $answer) {
+                $total2 +=  number_format((float)($answer->sum) / $answer->totalStudents, 2, '.', '');
+                $answer->total =  number_format((float)($answer->sum) / $answer->totalStudents, 2, '.', '');
+                $questionsGraphTuto[++$key] = [$key.'', (float)$answer->total];
+            }
+
+            $total2 = number_format((float)($total2 / $answersTutorias->count()), 2, '.', '');
+        }
+
+
+        return view('modules.stats.teachers-print-stats')
+        ->with('questionsGraph', json_encode($questionsGraph))
+        ->with('questionsGraphTuto', json_encode($questionsGraphTuto))
+        ->with('answersOpen', $answersOpen)
+        ->with('answersTutoriasOpen', $answersTutoriasOpen)
+        ->with('careersTutoria', $careersTutoria)
+        ->with('careers', $careers)
+        ->with('teacher', $teacher)
+        ->with('answers', $answers)
+        ->with('answersTutorias', $answersTutorias)
+        ->with('groups', $groups)
+        ->with('groupsTutoria', $groupsTutoria)
+        ->with('total', $total)
+        ->with('total2', $total2)
+        ;
 
         $pdf = PDF::loadView('modules.stats.teachers-stats',$data);
         return $pdf->stream('evaluacion.pdf');
