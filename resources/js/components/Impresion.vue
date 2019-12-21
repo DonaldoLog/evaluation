@@ -32,6 +32,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
                 <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
@@ -71,6 +72,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
                 <table class="blueTable">
                     <thead>
                         <tr>
@@ -186,6 +188,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
                 <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
@@ -223,6 +226,7 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
                 <table class="blueTable">
                     <thead>
                         <tr>
@@ -417,8 +421,8 @@ Vue.use(require('vue-moment'));
     margin-bottom:0px;
     padding-bottom:0px;
 
-    margin-top:0px;
-    padding-top:0px;
+    margin-top:4px;
+    padding-top:4px;
 
 }
 table.blueTable {
@@ -433,7 +437,7 @@ table.blueTable td, table.blueTable th {
   padding: 3px 2px;
 }
 table.blueTable tbody td {
-  font-size: 12px;
+  font-size: 11px;
 }
 table.blueTable tr:nth-child(even) {
   background: #D0E4F5;
@@ -446,7 +450,7 @@ table.blueTable thead {
   border-bottom: 2px solid #444444;
 }
 table.blueTable thead th {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   color: #FFFFFF;
   border-left: 2px solid #D0E4F5;
@@ -456,7 +460,7 @@ table.blueTable thead th:first-child {
 }
 
 table.blueTable tfoot {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: bold;
   color: #FFFFFF;
   background: #D0E4F5;
@@ -466,7 +470,7 @@ table.blueTable tfoot {
   border-top: 2px solid #444444;
 }
 table.blueTable tfoot td {
-  font-size: 13px;
+  font-size: 12px;
 }
 table.blueTable tfoot .links {
   text-align: right;
