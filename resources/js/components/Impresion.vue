@@ -12,7 +12,7 @@
                     </tbody>
                 </table>
 
-                <table style="padding-left: 50%; font-size: 12px;">
+                <table style="padding-left: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
                             <th>DEPENDENCIA:</th>
@@ -28,18 +28,18 @@
                         </tr>
                         <tr>
                             <th>FECHA:</th>
-                            <td> {{ new Date() | moment("DD/MM/YYYY H:mm") }} </td>
+                            <td> {{ new Date() | moment("DD/MM/YYYY") }} </td>
                         </tr>
                     </tbody>
                 </table>
-                <table style="padding-rigth: 50%; font-size: 12px;">
+                <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
-                            <th>NOMBRE DEL PROFESOR:</th>
+                            <th align="right">NOMBRE DEL PROFESOR:</th>
                             <td>{{ teacher.name }} {{ teacher.last_name }} </td>
                         </tr>
                         <tr>
-                            <th>PROGRAMA (S) EDUCATIVO (S):</th>
+                            <th align="right">PROGRAMA (S) EDUCATIVO (S):</th>
                             <td>
                                 <template v-for="(career, index) in careers">
                                     {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
@@ -47,7 +47,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>GRUPOS:</th>
+                            <th align="right">GRUPOS:</th>
                             <td>
                                 <template v-for="(group, index) in groups">
                                     {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
@@ -59,13 +59,15 @@
                             <td> {{ answers[0].totalStudents }} </td>
                         </tr>
                         <tr>
-                            <th>CALIFICACIÓN:</th>
+                            <th align="right">CALIFICACIÓN:</th>
                             <td>
                                 {{ total }}
                             </td>
-                            <th>NIVEL:</th>
+                            <th >NIVEL:</th>
                             <td> {{ `${(total >= 4.75)? 'Excelente': (total >= 4.25)? 'Notable': (total >= 3.75)? 'Bueno': (total >= 3.24)? 'Suficiente': 'Insuficiente'}` }} </td>
-
+                            <td> &nbsp </td>
+                            <td> &nbsp </td>
+                            <td> &nbsp </td>
                         </tr>
                     </tbody>
                 </table>
@@ -88,16 +90,7 @@
                     </tbody>
                 </table>
                 <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
                 <div>
-                    <p align="center">  Calificación por pregunta</p>
                     <GChart
                         type="ColumnChart"
                         :data="chartData"
@@ -173,7 +166,7 @@
                     </tbody>
                 </table>
 
-                <table style="padding-left: 50%; font-size: 12px;">
+                <table style="padding-left: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
                             <th>DEPENDENCIA:</th>
@@ -189,18 +182,18 @@
                         </tr>
                         <tr>
                             <th>FECHA:</th>
-                            <td> {{ new Date() | moment("DD/MM/YYYY H:mm") }} </td>
+                            <td> {{ new Date() | moment("DD/MM/YYYY") }} </td>
                         </tr>
                     </tbody>
                 </table>
-                <table style="padding-rigth: 50%; font-size: 12px;">
+                <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
-                            <th>NOMBRE DEL PROFESOR:</th>
+                            <th align="right">NOMBRE DEL PROFESOR:</th>
                             <td>{{ teacher.name }} {{ teacher.last_name }} </td>
                         </tr>
                         <tr>
-                            <th>PROGRAMA (S) EDUCATIVO (S):</th>
+                            <th align="right">PROGRAMA (S) EDUCATIVO (S):</th>
                             <td>
                                 <template v-for="(career, index) in careersTutoria">
                                     {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
@@ -208,7 +201,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>GRUPOS:</th>
+                            <th align="right">GRUPOS:</th>
                             <td>
                                 <template v-for="(group, index) in groupsTutoria">
                                     {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
@@ -220,7 +213,7 @@
                             <td> {{ answersTutorias[0].totalStudents }} </td>
                         </tr>
                         <tr>
-                            <th>CALIFICACIÓN:</th>
+                            <th align="right">CALIFICACIÓN:</th>
                             <td>
                                 {{ total2 }}
                             </td>
@@ -249,7 +242,6 @@
                     </tbody>
                 </table>
                 <div>
-                    <p align="center">  Calificación por pregunta</p>
                     <GChart
                         type="ColumnChart"
                         :data="chartData2"
@@ -322,11 +314,13 @@ Vue.use(require('vue-moment'));
                 chartData2: JSON.parse(this.questionsgraphtutoInitial)
                 ,
                 chartOptions: {
+                    title: '---------------------------------Calificacion por pregunta---------------------------------',
                     vAxis: {
                         minValue: 0,
                         maxValue: 5,
                         ticks: [0, 1, 2, 3, 4, 5]
-                    }
+                    },
+                    legend: {position: 'none'}
                 },
                 content: '',
                 answersOpen: this.answersOpenInitial? JSON.parse(this.answersOpenInitial): {},
