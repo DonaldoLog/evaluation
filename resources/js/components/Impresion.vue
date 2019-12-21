@@ -91,6 +91,8 @@
                         </tr>
                     </tbody>
                 </table>
+                <div style="page-break-after: always;"></div>
+                <br>
                 <br>
                 <div>
                     <GChart
@@ -99,9 +101,6 @@
                         :options="chartOptions"
                     />
                 </div>
-                <br>
-                <br>
-                <br>
                 <br>
                 <br>
                 <br>
@@ -126,7 +125,7 @@
                         <th>UPN-212</th>
                     </tr>
                 </table>
-                <table style="padding-left: 70%; font-size: 9px;">
+                <table style="bottom:0;right:0;padding-left: 70%; font-size: 9px;padding-top: 70%;">
                     <tbody style="border: solid 1px #000000;">
                         <tr>
                             <th> Niveles de desempeño</th>
@@ -245,6 +244,9 @@
                         </tr>
                     </tbody>
                 </table>
+             <div style="page-break-after: always;"></div>
+             <br>
+             <br>
                 <div>
                     <GChart
                         type="ColumnChart"
@@ -252,6 +254,12 @@
                         :options="chartOptions"
                     />
                 </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
                 <br>
                 <table style="font-size: 12px; width: 100%;" align="center">
                     <tr align="center">
@@ -270,7 +278,8 @@
                         <th>UPN-212</th>
                     </tr>
                 </table>
-                <table style="padding-left: 70%; font-size: 9px;">
+                <br>
+                <table style="bottom:0;right:0;padding-left: 70%; font-size: 9px;padding-top: 70%;">
                     <tbody style="border: solid 1px #000000;">
                         <tr>
                             <th> Niveles de desempeño</th>
