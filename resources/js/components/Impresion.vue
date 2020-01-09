@@ -36,11 +36,11 @@
                 <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
-                            <th align="right">NOMBRE DEL PROFESOR:</th>
+                            <th align="left">NOMBRE DEL PROFESOR:</th>
                             <td>{{ teacher.name }} {{ teacher.last_name }} </td>
                         </tr>
                         <tr>
-                            <th align="right">PROGRAMA (S) EDUCATIVO (S):</th>
+                            <th align="left">PROGRAMA (S) EDUCATIVO (S):</th>
                             <td>
                                 <template v-for="(career, index) in careers">
                                     {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
@@ -48,7 +48,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th align="right">GRUPOS:</th>
+                            <th align="left">GRUPOS:</th>
                             <td>
                                 <template v-for="(group, index) in groups">
                                     {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
@@ -56,11 +56,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>No. DE ESTUDIANTES EVALUADORES:</th>
+                            <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
                             <td> {{ answers[0].totalStudents }} </td>
                         </tr>
                         <tr>
-                            <th align="right">CALIFICACIÓN:</th>
+                            <th align="left">CALIFICACIÓN:</th>
                             <td>
                                 {{ total }}
                             </td>
@@ -179,7 +179,7 @@
                         </tr>
                         <tr>
                             <th>ASUNTO:</th>
-                            <td>Constancia de Evaluación Docente - Tutoría</td>
+                            <td>Constancia de Evaluación Tutoría</td>
                         </tr>
                         <tr>
                             <th>FECHA:</th>
@@ -191,11 +191,11 @@
                 <table style="padding-rigth: 60%; font-size: 11px;">
                     <tbody>
                         <tr>
-                            <th align="right">NOMBRE DEL PROFESOR:</th>
+                            <th align="left">NOMBRE DEL PROFESOR:</th>
                             <td>{{ teacher.name }} {{ teacher.last_name }} </td>
                         </tr>
                         <tr>
-                            <th align="right">PROGRAMA (S) EDUCATIVO (S):</th>
+                            <th align="left">PROGRAMA (S) EDUCATIVO (S):</th>
                             <td>
                                 <template v-for="(career, index) in careersTutoria">
                                     {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
@@ -203,7 +203,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th align="right">GRUPOS:</th>
+                            <th align="left">GRUPOS:</th>
                             <td>
                                 <template v-for="(group, index) in groupsTutoria">
                                     {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
@@ -211,11 +211,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>No. DE ESTUDIANTES EVALUADORES:</th>
+                            <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
                             <td> {{ answersTutorias[0].totalStudents }} </td>
                         </tr>
                         <tr>
-                            <th align="right">CALIFICACIÓN:</th>
+                            <th align="left">CALIFICACIÓN:</th>
                             <td>
                                 {{ total2 }}
                             </td>
