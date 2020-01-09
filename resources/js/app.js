@@ -29,6 +29,7 @@ Vue.component('admin-group-component', require('./components/AdminGroup/AdminGro
 Vue.component('evaluation-component', require('./components/Evaluation.vue').default);
 Vue.component('evaluation-student-component', require('./components/Evaluation/Index.vue').default);
 Vue.component('questions-component', require('./components/Evaluation/Questions.vue').default);
+Vue.component('stats-component', require('./components/Stats/Index.vue').default);
 Vue.component('teachers-stats-component', require('./components/TeachersStats.vue').default);
 Vue.component('impresion-component', require('./components/Impresion.vue').default);
 
