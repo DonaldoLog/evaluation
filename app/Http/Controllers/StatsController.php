@@ -34,16 +34,18 @@ class StatsController extends Controller
         ->with('evaluation', $evaluation);
     }
 
-    public function getTeachers(Request $request) {
+    public function getTeachers0(Request $request) {
         $search = $request->search;
         $evaluation = Evaluation::where('active', 1)->first();
         $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
-        $teachersIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)->pluck('teacherId')->toArray();
-        $query = Teacher::select('id', 'name', 'last_name', 'email')
-            ->whereIn('id', $teachersIds)
-            ->when($search, function ($query, $search) {
-                return $query->where('name', 'LIKE', '%' . $search . '%');
-            });
+        $query = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)
+        ->join('groups', 'groups.id', 'groups_teachers.groupId')
+        ->distinct('groups_teachers.teacherId')
+        ->join('careers', 'careers.id', 'groups.careerId')
+        ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
+        ->where('groups_teachers.tutoria', 0)
+        ->where('careers.type', 3)
+        ->select('teachers.id','teachers.name as name', 'teachers.last_name', 'teachers.email', DB::raw('"1" AS type'));
 
         $total    = $query->count();
         $ignora   = $request->per_page * ($request->page - 1);
@@ -65,11 +67,52 @@ class StatsController extends Controller
         return $response;
     }
 
-    public function getStatsTeacher ($teacherId, $evaluationId) {
+    public function getTeachers1(Request $request) {
+        $search = $request->search;
+        $evaluation = Evaluation::where('active', 1)->first();
+        $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
+        $query = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)
+        ->distinct('groups_teachers.teacherId')
+        ->leftjoin('groups', 'groups.id', 'groups_teachers.groupId')
+        ->leftjoin('careers', 'careers.id', 'groups.careerId')
+        ->leftjoin('teachers', 'teachers.id', 'groups_teachers.teacherId')
+        ->where('groups_teachers.tutoria', 0)
+        ->where('careers.type', '!=', 3)
+        ->select('teachers.id','teachers.name as name', 'teachers.last_name', 'teachers.email', DB::raw('"0" AS type'));
+
+        $total    = $query->count();
+        $ignora   = $request->per_page * ($request->page - 1);
+        $lastPage = intval(round($total / $request->per_page, 0));
+        $lastPage = ($lastPage == 0) ? $lastPage+1 : $lastPage;
+        $data     = $query->orderBy($request->column, $request->order)->skip($ignora)->take($request->per_page)->get();
+
+        $response = [
+            'data' => $data,
+            'meta' => (object) [
+                'current_page' => $request->page,
+                'from' => $ignora + 1,
+                'last_page' => $lastPage,
+                'per_page' => $request->per_page,
+                'to' => $ignora + $request->per_page,
+                'total' => $total
+            ],
+        ];
+        return $response;
+    }
+
+    public function getStatsTeacher ($teacherId, $evaluationId, $tipo = 0) {
+
         $evaluation = Evaluation::where('id', $evaluationId)->first();
         $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
-        $groupsTeachersIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)->where('teacherId', $teacherId)
-        ->where('tutoria', 0)->pluck('id')->toArray();
+        $groupsTeachersIds = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)->where('groups_teachers.teacherId', $teacherId)
+        ->leftjoin('groups', 'groups.id', 'groups_teachers.groupId')
+        ->leftjoin('careers', 'careers.id', 'groups.careerId');
+        if ($tipo == 1) {
+            $groupsTeachersIds = $groupsTeachersIds->where('careers.type', '!=', 3);
+        } else if($tipo == 0) {
+            $groupsTeachersIds = $groupsTeachersIds->where('careers.type', 3);
+        }
+        $groupsTeachersIds = $groupsTeachersIds->where('groups_teachers.tutoria', 0)->pluck('groups_teachers.id')->toArray();
         $pollsIds = Poll::whereIn('groupteacherId', $groupsTeachersIds)->pluck('id')->toArray();
 
         $groupsTeachersTutoriaIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)->where('teacherId', $teacherId)
@@ -102,9 +145,23 @@ class StatsController extends Controller
         $groupIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)
         ->where('tutoria', 0)
         ->where('teacherId', $teacherId)->pluck('groupId')->toArray();
-        $groups = Group::whereIn('id', $groupIds)->get();
+        if ($tipo == 1) {
+            $groups = Group::whereIn('groups.id', $groupIds)
+            ->join('careers', 'careers.id', 'groups.careerId')
+            ->where('careers.type', '!=', 3)->get();
+        } else {
+            $groups = Group::whereIn('groups.id', $groupIds)
+            ->join('careers', 'careers.id', 'groups.careerId')
+            ->where('careers.type', '=', 3)->get();
+        }
         $careersIds = $groups->pluck('careerId')->toArray();
         $careers = Career::whereIn('id', $careersIds)->get();
+        if ($tipo == 1) {
+            $careers = Career::whereIn('id', $careersIds)->where('type', '!=', 3)->get();
+        } else {
+            $careers = Career::whereIn('id', $careersIds)->where('type', 3)->get();
+        }
+        //dd($careers);
 
         $teacher = Teacher::where('id', $teacherId)->first();
 
@@ -114,6 +171,7 @@ class StatsController extends Controller
         $groupsTutoria = Group::whereIn('id', $groupsTeachersTutoria)->get();
         $careersIds = $groupsTutoria->pluck('careerId')->toArray();
         $careersTutoria = Career::whereIn('id', $careersIds)->get();
+        //dd($careersTutoria,1);
         /* if ($answersTutorias->count() == 0 && $answers->count() == 0) {
             return redirect('./');
         } */

@@ -30,7 +30,7 @@ Vue.component('evaluation-component', require('./components/Evaluation.vue').def
 Vue.component('evaluation-student-component', require('./components/Evaluation/Index.vue').default);
 Vue.component('questions-component', require('./components/Evaluation/Questions.vue').default);
 Vue.component('stats-component', require('./components/Stats/Index.vue').default);
-Vue.component('teachers-stats-component', require('./components/TeachersStats.vue').default);
+Vue.component('teachers-stats-component', require('./components/TeacherStats/TeachersStats.vue').default);
 Vue.component('impresion-component', require('./components/Impresion.vue').default);
 
 const app = new Vue({

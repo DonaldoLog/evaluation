@@ -5,9 +5,9 @@
                 <table style="width: 100%;">
                     <tbody>
                         <tr>
-                            <th align="center">  <img :src="'./../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
                             <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
-                            <th align="center">  <img :src="'./../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
                         </tr>
                     </tbody>
                 </table>
