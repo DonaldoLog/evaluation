@@ -115,7 +115,7 @@ class StatsController extends Controller
         $groupsTeachersIds = $groupsTeachersIds->where('groups_teachers.tutoria', 0)->pluck('groups_teachers.id')->toArray();
         $pollsIds = Poll::whereIn('groupteacherId', $groupsTeachersIds)->pluck('id')->toArray();
 
-        $groupsTeachersTutoriaIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)->where('teacherId', $teacherId)
+        $groupsTeachersTutoriaIds = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)->where('groups_teachers.teacherId', $teacherId)
         ->where('tutoria', 1)->pluck('id')->toArray();
         $pollsTuroriasIds = Poll::whereIn('groupteacherId', $groupsTeachersTutoriaIds)->pluck('id')->toArray();
 
@@ -126,10 +126,10 @@ class StatsController extends Controller
         ->groupBy('completed_question.questionId')->get();
 
         $answersOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
-        ->select('questions.name', 'completed_question.score')
+        ->select('completed_question.id as cid', 'questions.id', 'questions.type', 'questions.name', 'completed_question.score')
         ->whereIn('completed_question.pollId', $pollsIds)
         ->where('questions.type', 2)->get();
-
+        //dd($answersOpen);
         $answersTutorias = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
         ->selectRaw('count(completed_question.id) as totalStudents, sum(completed_question.score) as sum, questions.name')
         ->whereIn('completed_question.pollId', $pollsTuroriasIds)
@@ -232,6 +232,8 @@ class StatsController extends Controller
         $students = User::leftjoin('completed_eval', 'completed_eval.studentId', 'users.id')
         ->leftjoin('groups_students', 'groups_students.studentId', 'users.id')
         ->whereIn('groups_students.groupId', $groupsIds)
+        ->groupBy('users.id')
+        ->where('completed_eval.evaluationId', $evaluationId)
         ->select('users.name', 'users.studentId', 'users.last_name', 'completed_eval.id as completedId')
         ->get();
         $career = Career::where('id', $careerId)->first();
@@ -256,6 +258,7 @@ class StatsController extends Controller
         ->where('completed_eval.evaluationId', $evaluationId)
         ->orderBy('users.name')
         ->get();
+
         $careers = Career::whereIn('id', $careerIds)->get();
         $data = [ 'students' => $students, 'careers' => $careers];
         $pdf = PDF::loadView('modules.stats.dinamicStats',$data);

@@ -160,9 +160,9 @@
                 <table style="width: 100%;">
                     <tbody>
                         <tr>
-                            <th align="center">  <img :src="'./../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
                             <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
-                            <th align="center">  <img :src="'./../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
                         </tr>
                     </tbody>
                 </table>
@@ -244,9 +244,9 @@
                         </tr>
                     </tbody>
                 </table>
-             <div style="page-break-after: always;"></div>
-             <br>
-             <br>
+                <div style="page-break-after: always;"></div>
+                <br>
+                <br>
                 <div>
                     <GChart
                         type="ColumnChart"
@@ -307,6 +307,203 @@
                     </tbody>
                 </table>
 
+            </template>
+
+            <template v-if="answersOpen.length > 0">
+                <br>
+                <br>
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
+                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="padding-left: 60%; font-size: 11px;">
+                    <tbody>
+                        <tr>
+                            <th>DEPENDENCIA:</th>
+                            <td>Universidad Pedagógica Nacional 212, Teziutlán, Puebla.</td>
+                        </tr>
+                        <tr>
+                            <th>AREA:</th>
+                            <td>Subdirección Académica</td>
+                        </tr>
+                        <tr>
+                            <th>ASUNTO:</th>
+                            <td>Comentarios de Evaluación Docente</td>
+                        </tr>
+                        <tr>
+                            <th>FECHA:</th>
+                            <td> {{ new Date() | moment("DD/MM/YYYY") }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table style="padding-rigth: 60%; font-size: 11px;">
+                    <tbody>
+                        <tr>
+                            <th align="left">NOMBRE DEL PROFESOR:</th>
+                            <td>{{ teacher.name }} {{ teacher.last_name }} </td>
+                        </tr>
+                        <tr>
+                            <th align="left">PROGRAMA (S) EDUCATIVO (S):</th>
+                            <td>
+                                <template v-for="(career, index) in careers">
+                                    {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="left">GRUPOS:</th>
+                            <td>
+                                <template v-for="(group, index) in groups">
+                                    {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
+                            <td> {{ answers[0].totalStudents }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="blueTable">
+                    <thead>
+                        <tr>
+                            <th> CRITERIOS </th>
+                            <th> COMENTARIO </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(answer, index) in answersOpen">
+                            <td> {{ index + 1 }} </td>
+                            <td> {{ answer.score }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <table style="font-size: 12px; width: 100%;" align="center">
+                    <tr align="center">
+                        <th>_____________________________</th>
+                        <th>_____________________________</th>
+                        <th>_____________________________</th>
+                    </tr>
+                    <tr align="center">
+                        <th>Mtro. Ernesto C. Marín Alarcón</th>
+                        <th>Dra. Edith Lyions López</th>
+                        <th>Docente</th>
+                    </tr>
+                    <tr align="center">
+                        <th>Director UPN-212</th>
+                        <th>Subdirectora UPN-212</th>
+                        <th>UPN-212</th>
+                    </tr>
+                </table>
+            </template>
+                <div style="page-break-after: always;"></div>
+<template v-if="answersTutoriasOpen.length > 0">
+                <br>
+                <br>
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
+                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table style="padding-left: 60%; font-size: 11px;">
+                    <tbody>
+                        <tr>
+                            <th>DEPENDENCIA:</th>
+                            <td>Universidad Pedagógica Nacional 212, Teziutlán, Puebla.</td>
+                        </tr>
+                        <tr>
+                            <th>AREA:</th>
+                            <td>Subdirección Académica</td>
+                        </tr>
+                        <tr>
+                            <th>ASUNTO:</th>
+                            <td>Comentarios de Evaluación Docente Tutoría</td>
+                        </tr>
+                        <tr>
+                            <th>FECHA:</th>
+                            <td> {{ new Date() | moment("DD/MM/YYYY") }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table style="padding-rigth: 60%; font-size: 11px;">
+                    <tbody>
+                        <tr>
+                            <th align="left">NOMBRE DEL PROFESOR:</th>
+                            <td>{{ teacher.name }} {{ teacher.last_name }} </td>
+                        </tr>
+                         <tr>
+                            <th align="left">PROGRAMA (S) EDUCATIVO (S):</th>
+                            <td>
+                                <template v-for="(career, index) in careersTutoria">
+                                    {{ career.name }} <template v-if="index + 1 != careers.length"> - </template>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="left">GRUPOS:</th>
+                            <td>
+                                <template v-for="(group, index) in groupsTutoria">
+                                    {{ group.name }}  <template v-if="index + 1 != groups.length"> - </template>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
+                            <td> {{ answersTutorias[0].totalStudents }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table class="blueTable">
+                    <thead>
+                        <tr>
+                            <th> CRITERIOS </th>
+                            <th> COMENTARIO </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(answer, index) in answersTutoriasOpen">
+                            <td> {{ index + 1 }} </td>
+                            <td> {{ answer.score }} </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <table style="font-size: 12px; width: 100%;" align="center">
+                    <tr align="center">
+                        <th>_____________________________</th>
+                        <th>_____________________________</th>
+                        <th>_____________________________</th>
+                    </tr>
+                    <tr align="center">
+                        <th>Mtro. Ernesto C. Marín Alarcón</th>
+                        <th>Dra. Edith Lyions López</th>
+                        <th>Docente</th>
+                    </tr>
+                    <tr align="center">
+                        <th>Director UPN-212</th>
+                        <th>Subdirectora UPN-212</th>
+                        <th>UPN-212</th>
+                    </tr>
+                </table>
             </template>
         </div>
         <div class="flotante text-center">
@@ -406,19 +603,13 @@ Vue.use(require('vue-moment'));
         .todo{
             background-color: #ffffff;
             width: 100%;
-            margin-bottom: 0px;
-            bottom: 0;
         }
         .flotante {display:none}
 
         body  { visibility: hidden; }
         @page {
             size:  auto;   /* auto es el valor inicial*/
-            margin-top: 0;
-            margin-bottom: 1.5cm;
             /* margin-left: 0; */
-            margin-left: -20mm;
-            margin-right: -20mm;
             /* margin-left: 50mm;
             margin-right: 0mm; */
             /*margin-top: 2%;          */
