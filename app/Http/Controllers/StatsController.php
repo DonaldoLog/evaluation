@@ -233,7 +233,7 @@ class StatsController extends Controller
         ->leftjoin('groups_students', 'groups_students.studentId', 'users.id')
         ->whereIn('groups_students.groupId', $groupsIds)
         ->groupBy('users.id')
-        ->where('completed_eval.evaluationId', $evaluationId)
+        //->where('completed_eval.evaluationId', $evaluationId)
         ->select('users.name', 'users.studentId', 'users.last_name', 'completed_eval.id as completedId')
         ->get();
         $career = Career::where('id', $careerId)->first();
@@ -255,7 +255,7 @@ class StatsController extends Controller
         ->whereIn('groups_students.groupId', $groupsIds)
         ->select('users.name', 'users.studentId', 'users.last_name', 'completed_eval.id as completedId')
         ->groupBy('users.id')
-        ->where('completed_eval.evaluationId', $evaluationId)
+        //->where('completed_eval.evaluationId', $evaluationId)
         ->orderBy('users.name')
         ->get();
 
