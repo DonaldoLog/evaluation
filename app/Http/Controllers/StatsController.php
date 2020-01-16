@@ -252,6 +252,9 @@ class StatsController extends Controller
         ->leftjoin('groups_students', 'groups_students.studentId', 'users.id')
         ->whereIn('groups_students.groupId', $groupsIds)
         ->select('users.name', 'users.studentId', 'users.last_name', 'completed_eval.id as completedId')
+        ->groupBy('users.id')
+        ->where('completed_eval.evaluationId', $evaluationId)
+        ->orderBy('users.name')
         ->get();
         $careers = Career::whereIn('id', $careerIds)->get();
         $data = [ 'students' => $students, 'careers' => $careers];
