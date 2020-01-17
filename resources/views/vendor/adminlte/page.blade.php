@@ -191,6 +191,12 @@
                                     <p>Estadisticas profesores</p>
                                 </a>
                             </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="{{route('stats.index.teachers.comments')}}">
+                                    <i class="fas fa-archive"></i>
+                                    <p>Comentarios profesores</p>
+                                </a>
+                            </li>
                             @else
                             <li class="nav-item ">
                                     <a class="nav-link active" href="{{route('evaluation.index')}}">

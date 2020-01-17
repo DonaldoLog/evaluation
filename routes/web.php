@@ -99,9 +99,12 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::name('stats.')->prefix('stats')->middleware(['auth','is_admin'])->group(function () {
     Route::get('/index', 'StatsController@index')->name('index');
     Route::get('/teachers/index', 'StatsController@indexTeachers')->name('index.teachers');
+    Route::get('/teachers/comments/index', 'StatsController@indexTeachersComments')->name('index.teachers.comments');
+    Route::post('/teachers/data', 'StatsController@getTeachers')->name('get.teachers');
     Route::post('/teachers-esc/data', 'StatsController@getTeachers0')->name('get.teachers');
     Route::post('/teachers-on/data', 'StatsController@getTeachers1')->name('get.teachers');
     Route::get('/teacher/{teacherId}/{evaluationId}/{tipo}', 'StatsController@getStatsTeacher')->name('get.stats.teacher');
+    Route::get('/teacher-comments/{teacherId}/{evaluationId}', 'StatsController@getStatsCommentsTeacher')->name('get.stats.comments.teacher');
     Route::get('/career/{careerId}/{evaluationId}', 'StatsController@careerInfo')->name('career.info');
     Route::get('/dinamic-career/{evaluationId}/{careerIds}', 'StatsController@dinamicCareerInfo')->name('dinamic.career.info');
 });

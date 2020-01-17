@@ -1,13 +1,13 @@
 <template>
     <div class="todo" oncut="return false">
         <div class="plantilla">
-            <template v-if="answers.length > 0">
+            <template v-if="answersOpen.length > 0">
                 <table style="width: 100%;">
                     <tbody>
                         <tr>
-                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../images/upn.jpg'" height="90" width="90" style=""></th>
                             <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
-                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../images/buho.jpg'" height="90" width="90" style=""></th>
                         </tr>
                     </tbody>
                 </table>
@@ -24,7 +24,7 @@
                         </tr>
                         <tr>
                             <th>ASUNTO:</th>
-                            <td>Constancia de Evaluación Docente</td>
+                            <td>Comentarios de Evaluación Docente</td>
                         </tr>
                         <tr>
                             <th>FECHA:</th>
@@ -57,18 +57,7 @@
                         </tr>
                         <tr>
                             <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
-                            <td> {{ answers[0].totalStudents }} </td>
-                        </tr>
-                        <tr>
-                            <th align="left">CALIFICACIÓN:</th>
-                            <td>
-                                {{ total }}
-                            </td>
-                            <th >NIVEL:</th>
-                            <td> {{ `${(total >= 4.75)? 'Excelente': (total >= 4.25)? 'Notable': (total >= 3.75)? 'Bueno': (total >= 3.24)? 'Suficiente': 'Insuficiente'}` }} </td>
-                            <td> &nbsp </td>
-                            <td> &nbsp </td>
-                            <td> &nbsp </td>
+                            <td> {{ answersOpen.length }} </td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,30 +66,16 @@
                     <thead>
                         <tr>
                             <th> CRITERIOS </th>
-                            <th>  </th>
-                            <th> PROMEDIO </th>
-                            <th> NIVEL </th>
+                            <th> COMENTARIO </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(answer, index) in answers">
+                        <tr v-for="(answer, index) in answersOpen">
                             <td> {{ index + 1 }} </td>
-                            <td> {{ answer.name }} </td>
-                            <td> {{ answer.total }} </td>
-                            <td> {{ `${(answer.total >= 4.75)? 'Excelente': (answer.total >= 4.25)? 'Notable': (answer.total >= 3.75)? 'Bueno': (answer.total >= 3.24)? 'Suficiente': 'Insuficiente'}` }} </td>
+                            <td> {{ answer.score }} </td>
                         </tr>
                     </tbody>
                 </table>
-                <div style="page-break-after: always;"></div>
-                <br>
-                <br>
-                <div>
-                    <GChart
-                        type="ColumnChart"
-                        :data="chartData"
-                        :options="chartOptions"
-                    />
-                </div>
                 <br>
                 <br>
                 <br>
@@ -125,44 +100,15 @@
                         <th>UPN-212</th>
                     </tr>
                 </table>
-                <table style="bottom:0;right:0;padding-left: 70%; font-size: 9px;padding-top: 70%;">
-                    <tbody style="border: solid 1px #000000;">
-                        <tr>
-                            <th> Niveles de desempeño</th>
-                        </tr>
-                        <tr>
-                            <td>4.75 - 5</td>
-                            <td>Excelente</td>
-                        </tr>
-                        <tr>
-                            <td>4.25 - 4.74</td>
-                            <td>Notable</td>
-                        </tr>
-                        <tr>
-                            <td>3.75 - 4.24</td>
-                            <td>Bueno</td>
-                        </tr>
-                        <tr>
-                            <td>3.24 - 3.75</td>
-                            <td>Suficiente</td>
-                        </tr>
-                        <tr>
-                            <td> &lt; 3.23</td>
-                            <td>Insuficiente</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-             <div style="page-break-after: always;"></div>
+                <div style="page-break-after: always;"></div>
             </template>
-            <br>
-             <template v-if="answersTutorias.length > 0">
+<template v-if="answersTutoriasOpen.length > 0">
                 <table style="width: 100%;">
                     <tbody>
                         <tr>
-                            <th align="center">  <img :src="'./../../../../images/upn.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../images/upn.jpg'" height="90" width="90" style=""></th>
                             <th align="center"> <h3 style="text-align: center"> Universidad Pedagógica Nacional 212, Teziutlán, Puebla. </h3> </th>
-                            <th align="center">  <img :src="'./../../../../images/buho.jpg'" height="90" width="90" style=""></th>
+                            <th align="center">  <img :src="'./../../../images/buho.jpg'" height="90" width="90" style=""></th>
                         </tr>
                     </tbody>
                 </table>
@@ -179,7 +125,7 @@
                         </tr>
                         <tr>
                             <th>ASUNTO:</th>
-                            <td>Constancia de Evaluación Tutoría</td>
+                            <td>Comentarios de Evaluación Docente Tutoría</td>
                         </tr>
                         <tr>
                             <th>FECHA:</th>
@@ -194,7 +140,7 @@
                             <th align="left">NOMBRE DEL PROFESOR:</th>
                             <td>{{ teacher.name }} {{ teacher.last_name }} </td>
                         </tr>
-                        <tr>
+                         <tr>
                             <th align="left">PROGRAMA (S) EDUCATIVO (S):</th>
                             <td>
                                 <template v-for="(career, index) in careersTutoria">
@@ -212,16 +158,7 @@
                         </tr>
                         <tr>
                             <th align="left">No. DE ESTUDIANTES EVALUADORES:</th>
-                            <td> {{ answersTutorias[0].totalStudents }} </td>
-                        </tr>
-                        <tr>
-                            <th align="left">CALIFICACIÓN:</th>
-                            <td>
-                                {{ total2 }}
-                            </td>
-                            <th>NIVEL:</th>
-                            <td> {{ `${(total2 >= 4.75)? 'Excelente': (total2 >= 4.25)? 'Notable': (total2 >= 3.75)? 'Bueno': (total2 >= 3.24)? 'Suficiente': 'Insuficiente'}` }} </td>
-
+                            <td> {{ answersTutoriasOpen.length }} </td>
                         </tr>
                     </tbody>
                 </table>
@@ -230,30 +167,17 @@
                     <thead>
                         <tr>
                             <th> CRITERIOS </th>
-                            <th>  </th>
-                            <th> PROMEDIO </th>
-                            <th> NIVEL </th>
+                            <th> COMENTARIO </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(answer, index) in answersTutorias">
+                        <tr v-for="(answer, index) in answersTutoriasOpen">
                             <td> {{ index + 1 }} </td>
-                            <td> {{ answer.name }} </td>
-                            <td> {{ answer.total }} </td>
-                            <td> {{ `${(answer.total >= 4.75)? 'Excelente': (answer.total >= 4.25)? 'Notable': (answer.total >= 3.75)? 'Bueno': (answer.total >= 3.24)? 'Suficiente': 'Insuficiente'}` }} </td>
+                            <td> {{ answer.score }} </td>
                         </tr>
                     </tbody>
                 </table>
-                <div style="page-break-after: always;"></div>
                 <br>
-                <br>
-                <div>
-                    <GChart
-                        type="ColumnChart"
-                        :data="chartData2"
-                        :options="chartOptions"
-                    />
-                </div>
                 <br>
                 <br>
                 <br>
@@ -278,35 +202,6 @@
                         <th>UPN-212</th>
                     </tr>
                 </table>
-                <br>
-                <table style="bottom:0;right:0;padding-left: 70%; font-size: 9px;padding-top: 70%;">
-                    <tbody style="border: solid 1px #000000;">
-                        <tr>
-                            <th> Niveles de desempeño</th>
-                        </tr>
-                        <tr>
-                            <td>4.75 - 5</td>
-                            <td>Excelente</td>
-                        </tr>
-                        <tr>
-                            <td>4.25 - 4.74</td>
-                            <td>Notable</td>
-                        </tr>
-                        <tr>
-                            <td>3.75 - 4.24</td>
-                            <td>Bueno</td>
-                        </tr>
-                        <tr>
-                            <td>3.24 - 3.75</td>
-                            <td>Suficiente</td>
-                        </tr>
-                        <tr>
-                            <td> &lt; 3.23</td>
-                            <td>Insuficiente</td>
-                        </tr>
-                    </tbody>
-                </table>
-
             </template>
         </div>
         <div class="flotante text-center">
@@ -314,7 +209,6 @@
         </div>
     </div>
 </template>
-
 <script>
 import { GChart } from 'vue-google-charts'
 Vue.use(require('vue-moment'));
@@ -324,32 +218,14 @@ Vue.use(require('vue-moment'));
         },
         data(){
             return{
-                chartData: JSON.parse(this.questionsgraphInitial),
-                chartData2: JSON.parse(this.questionsgraphtutoInitial)
-                ,
-                chartOptions: {
-                    title: '---------------------------------Calificacion por pregunta---------------------------------',
-                    vAxis: {
-                        minValue: 0,
-                        maxValue: 5,
-                        ticks: [0, 1, 2, 3, 4, 5]
-                    },
-                    legend: {position: 'none'}
-                },
                 content: '',
                 answersOpen: this.answersOpenInitial? JSON.parse(this.answersOpenInitial): {},
                 answersTutoriasOpen: this.answersTutoriasOpenInitial? JSON.parse(this.answersTutoriasOpenInitial): {},
                 careersTutoria: this.careersTutoriaInitial? JSON.parse(this.careersTutoriaInitial): {},
                 careers: this.careersInitial? JSON.parse(this.careersInitial): {},
                 teacher: this.teacherInitial? JSON.parse(this.teacherInitial): {},
-                answers: this.answersInitial? JSON.parse(this.answersInitial): {},
-                answersTutorias: this.answerstutoriasInitial? JSON.parse(this.answerstutoriasInitial): {},
                 groups: this.groupsInitial? JSON.parse(this.groupsInitial): {},
                 groupsTutoria: this.groupsTutoriaInitial? JSON.parse(this.groupsTutoriaInitial): {},
-                total: this.totalInitial? this.totalInitial: 0,
-                total2: this.total2Initial? this.total2Initial: 0,
-                questionsgraph: this.questionsgraphInitial? JSON.parse(this.questionsgraphInitial): [],
-                questionsgraphtuto: this.questionsgraphtutoInitial? JSON.parse(this.questionsgraphtutoInitial): [],
             }
         },
         props:{
@@ -361,14 +237,8 @@ Vue.use(require('vue-moment'));
             careersTutoriaInitial: {},
             careersInitial: {},
             teacherInitial: {},
-            answersInitial: {},
-            answerstutoriasInitial: {},
             groupsInitial: {},
             groupsTutoriaInitial: {},
-            totalInitial: 0,
-            total2Initial: 0,
-            questionsgraphInitial: {},
-            questionsgraphtutoInitial: {},
         },
         created: function () {
             this.content = this.contenido

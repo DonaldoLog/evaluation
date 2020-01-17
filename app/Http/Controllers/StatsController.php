@@ -34,6 +34,44 @@ class StatsController extends Controller
         ->with('evaluation', $evaluation);
     }
 
+    public function indexTeachersComments() {
+        $evaluation = Evaluation::where('active', 1)->first();
+
+        return view('modules.stats.teachers-comments')
+        ->with('evaluation', $evaluation);
+    }
+
+    public function getTeachers(Request $request) {
+        $search = $request->search;
+        $evaluation = Evaluation::where('active', 1)->first();
+        $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
+        $query = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)
+        ->join('groups', 'groups.id', 'groups_teachers.groupId')
+        ->distinct('groups_teachers.teacherId')
+        ->join('careers', 'careers.id', 'groups.careerId')
+        ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
+        ->select('teachers.id','teachers.name as name', 'teachers.last_name', 'teachers.email');
+
+        $total    = $query->count();
+        $ignora   = $request->per_page * ($request->page - 1);
+        $lastPage = intval(round($total / $request->per_page, 0));
+        $lastPage = ($lastPage == 0) ? $lastPage+1 : $lastPage;
+        $data     = $query->orderBy($request->column, $request->order)->skip($ignora)->take($request->per_page)->get();
+
+        $response = [
+            'data' => $data,
+            'meta' => (object) [
+                'current_page' => $request->page,
+                'from' => $ignora + 1,
+                'last_page' => $lastPage,
+                'per_page' => $request->per_page,
+                'to' => $ignora + $request->per_page,
+                'total' => $total
+            ],
+        ];
+        return $response;
+    }
+
     public function getTeachers0(Request $request) {
         $search = $request->search;
         $evaluation = Evaluation::where('active', 1)->first();
@@ -43,7 +81,7 @@ class StatsController extends Controller
         ->distinct('groups_teachers.teacherId')
         ->join('careers', 'careers.id', 'groups.careerId')
         ->join('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->where('groups_teachers.tutoria', 0)
+        //->where('groups_teachers.tutoria', 0)
         ->where('careers.type', 3)
         ->select('teachers.id','teachers.name as name', 'teachers.last_name', 'teachers.email', DB::raw('"1" AS type'));
 
@@ -76,7 +114,7 @@ class StatsController extends Controller
         ->leftjoin('groups', 'groups.id', 'groups_teachers.groupId')
         ->leftjoin('careers', 'careers.id', 'groups.careerId')
         ->leftjoin('teachers', 'teachers.id', 'groups_teachers.teacherId')
-        ->where('groups_teachers.tutoria', 0)
+        //->where('groups_teachers.tutoria', 0)
         ->where('careers.type', '!=', 3)
         ->select('teachers.id','teachers.name as name', 'teachers.last_name', 'teachers.email', DB::raw('"0" AS type'));
 
@@ -125,16 +163,9 @@ class StatsController extends Controller
         ->where('questions.type', 1)
         ->groupBy('completed_question.questionId')->get();
 
-        $answersOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
-        ->select('completed_question.id as cid', 'questions.id', 'questions.type', 'questions.name', 'completed_question.score')
-        ->whereIn('completed_question.pollId', $pollsIds)
-        ->where('questions.type', 2)->get();
+        $answersOpen = CompletedQuestion::where('id', 0)->get();
         //dd($answersOpen);
-        $answersTutorias = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
-        ->selectRaw('count(completed_question.id) as totalStudents, sum(completed_question.score) as sum, questions.name')
-        ->whereIn('completed_question.pollId', $pollsTuroriasIds)
-        ->where('questions.type', 1)
-        ->groupBy('completed_question.questionId')->get();
+        $answersTutorias = CompletedQuestion::where('id', 0)->get();
 
         $answersTutoriasOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
         ->select('questions.name', 'completed_question.score')
@@ -265,5 +296,62 @@ class StatsController extends Controller
         return $pdf->stream('evaluaciones.pdf');
        /*  $pdf = PDF::loadView('modules.stats.stats', $data);
         return $pdf->download('invoice.pdf'); */
+    }
+
+    public function getStatsCommentsTeacher ($teacherId, $evaluationId) {
+
+        $evaluation = Evaluation::where('id', $evaluationId)->first();
+        $groupTeachersIds = Poll::where('evaluationId', $evaluation->id)->pluck('groupTeacherId')->toArray();
+        $groupsTeachersIds = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)->where('groups_teachers.teacherId', $teacherId)
+        ->leftjoin('groups', 'groups.id', 'groups_teachers.groupId')
+        ->leftjoin('careers', 'careers.id', 'groups.careerId')
+        ->where('groups_teachers.tutoria', 0)->pluck('groups_teachers.id')->toArray();
+        $pollsIds = Poll::whereIn('groupteacherId', $groupsTeachersIds)->pluck('id')->toArray();
+
+        $groupsTeachersTutoriaIds = DB::table('groups_teachers')->whereIn('groups_teachers.id', $groupTeachersIds)->where('groups_teachers.teacherId', $teacherId)
+        ->where('tutoria', 1)->pluck('id')->toArray();
+        $pollsTuroriasIds = Poll::whereIn('groupteacherId', $groupsTeachersTutoriaIds)->pluck('id')->toArray();
+
+        $answersOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
+        ->select('completed_question.id as cid', 'questions.id', 'questions.type', 'questions.name', 'completed_question.score')
+        ->whereIn('completed_question.pollId', $pollsIds)
+        ->where('questions.type', 2)->get();
+        //dd($answersOpen);
+
+
+        $answersTutoriasOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
+        ->select('questions.name', 'completed_question.score')
+        ->whereIn('completed_question.pollId', $pollsTuroriasIds)
+        ->where('questions.type', 2)->get();
+
+        // dd($answers, $answersTutorias);
+        $groupIds = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)
+        ->where('tutoria', 0)
+        ->where('teacherId', $teacherId)->pluck('groupId')->toArray();
+        $groups = Group::whereIn('groups.id', $groupIds)
+        ->join('careers', 'careers.id', 'groups.careerId')->get();
+        $careersIds = $groups->pluck('careerId')->toArray();
+        $careers = Career::whereIn('id', $careersIds)->get();
+        //dd($careers);
+
+        $teacher = Teacher::where('id', $teacherId)->first();
+
+        $groupsTeachersTutoria = DB::table('groups_teachers')->whereIn('id', $groupTeachersIds)
+        ->where('teacherId', $teacherId)
+        ->where('tutoria', 1)->pluck('groupId')->toArray();
+        $groupsTutoria = Group::whereIn('id', $groupsTeachersTutoria)->get();
+        $careersIds = $groupsTutoria->pluck('careerId')->toArray();
+        $careersTutoria = Career::whereIn('id', $careersIds)->get();
+
+
+        return view('modules.stats.teachers-print-comments')
+        ->with('answersOpen', $answersOpen)
+        ->with('answersTutoriasOpen', $answersTutoriasOpen)
+        ->with('careersTutoria', $careersTutoria)
+        ->with('careers', $careers)
+        ->with('teacher', $teacher)
+        ->with('groups', $groups)
+        ->with('groupsTutoria', $groupsTutoria)
+        ;
     }
 }

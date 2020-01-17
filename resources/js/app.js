@@ -31,7 +31,9 @@ Vue.component('evaluation-student-component', require('./components/Evaluation/I
 Vue.component('questions-component', require('./components/Evaluation/Questions.vue').default);
 Vue.component('stats-component', require('./components/Stats/Index.vue').default);
 Vue.component('teachers-stats-component', require('./components/TeacherStats/TeachersStats.vue').default);
+Vue.component('teachers-comments-component', require('./components/TeacherStats/TeachersComments.vue').default);
 Vue.component('impresion-component', require('./components/Impresion.vue').default);
+Vue.component('impresion2-component', require('./components/Impresion2.vue').default);
 
 const app = new Vue({
     el: '#app'
