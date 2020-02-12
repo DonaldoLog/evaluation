@@ -165,7 +165,12 @@ class StatsController extends Controller
 
         $answersOpen = CompletedQuestion::where('id', 0)->get();
         //dd($answersOpen);
-        $answersTutorias = CompletedQuestion::where('id', 0)->get();
+        //$answersTutorias = CompletedQuestion::where('id', 0)->get();
+        $answersTutorias = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
+        ->selectRaw('count(completed_question.id) as totalStudents, sum(completed_question.score) as sum, questions.name')
+        ->whereIn('completed_question.pollId', $pollsTuroriasIds)
+        ->where('questions.type', 1)
+        ->groupBy('completed_question.questionId')->get();
 
         $answersTutoriasOpen = CompletedQuestion::leftJoin('questions', 'questions.id', 'completed_question.questionId')
         ->select('questions.name', 'completed_question.score')
